@@ -56,3 +56,6 @@ selenium_tests/reports/
 # Othre files
 *.bak
 *.swp
+
+#test results db
+test_results.db
