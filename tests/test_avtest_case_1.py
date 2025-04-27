@@ -5,7 +5,7 @@
   @Author: Rafael Daniel Farfán
 """
 import allure
-from pages.form_passengers import FormPassengers
+from pages.form_passengers_page import FormPassengersPage
 from pages.home_page import HomePage
 
 @allure.title("Caso automatizado 1: One way booking")
@@ -15,7 +15,7 @@ def test_avtest_case_1(browser):
     Tests that we do when we have one way booking scenario
     """
     page = HomePage(browser)
-    form = FormPassengers(browser)
+    form = FormPassengersPage(browser)
     page.load()
     with allure.step("Seleccionar vuelo de solo ida"):
         # page.select_one_way_flight()
