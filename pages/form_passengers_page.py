@@ -5,7 +5,7 @@ from pages.common import Common
 import time
 
 
-class FormPassengers(Common):
+class FormPassengersPage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
     # Loader that indicate that the page is loading.
     LOADER: tuple = (By.CLASS_NAME, "loader")
