@@ -16,4 +16,8 @@ def test_avtest_case_1(browser):
     page = HomePage(browser)
     page.load()
     page.select_one_way_flight()
+    with allure.step("Validar selección de idiomas"):
+        # Get language
+        language = browser.execute_script("return navigator.language || navigator.userLanguage;")
+        print(f"Idioma detectado: {language}")
     
