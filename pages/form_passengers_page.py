@@ -1,6 +1,7 @@
 
 
 from selenium.webdriver.common.by import By
+from logger import get_logger
 from pages.common import Common
 import time
 
@@ -58,6 +59,7 @@ class FormPassengersPage(Common):
 
     def __init__(self, driver):
        super().__init__(driver)
+       self.logger = get_logger(self.__class__.__name__)
     
     def fill_passenger_form_method(self):
         container_first_passenger = self.find(self.CONTAINER_FIRST_PASSENGER)
@@ -65,10 +67,12 @@ class FormPassengersPage(Common):
 
         # All forms passengers
         passenger_forms = self.find_all(self.CONTAINERS_PASSENGERS)  
-        print(f"Se encontraron {len(passenger_forms)} formularios de pasajeros.")
+        self.logger.info(f"Se encontraron {len(passenger_forms)} formularios de pasajeros.")
 
         for index, form in enumerate(passenger_forms, start=1):
             print(f"Llenando pasajero #{index}...")
+            self.logger.info(f"Llenando pasajero #{index}...")
+
             self.scroll_down_to_element(form).perform()
 
             # --- Dentro del contenedor 'form' ---
@@ -150,26 +154,29 @@ class FormPassengersPage(Common):
                 self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", nationality_option)
                 nationality_option.click()
 
-            print(f"Pasajero #{index} llenado.")
+            self.logger.info(f"Pasajero #{index} llenado.")
         
         # Click on prefix button to show prefix phone list
         prefix_button = self.wait_to_be_clickable(self.PHONE_PREFIX_SELECTOR)
         prefix_button.click()
         time.sleep(3)
-        print("Listado de prefixes mostrado.")
+        self.logger.info("Listado de prefijos mostrado.")
 
         # Select prefix
         self.driver.execute_script("window.scrollBy(0, 300);")
         prefix_option = self.wait_to_be_clickable(self.PHONE_PREFIX_BUTTON)
         prefix_option.click()
-        print("Prefix seleccionado.")
+        self.logger.info("Prefix seleccionado.")
+
+
 
         # Input phone number owner
         input_phone_number_owner = form.find_element(*self.INPUT_PHONE_NUMBER_OWNER)
         self.wait_for_visibility(input_phone_number_owner)
         self.scroll_down_to_element(input_phone_number_owner).perform()
         input_phone_number_owner.send_keys("3165555888")
-        print("Número de telefono ingresado.")
+        self.logger.info("Número de telefono ingresado.")
+
 
         # Input email owner
         self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -177,7 +184,7 @@ class FormPassengersPage(Common):
         self.wait_for_visibility(input_email_owner)
         self.scroll_down_to_element(input_email_owner).perform()
         input_email_owner.send_keys(f"andres{index}@gmail.com")
-        print("Correo ingresado.")
+        self.logger.info("Correo ingresado.")
 
        # Intentar encontrar el campo de confirmación del correo electrónico
         input_confirm_email_owner_elements = form.find_elements(*self.INPUT_CONFIRM_EMAIL_OWNER)
@@ -185,21 +192,22 @@ class FormPassengersPage(Common):
         # Verificar si el elemento existe
         if input_confirm_email_owner_elements:
             print("El campo de confirmación de correo electrónico fue encontrado.")
+            self.logger.info("El campo de confirmación de correo electrónico fue encontrado.")
             input_confirm_email_owner = input_confirm_email_owner_elements[0]
             self.wait_for_visibility(input_confirm_email_owner)
             self.scroll_down_to_element(input_confirm_email_owner).perform()
             input_confirm_email_owner.send_keys(f"andres{index}@gmail.com")
-        else:
-            print("El campo de confirmación de correo electrónico no está presente en esta versión.")
+        else:            
+            self.logger.info("El campo de confirmación de correo electrónico no está presente en esta versión.")
         
 
         # Click on checkbox
         check_box = self.find(self.CHECK_BOX)
         self.scroll_down_to_element(check_box).perform()
         check_box.click()
-        print("Checkbox de terminos y condiciones clickeado.")
+        self.logger.info("Checkbox de terminos y condiciones clickeado.")
 
         # Click on continue button
         continue_button = self.find((By.XPATH, "//button[contains(@class, 'btn-next')]//span[normalize-space(text())='Continuar']"))
-        self.driver.execute_script("arguments[0].click();", continue_button)        
-        print("Botón de continuar clickeado.")
+        self.driver.execute_script("arguments[0].click();", continue_button)       
+        self.logger.info("Botón de continuar clickeado.")

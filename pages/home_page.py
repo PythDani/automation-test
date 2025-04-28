@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+from logger import get_logger
 from .common import Common
 class HomePage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
@@ -47,6 +48,7 @@ class HomePage(Common):
             driver (selenium.webdriver): A selenium webdriver instance.
         """       
         super().__init__(driver)
+        self.logger = get_logger(self.__class__.__name__)
         
 
     def load(self):
@@ -54,10 +56,12 @@ class HomePage(Common):
         load home page.
 
         """
-        print(f"URL a la que vamos a navegar: {self.URL}")
+        self.logger.info(f"Cargando la URL: {self.URL}")
         self.driver.get(self.URL)    
         #We wait unitll the page loader disapear.
-        self.wait_for_invisibility(self.LOADER)     
+        self.logger.info("Esperando a que desaparezca el loader...")
+        self.wait_for_invisibility(self.LOADER)
+        self.logger.info("Página cargada correctamente.")    
 
     def loader_b(self):
         self.wait_for_invisibility(self.LOADER_B)
@@ -71,25 +75,25 @@ class HomePage(Common):
         #Scroll down to move to the button       
         ActionChains(self.driver).move_to_element(continue_button).perform()              
         continue_button.click()
-        print("Continuar.")
+        self.logger.info("Boton continuar a pasajeros Clickeado.") 
 
     def click_on_fare_flight(self):
         basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)        
         ActionChains(self.driver).move_to_element(basic_fare_button).perform()        
         basic_fare_button.click()
-        print("Tarifa seleccionada.")
+        self.logger.info("Tarifa seleccionada.") 
 
     def click_drop_down_flight(self):
         flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)        
         ActionChains(self.driver).move_to_element(flight_button).perform()        
         flight_button.click()
-        print("Vuelo seleccionado.")
+        self.logger.info("Vuelo seleccionado.") 
         time.sleep(3)
 
     def click_search_flight_button(self):
         search_button = self.wait_to_be_clickable(self.SEARCH_BUTTON)
         search_button.click()
-        print("Busqueda realizada.")
+        self.logger.info("Búsqueda de vuelos realizada.") 
 
     def confirm_button_passengers_quantity(self):
         confirm_button = self.wait_to_be_clickable(self.CONFIRM_BUTTON)
@@ -99,7 +103,7 @@ class HomePage(Common):
     def select_date_departure(self):
         day_element = self.wait_to_be_clickable(self.DATEPICKER_BUTTON)
         day_element.click()       
-        print("Fecha seleccionada.")
+        self.logger.info("Fecha de salida seleccionada.") 
 
     def select_one_way_radio_button(self):
         """
@@ -110,6 +114,7 @@ class HomePage(Common):
         select_radio = self.find(self.RADIO_ONE_WAY)
         if not select_radio.is_selected():
             select_radio.click()
+            self.logger.info("Vuelo de solo ida seleccionado.") 
 
     def is_one_way_selected(self):
         """
@@ -128,20 +133,20 @@ class HomePage(Common):
             field_origin (tuple): A tuple of (By, str) to locate the origin field.
             option_city_origin (tuple): A tuple of (By, str) to locate the city option.
         """
-        print("Esperando que el botón de origen esté disponible...")
+        self.logger.info("Esperando que el botón de origen esté disponible...") 
         origin_button = self.find(self.BUTTON_ORIGIN)
         origin_button.click()
-        print("Botón de origen clickeado.")
+        self.logger.info("Botón de origen Clickeado.") 
 
         self.select_city_origin(self.FIELD_ORIGIN, "Medellín")
 
         # Wait till the city option appears
-        print("Esperando la opción de Medellín en la lista...")
+        self.logger.info("Esperando resultado de ciudad de origen...") 
         city_option = self.wait_to_be_clickable(self.OPTION_CITY_ORIGIN)
 
         # Click on the option selected
         city_option.click()
-        print("Opción 'Medellín' seleccionada.")
+        self.logger.info("Ciudad de origen seleccionada.") 
 
     def select_destination(self):
         """
@@ -153,10 +158,10 @@ class HomePage(Common):
             option_city_destination (tuple): A tuple of (By, str) to locate the city option.
         """
 
-        print("Esperando que el campo de destino esté disponible...")
+        self.logger.info("Esperando campo de destino...") 
         destination_input = self.wait_to_be_clickable(self.FIELD_DESTINATION)
         
-        print("Limpiando campo de destino...")
+        self.logger.info("Limpiando campo de destino...") 
         destination_input.clear()
 
         self.select_city_destination(self.OPTION_CITY_DESTINATION, destination_input)
@@ -169,17 +174,16 @@ class HomePage(Common):
             option_city_destination (tuple): A tuple of (By, str) to locate the city option.
             destination_input (selenium.webdriver.remote.webelement.WebElement): The destination input field.
         """
-        print("Escribiendo 'Bogotá' en el campo de destino...")
+        self.logger.info("Escribiendo Ciudad destino") 
         destination_input.send_keys("Bogotá")
 
         # Wait till the city option appears
-        print("Esperando que aparezca la opción de 'Bogotá' en la lista...")
+        self.logger.info("Esperando resultado de ciudad destino...") 
         city_option = self.wait_to_be_clickable(option_city_destination)
 
-        # Click on the option
-        print("Seleccionando la opción 'Bogotá'...")
+        # Click on the option        
         city_option.click()
-        print("Ciudad de destino 'Bogotá' seleccionada exitosamente.")
+        self.logger.info("Ciudad destino seleccionada.") 
 
     def select_city_origin(self, field_city, city_name):
         """
@@ -189,7 +193,7 @@ class HomePage(Common):
             field_city (tuple): A tuple of (By, str) to locate the origin field.
             city_name (str): The name of the city to select.
         """
-        print("Esperando que el campo de origen esté visible...")
+        self.logger.info("Esperando campo de origen...") 
         input_origin_city = self.find(field_city)
 
         # Click on the input field
@@ -208,6 +212,7 @@ class HomePage(Common):
         
         for _ in range(times):
             element.click()
+            self.logger.info("Seleccionando pasajeros.") 
             time.sleep(wait_between_clicks)
 
     def select_random_month(self, times=1, wait_between_clicks=0.5):
@@ -222,6 +227,7 @@ class HomePage(Common):
         
         for _ in range(times):
             element.click()
+            self.logger.info("Seleccionando mes de salida.") 
             time.sleep(wait_between_clicks)
 
 
