@@ -9,53 +9,53 @@ import time
 class FormPassengersPage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
     # Loader that indicate that the page is loading.
-    LOADER: tuple = (By.CLASS_NAME, "loader")
+    LOADER:                                tuple = (By.CLASS_NAME, "loader")
     # Loader that indicate that the page is loading in some cases.
-    LOADER_B: tuple = (By.CLASS_NAME, "page-loader")        
+    LOADER_B:                              tuple = (By.CLASS_NAME, "page-loader")        
     # Container first passenger
-    CONTAINER_FIRST_PASSENGER: tuple = (By.XPATH, "//*[@id='maincontent']/div/div[3]/div/div/passenger-details-container/personal-data-custom/div/div/div[1]/personal-data-form-custom")    
+    CONTAINER_FIRST_PASSENGER:             tuple = (By.XPATH, "//*[@id='maincontent']/div/div[3]/div/div/passenger-details-container/personal-data-custom/div/div/div[1]/personal-data-form-custom")    
     # Container passenger group
-    CONTAINERS_PASSENGERS: tuple = (By.XPATH, "//personal-data-form-custom")
+    CONTAINERS_PASSENGERS:                 tuple = (By.XPATH, "//personal-data-form-custom")
     # Genre selector"
-    GENRE_SELECTOR: tuple = (By.XPATH, "//button[@role='combobox' and @aria-haspopup='listbox']")
+    GENRE_SELECTOR:                        tuple = (By.XPATH, "//button[@role='combobox' and @aria-haspopup='listbox']")
     # Male button option
-    BUTTON_MALE_OPTION: tuple = (By.XPATH, "//li[@class='ui-dropdown_item ng-star-inserted']//button[@class='ui-dropdown_item_option']")
+    BUTTON_MALE_OPTION:                    tuple = (By.XPATH, "//li[@class='ui-dropdown_item ng-star-inserted']//button[@class='ui-dropdown_item_option']")
     # Input name field
-    INPUT_NAME: tuple = (By.XPATH, "//div[@class='ui-input_wrap']//input[@name='IdFirstName7E7E303030312D30312D30317E353334423438324433313244343535383534']")
+    INPUT_NAME:                            tuple = (By.XPATH, "//div[@class='ui-input_wrap']//input[@name='IdFirstName7E7E303030312D30312D30317E353334423438324433313244343535383534']")
     # Input last name field
-    INPUT_LAST_NAME: tuple = (By.XPATH, "//div[@class='ui-input_wrap']//input[@name='IdLastName7E7E303030312D30312D30317E353334423438324433313244343535383534']")
+    INPUT_LAST_NAME:                       tuple = (By.XPATH, "//div[@class='ui-input_wrap']//input[@name='IdLastName7E7E303030312D30312D30317E353334423438324433313244343535383534']")
     # Selector day of birth
-    SELECTOR_DAY_OF_BIRTH:tuple = (By.XPATH, "//div[@class='ui-dropdown ng-star-inserted']//button[@class='ui-input' and @role='combobox' and @id='dateDayId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_']")
+    SELECTOR_DAY_OF_BIRTH:                 tuple = (By.XPATH, "//div[@class='ui-dropdown ng-star-inserted']//button[@class='ui-input' and @role='combobox' and @id='dateDayId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_']")
     # Day of birth button
-    DAY_OF_BIRTH_BUTTON: tuple = (By.XPATH, "//li[@class='ui-dropdown_item ng-star-inserted' and @role='none']//button[@class='ui-dropdown_item_option' and @role='option' and @id='dateDayId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_-26']//span[text()='27']")
+    DAY_OF_BIRTH_BUTTON:                   tuple = (By.XPATH, "//li[@class='ui-dropdown_item ng-star-inserted' and @role='none']//button[@class='ui-dropdown_item_option' and @role='option' and @id='dateDayId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_-26']//span[text()='27']")
     # Selector month of birth
-    SELECTOR_MONTH_OF_BIRTH: tuple = (By.XPATH, "//div[@class='ui-dropdown ng-star-inserted']//button[@class='ui-input' and @role='combobox' and @id='dateMonthId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_']")
+    SELECTOR_MONTH_OF_BIRTH:               tuple = (By.XPATH, "//div[@class='ui-dropdown ng-star-inserted']//button[@class='ui-input' and @role='combobox' and @id='dateMonthId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_']")
     # Month of birth button
-    MONTH_OF_BIRTH_BUTTON: tuple = (By.XPATH, "//li[@class='ui-dropdown_item ng-star-inserted' and @role='none']//button[@class='ui-dropdown_item_option' and @role='option' and @id='dateMonthId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_-7']//span[text()='8']")
+    MONTH_OF_BIRTH_BUTTON:                 tuple = (By.XPATH, "//li[@class='ui-dropdown_item ng-star-inserted' and @role='none']//button[@class='ui-dropdown_item_option' and @role='option' and @id='dateMonthId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_-7']//span[text()='8']")
     # Selector year of birth
-    SELECTOR_YEAR_OF_BIRTH: tuple = (By.XPATH, "//div[@class='ui-dropdown ng-star-inserted']//button[@class='ui-input' and @role='combobox' and @id='dateYearId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_']")
+    SELECTOR_YEAR_OF_BIRTH:                tuple = (By.XPATH, "//div[@class='ui-dropdown ng-star-inserted']//button[@class='ui-input' and @role='combobox' and @id='dateYearId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_']")
     # Year of birth button
-    YEAR_OF_BIRTH_BUTTON: tuple = (By.XPATH, "//li[contains(@class, 'ui-dropdown_item') and contains(@class, 'ng-star-inserted')]//button[contains(@class, 'ui-dropdown_item_option')]//span[text()='2000']")
+    YEAR_OF_BIRTH_BUTTON:                  tuple = (By.XPATH, "//li[contains(@class, 'ui-dropdown_item') and contains(@class, 'ng-star-inserted')]//button[contains(@class, 'ui-dropdown_item_option')]//span[text()='2000']")
     # Selector of Nationality
-    SELECTOR_OF_NATIONALITY: tuple= (By.ID, "IdDocNationality_7E7E303030312D30312D30317E353334423438324433313244343535383534")
+    SELECTOR_OF_NATIONALITY:               tuple= (By.ID, "IdDocNationality_7E7E303030312D30312D30317E353334423438324433313244343535383534")
     # Nationality button
-    NATIONALITY_BUTTON: tuple = (By.ID, "IdDocNationality_7E7E303030312D30312D30317E353334423438324433313244343535383534-0")
+    NATIONALITY_BUTTON:                    tuple = (By.ID, "IdDocNationality_7E7E303030312D30312D30317E353334423438324433313244343535383534-0")
 
     #-----------------------------------------------Booking owner form-----------------------------------------------------
     # Phone prefix selector
-    PHONE_PREFIX_SELECTOR: tuple = (By.ID, "phone_prefixPhoneId")
+    PHONE_PREFIX_SELECTOR:                 tuple = (By.ID, "phone_prefixPhoneId")
     # Phone prefix button
-    PHONE_PREFIX_BUTTON: tuple = (By.ID, "phone_prefixPhoneId-0")
+    PHONE_PREFIX_BUTTON:                   tuple = (By.ID, "phone_prefixPhoneId-0")
     # Input phone number owner
-    INPUT_PHONE_NUMBER_OWNER: tuple = (By.XPATH, "//input[@id='phone_phoneNumberId']")
+    INPUT_PHONE_NUMBER_OWNER:              tuple = (By.XPATH, "//input[@id='phone_phoneNumberId']")
     # Input email owner
-    INPUT_EMAIL_OWNER: tuple = (By.XPATH, "//input[@id='email']")
+    INPUT_EMAIL_OWNER:                     tuple = (By.XPATH, "//input[@id='email']")
     # Input confirm email owner
-    INPUT_CONFIRM_EMAIL_OWNER: tuple = (By.XPATH, "//input[@id='confirmEmail']")
+    INPUT_CONFIRM_EMAIL_OWNER:             tuple = (By.XPATH, "//input[@id='confirmEmail']")
     # CHECKBOX
-    CHECK_BOX: tuple = (By.XPATH, "//input[@id='sendNewsLetter']")
+    CHECK_BOX:                             tuple = (By.XPATH, "//input[@id='sendNewsLetter']")
     # Button Continue
-    BUTTON_CONTINUE: tuple = (By.XPATH, "//button[contains(@class, 'btn-next')]//span[text()='Continuar']")
+    BUTTON_CONTINUE:                       tuple = (By.XPATH, "//button[contains(@class, 'btn-next')]//span[text()='Continuar']")
 
     def __init__(self, driver):
        super().__init__(driver)
@@ -211,3 +211,9 @@ class FormPassengersPage(Common):
         continue_button = self.find((By.XPATH, "//button[contains(@class, 'btn-next')]//span[normalize-space(text())='Continuar']"))
         self.driver.execute_script("arguments[0].click();", continue_button)       
         self.logger.info("Botón de continuar clickeado.")
+    
+    def loader_b(self):
+        self.wait_for_invisibility(self.LOADER_B)
+    def loader_a(self):
+        self.wait_for_invisibility(self.LOADER_A)
+   
