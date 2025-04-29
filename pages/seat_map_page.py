@@ -5,6 +5,7 @@ from selenium.common.exceptions import TimeoutException
 from pages.common import Common
 from selenium.common.exceptions import TimeoutException
 from logger import get_logger
+import time
 
 
 class SeatMapPage(Common):
@@ -12,6 +13,7 @@ class SeatMapPage(Common):
     LOADER_C:             tuple = (By.CLASS_NAME, "loading")
     PAX_TYPE:             tuple = (By.CLASS_NAME, "paxtype_total_value")
     AVAILABLE_SEATS:      tuple = (By.CSS_SELECTOR, "button.seat.ng-star-inserted")
+    CONFIRM_BUTTON:       tuple = (By.XPATH, "//button[contains(@class, 'amount-summary_button') and .//span[normalize-space()='Continuar']]")
     
     def __init__(self, driver):
         """
@@ -100,5 +102,27 @@ class SeatMapPage(Common):
             self.logger.error(f"Error selecting seats: {str(e)}")
             raise
 
+    def continue_to_the_next_step(self):     
+        """
+        Continues to the next step by clicking the "Continuar" button.
 
+        This method waits until the "Continuar" button is visible and clickable, then clicks on it.
+        If the button is not found or clickable within the timeout period, a TimeoutException is raised.
+
+        """
+        
+        # Wait for the button to appear
+        self.logger.info("Waiting for the button to appear...")
+        add_bussines_on_button = self.wait_for(self.CONFIRM_BUTTON)
+
+        # Scroll to the button
+        self.scroll_down_move_to_element(add_bussines_on_button)
+        self.logger.info("Scroll to the button Continue...'")
+
+        # SLEEP(1) added
+        time.sleep(1)
+
+        # Click the button            
+        self.driver.execute_script("arguments[0].click();", add_bussines_on_button)
+        self.logger.info("Seats added... Going to the payment page...")
 
