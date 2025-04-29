@@ -7,6 +7,8 @@
 import allure
 from pages.form_passengers_page import FormPassengersPage
 from pages.home_page import HomePage
+from pages.seat_map_page import SeatMapPage
+from pages.services_page import ServicesPage
 
 
 @allure.title("Caso automatizado 1: One way booking")
@@ -17,6 +19,8 @@ def test_avtest_case_1(browser):
     """
     page = HomePage(browser)
     form = FormPassengersPage(browser)
+    services = ServicesPage(browser)
+    seat_map = SeatMapPage(browser) 
 
     # Load page
     with allure.step("Cargar página"):
@@ -58,7 +62,7 @@ def test_avtest_case_1(browser):
 
     # Select plus adults button
     with allure.step("Seleccionar dos pasajeros"):
-      page.click_plus_adult(times =1)
+      page.click_plus_adult(times = 1)
 
     # Confirm button number passengers and click
     with allure.step("Pulsar en botón de confirmar cantidad de pasajeros"):
@@ -91,7 +95,68 @@ def test_avtest_case_1(browser):
 
     # Click on submit button
     with allure.step("Click en botón de submit información de pasajeros"):
-      form.fill_passenger_form_method() 
+      form.fill_passenger_form_method()
+   
+
+    # Open services page
+    with allure.step("Ir a la página de servicios"):
+      services.load()
+
+    # Add carry on and checked baggage
+    with allure.step("Ir a servicio Agregar maleta de mano"):
+      services.add_carry_on_and_checked_baggage()
+    
+    # Click on add plus button to add baggage
+    with allure.step("Click en boton para añadir maleta de mano"):
+       services.click_on_bagage_plus_button()
+    
+    # Confirm baggage selection
+    with allure.step("Click en boton confirmar servicio de euipage"):
+       services.confirm_carry_on_modal_and_checked_baggage_modal()
+    
+    services.wait_for_loader_to_disappear()
+    
+    # # Add sport baggage
+    with allure.step("Click en boton confirmar servicio de euipage"):    
+      services.add_sport_baggage()
+    
+    
+    # # Click on add plus button to add bagolf baggage
+    with allure.step("Click en boton para añadir equipaje de deporte de golf"):
+      services.click_on_sport_bagage_plus_button()
+
+    # # Confirm sport baggage selection
+    with allure.step("Click en boton confirmar servicio de euipage"):
+      services.confirm_sport_baggage_modal()
+    
+    services.wait_for_loader_to_disappear()
+
+    # Click on add plus button to add lounge
+    with allure.step("Click en boton para añadir servicio de lounge bussines"):
+      services.add_bussines_lounge()
+
+    # Click on add plus button to add lounge
+    with allure.step("Añadir un lounge bussines"):
+      services.click_on_some_lounge_plus_button()
+    
+    # Confirm lounge selection
+    with allure.step("Click en boton confirmar servicio de equipage"):
+      services.confirm_lounge_bussiness_modal()
+    
+    services.wait_for_loader_to_disappear()
+
+    # Click on continue button to move to the next step "SeatMap"
+    with allure.step("Click en boton para continuar a seatmap"):
+      services.continue_to_the_next_step()
+
+    seat_map.load()
+
+    # Select seats
+    with allure.step("Seleccionar asientos"):
+      seat_map.select_seats_based_on_passengers()    
+ 
+
+    
 
 
 
