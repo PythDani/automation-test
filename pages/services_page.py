@@ -97,8 +97,10 @@ class ServicesPage(Common):
         
         try:
             self.logger.info("Adding carry-on baggage...")
-            plus_button = self.find(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
-            time.sleep(4)
+            self.wait_for(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
+            time.sleep(2)
+            plus_button = self.wait_for(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
+            # time.sleep(4)
             plus_button.click()           
             self.logger.info("Adding carry-on baggage added...")
         except TimeoutException as e:
@@ -118,7 +120,8 @@ class ServicesPage(Common):
 
         try:
             self.logger.info("Click on confirm button...")          
-            continue_button = self.find(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
+            self.wait_for(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
+            continue_button = self.wait_for(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
             self._action.scroll_to_element(continue_button).perform()
             time.sleep(4)
             continue_button.click()

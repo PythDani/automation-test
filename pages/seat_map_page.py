@@ -3,7 +3,6 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from pages.common import Common
-from selenium.common.exceptions import TimeoutException
 from logger import get_logger
 import time
 
@@ -38,7 +37,7 @@ class SeatMapPage(Common):
     
         # We wait unitll the page loader disapear.
         try:
-            self.logger.info("Waiting for page to load disappear...")
+            self.logger.info("Waiting for loader to disappear...")
             # EXecute the wait_for_loader_to_disappear method twice
             self.wait_for_loader_to_disappear(self.LOADER_C)
             self.wait_for_loader_to_disappear(self.LOADER_C)
@@ -46,7 +45,7 @@ class SeatMapPage(Common):
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
         
-    def select_seats_based_on_passengers(self):
+    def select_seats_based_on_quantity_of_passengers(self):
         """
         Select seats based on passengers count.
 

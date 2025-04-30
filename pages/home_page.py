@@ -84,7 +84,7 @@ class HomePage(Common):
         basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)        
         ActionChains(self.driver).move_to_element(basic_fare_button).perform()        
         basic_fare_button.click()
-        self.logger.info("tariff selected") 
+        self.logger.info("Fee selected") 
 
     def click_drop_down_flight(self):
         flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)        
@@ -110,8 +110,8 @@ class HomePage(Common):
         Logs the actions performed, and raises an exception if the button
         is not found or clickable within the timeout period.
         """
-        self.logger.info("Clicking on date picker button...")
         try:
+            self.logger.info("Clicking on date picker button...")
             day_element = self.wait_to_be_clickable(self.DATEPICKER_BUTTON)
             day_element.click()       
             self.logger.info("Departure date selected")
@@ -124,9 +124,13 @@ class HomePage(Common):
 
         If the radio button is not selected, it will be clicked.
         """
+        self.logger.info("Waiting visibility of one way radio button...")
+        self.wait_for(self.RADIO_ONE_WAY)
+        self.logger.info("Waiting clickability of one way radio button...")
+        self.wait_for(self.RADIO_ONE_WAY)
         self.logger.info("Selecting one way radio button...")
-        select_radio = self.find(self.RADIO_ONE_WAY)
-        if not select_radio.is_selected():
+        select_radio = self.wait_for(self.RADIO_ONE_WAY)
+        if not select_radio.is_selected():            
             select_radio.click()
             self.logger.info("One way radio button selected.") 
 
