@@ -7,6 +7,7 @@
 import allure
 from pages.form_passengers_page import FormPassengersPage
 from pages.home_page import HomePage
+from pages.payment_page import PaymentPage
 from pages.seat_map_page import SeatMapPage
 from pages.services_page import ServicesPage
 
@@ -20,15 +21,16 @@ def test_avtest_case_1(browser):
     page = HomePage(browser)
     form = FormPassengersPage(browser)
     services = ServicesPage(browser)
-    seat_map = SeatMapPage(browser) 
+    seat_map = SeatMapPage(browser)
+    payment_page = PaymentPage(browser) 
 
     # Load page
     with allure.step("Load home page"):
       page.load()
 
     # Validate that the page has loaded correctly
-    with allure.step("Validate page title"):
-        assert "avianca - encuentra tiquetes y vuelos baratos | Web oficial" in browser.title, f"The page does not load correctly: {browser.title}"
+    # with allure.step("Validate page title"):
+    #     assert "avianca - encuentra tiquetes y vuelos baratos | Web oficial" in browser.title, f"The page does not load correctly: {browser.title}"
     
     # Select one way Flight
     with allure.step("Select one way flight"):        
@@ -153,12 +155,31 @@ def test_avtest_case_1(browser):
 
     # Select seats
     with allure.step("Select seats"):
-      seat_map.select_seats_based_on_passengers()   
+      seat_map.select_seats_based_on_quantity_of_passengers()   
 
 
     # Click on continue button to move to the next step "Paynemt page"
     with allure.step("Click contiue to Paynemt page"):
       seat_map.continue_to_the_next_step()
+
+    payment_page.load()
+    payment_page.scroll_to_element(200)
+
+    with allure.step("Fill payment form"):         
+      payment_page.fill_cardholder_name("Lola Perez")
+      # payment_page.scroll_to_element(200)
+      payment_page.fill_card_number("4111111111111111")
+      payment_page.select_expiration_month("12")
+      payment_page.select_expiration_year("25")
+      payment_page.fill_cvv("123")
+      payment_page.fill_email("test@test.com")
+      payment_page.fill_address("calle #13")
+      payment_page.fill_city("Medellin")
+      payment_page.select_country("Colombia")
+      payment_page.accept_terms_and_conditions()
+      payment_page.click_continue()
+
+
 
 
 

@@ -16,7 +16,18 @@ def pytest_addoption(parser):
     Returns:
         None
     """
-    parser.addoption("--browser", action="store", default="chrome", help="Browser to use: chrome or firefox")
+    parser.addoption(
+        "--browser",
+        action="store",
+        default="chrome",
+        help="Browser to use: chrome, edge or firefox"
+    )
+    parser.addoption(
+        "--headless",
+        action="store",
+        default="false",
+        help="Run tests in headless mode: true or false"
+    )
 
 @pytest.fixture(scope="function")
 def browser(request):
@@ -33,7 +44,8 @@ def browser(request):
     """
 
     browser_name = request.config.getoption("--browser")
-    driver = get_driver(browser_name)
+    headless_option = request.config.getoption("--headless").lower() == "true"
+    driver = get_driver(browser_name, headless_option)
     yield driver
     driver.quit()
 

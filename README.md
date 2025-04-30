@@ -17,14 +17,33 @@ pip install -r requirements.txt
 ```
 
 ## ▶️ Ejecutar pruebas
+Instalar Allure CLI
+Descarga Allure para eso:
+
+Ve a: https://github.com/allure-framework/allure2/releases
+
+Descarga la última versión (allure-X.Y.Z.zip)
+
+Extrae el .zip en una carpeta, por ejemplo: C:\Allure
+
+Agrega la ruta C:\Allure\bin a tu variable de entorno PATH:
+
+Entra a Configuración del sistema → Variables de entorno → PATH
+
+Haz clic en Editar → Nuevo → y pega: C:\Allure\bin
+
+Reinicia tu terminal o IDE para que tome los cambios.
 
 ```bash
-pytest tests/test_google_search.py --browser=chrome --alluredir=reports
+pytest --browser=chrome --alluredir=reports
 ```
+## 📊Generar reporte 
+ allure generate allure-results --clean -o allure-report
 
 ## 📊 Ver reportes Allure
 
 ```bash
+allure open allure-report
 allure serve reports
 ```
 

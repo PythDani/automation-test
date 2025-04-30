@@ -22,8 +22,8 @@ class Common:
     def wait_to_be_clickable(self, locator):
         return self._wait.until(EC.element_to_be_clickable(locator))
     
-    def wait_for_visibility(self, locator):
-        return self._wait.until(EC.visibility_of(locator))
+    def wait_for_visibility(self, element):
+        return self._wait.until(EC.visibility_of(element))
     
     def wait_for_visibility_of_element_located(self, locator):
         return self._wait.until(EC.visibility_of_element_located(locator))
@@ -42,6 +42,10 @@ class Common:
 
     def scroll_down_move_to_element(self, element):
         self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", element)
+
+    def scroll_down_by_pixels(self, pixels: int = 200):
+        self.driver.execute_script(f"window.scrollBy(0, {pixels});")
+    
     def alert(self):
         return self._wait.until(EC.alert_is_present())
     
