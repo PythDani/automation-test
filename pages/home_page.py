@@ -1,5 +1,4 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import TimeoutException
 import time
 from logger import get_logger
@@ -11,19 +10,29 @@ class HomePage(Common):
     #Loader that indicate that the page is loading in some cases.
     LOADER_B:                                       tuple = (By.CLASS_NAME, "page-loader")
     #Button that indicate the language selectioned 
-    BUTTON_LANGUAGE:                                tuple = (By.XPATH, "//span[@class='dropdown_trigger_value' and contains(text(), 'Español')]") 
+    BUTTON_LANGUAGE:                                tuple = (By.XPATH, "//button[.//span[normalize-space(.)='{}']]")
+    #Button to deploy the language options
+    DEPLOY_LANGUAGE_BUTTON:                         tuple = (By.XPATH, "//button[contains(@id, 'languageListTriggerId')]") 
+    #currency_button
+    BUTTON_CURRENCY:                                tuple = (By.XPATH, "//*[contains(@id, 'pointOfSaleSelectorId')]")
+    #Button _to deploy the currency options
+    SELECT_CURRENCY_COUNTRY:                         tuple = (By.XPATH, "//*[@id= 'pointOfSaleListId']//*[@class= 'points-of-sale_list_item ng-star-inserted']//*[@class= 'points-of-sale_list_item_label' and contains(.,'{}')]")
+    #Button to apply currency selection
+    CONFIRM_CURRENCY_BUTTON:                        tuple = (By.XPATH, "//*[@class='button points-of-sale_footer_action_button']//*[@class='button_label']")
+    #Close currncy window
+    CLOSE_CURRENCY_BUTTON:                          tuple = (By.XPATH, "//*[contains(@class,'points-of-sale_header_close-button')]")
     #Radio button that indicate one way flight 
     RADIO_ONE_WAY:                                  tuple = (By.ID, "journeytypeId_1")
     #Button in the origin city field 
     BUTTON_ORIGIN:                                  tuple = (By.ID, "originBtn")
     #Input field of the origin city 
-    FIELD_ORIGIN:                                   tuple = (By.XPATH, "//input[@class='control_field_input' and @placeholder='Origen']")
+    FIELD_ORIGIN:                                   tuple = (By.XPATH, "//button[@id='originBtn']/following-sibling::input[@class='control_field_input' and @aria-label='Search.DepartureArrivalFocusInfo']")
     #Search result of the origin city 
-    OPTION_CITY_ORIGIN:                             tuple = (By.XPATH, "//li[contains(@class, 'station-control-list_item')]//span[contains(@class, 'station-control-list_item_link-city') and contains(., 'Medellín')]")
+    OPTION_CITY_ORIGIN:                             tuple =  (By.XPATH, "//li[contains(@class, 'station-control-list_item')]//span[contains(@class, 'station-control-list_item_link-city') and contains(., '{}')]")
     #Input field of the destination city 
-    FIELD_DESTINATION:                              tuple = (By.XPATH, "//input[@class='control_field_input' and @placeholder='Hacia']")
+    FIELD_DESTINATION:                              tuple = (By.XPATH, "//div[@id='arrivalStationInputLabel']/following-sibling::input[@class='control_field_input' and @aria-label='Search.DepartureArrivalFocusInfo']")
     #Search result of the destination city 
-    OPTION_CITY_DESTINATION:                        tuple = (By.XPATH, "//li[contains(@class, 'station-control-list_item')]//span[contains(@class, 'station-control-list_item_link-city') and contains(., 'Bogotá')]")
+    OPTION_CITY_DESTINATION:                        tuple = (By.XPATH, "//li[contains(@class, 'station-control-list_item')]//span[contains(@class, 'station-control-list_item_link-city') and contains(., '{}')]")
     #Button to select the date  
     DATEPICKER_BUTTON:                              tuple = (By.XPATH, "//*[@id='ngbStartDatepickerId']/div[2]/div[2]/ngb-datepicker-month-view/div[2]/div[1]/span/div[1]")
     #DatePicker control month button
@@ -66,58 +75,35 @@ class HomePage(Common):
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e    
 
-    def loader_b(self):
-        self.wait_for_invisibility(self.LOADER_B)
+    def select_language(self, language):
+        self.logger.info(f"Selecting language {language} in URL: {self.URL}")
+        laguage_options =self.wait_to_be_clickable(self.DEPLOY_LANGUAGE_BUTTON)
+        laguage_options.click()
+        tuple_language = ( self.BUTTON_LANGUAGE[0],  self.BUTTON_LANGUAGE[1].format(language))
+        button_language = self.wait_to_be_clickable(tuple_language)
+        button_language.click()
+        self.logger.info(f"Language {language} selected.")
 
-    def loader_a(self):
-        self.wait_for_invisibility(self.LOADER)
+    def select_currency(self, currency):
+        if(currency == "Colombia"):
+            self.logger.info(f"{currency} currency aleady selected")
+        else:        
+            self.logger.info(f"Selecting currency {currency}")
+            self.driver.maximize_window()
+            self.logger.info(f"Deploying currency options...")
+            currency_options =self.wait_to_be_clickable(self.BUTTON_CURRENCY)
+            currency_options.click()
+            self.logger.info(f"Selecting currency from the list...")
+            tuple_currency = ( self.SELECT_CURRENCY_COUNTRY[0],  self.SELECT_CURRENCY_COUNTRY[1].format(currency))
+            
+            button_currency = self.wait_to_be_clickable(tuple_currency)        
+            button_currency.click()
+            self.logger.info(f"Confirm currency {currency}")
+            confirm_currency =self.wait_to_be_clickable(self.CONFIRM_CURRENCY_BUTTON)    
 
-    def button_continue_to_move_to_passenger_form(self):
-        continue_button = self.find(self.CONTINUE_BUTTON)
-
-        #Scroll down to move to the button       
-        ActionChains(self.driver).move_to_element(continue_button).perform()              
-        continue_button.click()
-        self.logger.info("Button continue clicked.") 
-
-    def click_on_fare_flight(self):
-        basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)        
-        ActionChains(self.driver).move_to_element(basic_fare_button).perform()        
-        basic_fare_button.click()
-        self.logger.info("Fee selected") 
-
-    def click_drop_down_flight(self):
-        flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)        
-        ActionChains(self.driver).move_to_element(flight_button).perform()        
-        flight_button.click()
-        self.logger.info("Flight selected") 
-        time.sleep(3)
-
-    def click_search_flight_button(self):
-        search_button = self.wait_to_be_clickable(self.SEARCH_BUTTON)
-        search_button.click()
-        self.logger.info("Search button clicked.") 
-
-    def confirm_button_passengers_quantity(self):
-        confirm_button = self.wait_to_be_clickable(self.CONFIRM_BUTTON)
-        confirm_button.click()
-        self.logger.info("Confirm button  passenger clicked.") 
-
-    def select_date_departure(self):
-        """
-        Selects the departure date by clicking on the date picker button.
-
-        Logs the actions performed, and raises an exception if the button
-        is not found or clickable within the timeout period.
-        """
-        try:
-            self.logger.info("Clicking on date picker button...")
-            day_element = self.wait_to_be_clickable(self.DATEPICKER_BUTTON)
-            day_element.click()       
-            self.logger.info("Departure date selected")
-        except TimeoutException as e:
-            raise Exception("Timeout Exception trying to select departure date") from e
-
+            confirm_currency.click()
+            self.logger.info(f"Currency {currency} selected.")
+    
     def select_one_way_radio_button(self):
         """
         Select the one way radio button in the page.
@@ -134,39 +120,30 @@ class HomePage(Common):
             select_radio.click()
             self.logger.info("One way radio button selected.") 
 
-    def is_one_way_selected(self):
-        """
-        Return True if the one way radio button is selected, False otherwise.
-        """
-        select_radio = self.find(self.RADIO_ONE_WAY)
-        return select_radio.is_selected()   
-                                                            
-    def select_origin(self):
-        """
+    def select_origin(self, city_origin):         
+         """
         Select the origin city in the page.
 
         Args:
-            wait (selenium.webdriver.support.ui.WebDriverWait): A WebDriverWait instance.
-            button_origin (tuple): A tuple of (By, str) to locate the origin button.
-            field_origin (tuple): A tuple of (By, str) to locate the origin field.
-            option_city_origin (tuple): A tuple of (By, str) to locate the city option.
+                wait (selenium.webdriver.support.ui.WebDriverWait): A WebDriverWait instance.
+                button_origin (tuple): A tuple of (By, str) to locate the origin button.
+                field_origin (tuple): A tuple of (By, str) to locate the origin field.
+                option_city_origin (tuple): A tuple of (By, str) to locate the city option.
         """
-        self.logger.info("Waiting for origin button...") 
-        origin_button = self.find(self.BUTTON_ORIGIN)
-        origin_button.click()
-        self.logger.info("Origin button clicked") 
+         self.logger.info("Waiting for origin button...") 
+         origin_button = self.find(self.BUTTON_ORIGIN)
+         origin_button.click()
+         self.logger.info("Origin button clicked") 
+         self.select_city_origin(self.FIELD_ORIGIN, city_origin)
+         # Wait till the city option appears
+         self.logger.info("Waiting for city option...")
+         city= (self.OPTION_CITY_ORIGIN [0], self.OPTION_CITY_ORIGIN [1].format(city_origin))
+         city_option = self.wait_to_be_clickable(city)
+         # Click on the option selected
+         city_option.click()
+         self.logger.info("Origin city selected.") 
 
-        self.select_city_origin(self.FIELD_ORIGIN, "Medellín")
-
-        # Wait till the city option appears
-        self.logger.info("Waiting for city option...") 
-        city_option = self.wait_to_be_clickable(self.OPTION_CITY_ORIGIN)
-
-        # Click on the option selected
-        city_option.click()
-        self.logger.info("Origin city selected.") 
-
-    def select_destination(self):
+    def select_destination(self, city_destination):
         """
         Select the destination city in the page.
 
@@ -182,56 +159,7 @@ class HomePage(Common):
         self.logger.info("Clearing destination field...") 
         destination_input.clear()
 
-        self.select_city_destination(self.OPTION_CITY_DESTINATION, destination_input)
-
-    def select_city_destination(self, option_city_destination, destination_input):
-        """
-        Select the destination city in the page.
-
-        Args:            
-            option_city_destination (tuple): A tuple of (By, str) to locate the city option.
-            destination_input (selenium.webdriver.remote.webelement.WebElement): The destination input field.
-        """
-        self.logger.info("Writing destination...") 
-        destination_input.send_keys("Bogotá")
-
-        # Wait till the city option appears
-        self.logger.info("Waiting for destination city option...") 
-        city_option = self.wait_to_be_clickable(option_city_destination)
-
-        # Click on the option        
-        city_option.click()
-        self.logger.info("Destination city selected.") 
-
-    def select_city_origin(self, field_city, city_name):
-        """
-        Select the origin city in the page.
-
-        Args:
-            field_city (tuple): A tuple of (By, str) to locate the origin field.
-            city_name (str): The name of the city to select.
-        """
-        self.logger.info("Waiting for origin field...") 
-        input_origin_city = self.find(field_city)
-
-        # Click on the input field
-        input_origin_city.click()
-        # Write the city name
-        input_origin_city.send_keys(city_name)
-
-    def click_plus_adult(self, times, wait_between_clicks=0.5):
-        """
-        Clicks multiple times on the same element.
-        
-        :param times: Number of times you want to click.
-        :param wait_between_clicks: Wait time between clicks in seconds.
-        """
-        element = self.wait_to_be_clickable(self.ADULT_PLUS_BUTTON)                
-        
-        for _ in range(times - 1):
-            element.click()
-            self.logger.info("Selecting passenger.") 
-            time.sleep(wait_between_clicks)
+        self.select_city_destination(city_destination, destination_input)
 
     def select_random_month(self, times=1, wait_between_clicks=0.5):
         """
@@ -248,6 +176,99 @@ class HomePage(Common):
             self.logger.info("Selecting departure month.") 
             time.sleep(wait_between_clicks)
 
+    def select_date_departure(self):
+        """
+        Selects the departure date by clicking on the date picker button.
+
+        Logs the actions performed, and raises an exception if the button
+        is not found or clickable within the timeout period.
+        """
+        try:
+            self.logger.info("Clicking on date picker button...")
+            day_element = self.wait_to_be_clickable(self.DATEPICKER_BUTTON)
+            day_element.click()       
+            self.logger.info("Departure date selected")
+        except TimeoutException as e:
+            raise Exception("Timeout Exception trying to select departure date") from e
+    
+    def click_plus_adult(self, times, wait_between_clicks=0.5):
+        """
+        Clicks multiple times on the same element.
+        
+        :param times: Number of times you want to click.
+        :param wait_between_clicks: Wait time between clicks in seconds.
+        """
+        element = self.wait_to_be_clickable(self.ADULT_PLUS_BUTTON)                
+        
+        for _ in range(times - 1):
+            element.click()
+            self.logger.info("Selecting passenger.") 
+            time.sleep(wait_between_clicks)
+
+    def confirm_button_passengers_quantity(self):
+        confirm_button = self.wait_to_be_clickable(self.CONFIRM_BUTTON)
+        confirm_button.click()
+        self.logger.info("Confirm button  passenger clicked.") 
+
+    def click_search_flight_button(self):
+        """
+        Clicks the search flight button on the home page.
+
+        This method waits for the search button to become clickable, 
+        clicks it, and logs the action for tracking purposes.
+        """
+        search_button = self.wait_to_be_clickable(self.SEARCH_BUTTON)
+        search_button.click()
+        self.logger.info("Search button clicked.") 
+
+    def is_one_way_selected(self):
+        """
+        Return True if the one way radio button is selected, False otherwise.
+        """
+        select_radio = self.find(self.RADIO_ONE_WAY)
+        return select_radio.is_selected()   
+                                                            
+    def select_city_destination(self, option_city_destination, destination_input):
+        """
+        Select the destination city in the page.
+
+        Args:            
+            option_city_destination (tuple): A tuple of (By, str) to locate the city option.
+            destination_input (selenium.webdriver.remote.webelement.WebElement): The destination input field.
+        """
+        self.logger.info("Writing destination...") 
+        destination_input.send_keys(option_city_destination)
+
+        # Wait till the city option appears
+        self.logger.info("Waiting for destination city option...")
+        city= (self.OPTION_CITY_DESTINATION [0], self.OPTION_CITY_DESTINATION [1].format(option_city_destination))
+        city_option = self.wait_to_be_clickable(city)
+
+        # Click on the option        
+        city_option.click()
+        self.logger.info("Destination city selected.") 
+
+    def select_city_origin(self, field_city, city_name):
+        """
+        Select the origin city in the page.
+
+        Args:
+            field_city (tuple): A tuple of (By, str) to locate the origin field.
+            city_name (str): The name of the city to select.
+        """
+        self.logger.info("Waiting for origin field...") 
+        input_origin_city = self.find(field_city)
+        self.logger.info("clicking on origin field...") 
+        # Click on the input field
+        input_origin_city.click()
+        # Write the city name
+        input_origin_city.send_keys(city_name)
+    
+    def loader_a(self):
+        self.wait_for_invisibility(self.LOADER)
+
+    def loader_b(self):
+        self.wait_for_invisibility(self.LOADER_B)
 
 
 
