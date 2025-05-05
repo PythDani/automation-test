@@ -5,8 +5,10 @@
   @Author: Rafael Daniel Farfán
 """
 import allure
+from pages.booking_select_page import BookingSelectPage
 from pages.form_passengers_page import FormPassengersPage
 from pages.home_page import HomePage
+from pages.itinerary_page import ItineraryPage
 from pages.payment_page import PaymentPage
 from pages.seat_map_page import SeatMapPage
 from pages.services_page import ServicesPage
@@ -22,152 +24,84 @@ def test_avtest_case_1(browser):
     form = FormPassengersPage(browser)
     services = ServicesPage(browser)
     seat_map = SeatMapPage(browser)
-    payment_page = PaymentPage(browser) 
+    payment_page = PaymentPage(browser)
+    bokking_select_page = BookingSelectPage(browser) 
+    itinerary_page = ItineraryPage(browser)
 
     # Load page
-    with allure.step("Load home page"):
+    with allure.step("Test Home page"):
       page.load()
-
-    # Validate that the page has loaded correctly
-    # with allure.step("Validate page title"):
-    #     assert "avianca - encuentra tiquetes y vuelos baratos | Web oficial" in browser.title, f"The page does not load correctly: {browser.title}"
-    
-    # Select one way Flight
-    with allure.step("Select one way flight"):        
-        page.select_one_way_radio_button()
-
-    # Validar que el radio button de ida haya sido seleccionado
-    with allure.step("Validate one way radio button"):
-        assert page.is_one_way_selected(), "No se ha seleccionado el radio button de ida"
-
-    # Select language
-    with allure.step("Validate language"):
-        # Get language
-        language = browser.execute_script("return navigator.language || navigator.userLanguage;")
-        print(f"Language: {language}")
-    
-    # Select Origin city
-    with allure.step("Select origin city"):
-      page.select_origin()
-
-    # Select destination city
-    with allure.step("Select destination city"): 
-      page.select_destination()
-
-    # Select a month randomly
-    with allure.step("Select a month randomly"):
-      page.select_random_month(times = 3)    
-
-    # Click on the datepicker button.
-    with allure.step("Select date departure"):
-      page.select_date_departure()        
-
-    # Select plus adults button
-    with allure.step("Add passengers"):
+      #Select language
+      page.select_language(language="Español")
+      #Select currency
+      page.select_currency(currency="Colombia")
+      # Select one way Flight
+      page.select_one_way_radio_button()
+      #Select Origin city
+      page.select_origin(city_origin="Medellín")
+      #Select destination city
+      page.select_destination(city_destination="Bogotá")
+      #Select a month randomly
+      page.select_random_month(times = 3)
+      # Click on the datepicker button to select date    
+      page.select_date_departure()
+      # Select plus adults button        
       page.click_plus_adult(times = 1)
-
-    # Confirm button number passengers and click
-    with allure.step("Confirm passengers quantity"):
-      page.confirm_button_passengers_quantity()        
-
-    # Click on search button
-    with allure.step("Search flights button"):
+      # Confirm button number passengers
+      page.confirm_button_passengers_quantity() 
+      # Click on search button       
       page.click_search_flight_button()
-
+   
     # We wait unitll the page loader disapear.
     page.loader_a()         
 
     # Click on flight selected button
-    with allure.step("Click on flight selected"):
-      page.click_drop_down_flight()
+    with allure.step("Test Booking Select Page"):
+      # Click on basic fare button
+      bokking_select_page.click_drop_down_flight()
+      # We wait unitll the page loader disapear.
+      bokking_select_page.click_on_fare_flight()
+      # We wait unitll the page loader disapear.
+      bokking_select_page.loader_b() 
+      # Click on continue button TO MOVE TO PASSENGER FORM
+      bokking_select_page.button_continue_to_move_to_passenger_form()
 
-    # Click on basic fare button
-    with allure.step("Click on basic fare"):
-      page.click_on_fare_flight()
-
-    # We wait unitll the page loader disapear.
-    page.loader_b() 
-
-    # Click on continue button TO MOVE TO PASSENGER FORM
-    with allure.step("Click continue to passenger form"):
-      page.button_continue_to_move_to_passenger_form()
-
-    # We wait unitll the page loader disapear.
-    page.loader_b()
+    bokking_select_page.loader_b()   
 
     # Click on submit button
-    with allure.step("Click on submit button"):
-      form.fill_passenger_form_method()
-   
+    with allure.step("Form passengers page"):
+      form.fill_passenger_form_method()   
 
     # Open services page
     with allure.step("Go to services page"):
       services.load()
-
-    # Add carry on and checked baggage
-    with allure.step("Gor to carry on baggage service"):
       services.add_carry_on_and_checked_baggage()
-    
-    # Click on add plus button to add baggage
-    with allure.step("Add carry on and checked baggage"):
-       services.click_on_bagage_plus_button()
-    
-    # Confirm baggage selection
-    with allure.step("Click on confirm carry on and checked baggage"):
-       services.confirm_carry_on_modal_and_checked_baggage_modal()
-    
-    services.wait_for_loader_to_disappear()
-    
-    # # Add sport baggage
-    with allure.step("Click to show sport baggage"):    
+      services.click_on_bagage_plus_button()
+      services.confirm_carry_on_modal_and_checked_baggage_modal()
+      services.wait_for_loader_to_disappear()
       services.add_sport_baggage()
-    
-    
-    # # Click on add plus button to add bagolf baggage
-    with allure.step("Click to add sport baggage"):
       services.click_on_sport_bagage_plus_button()
-
-    # # Confirm sport baggage selection
-    with allure.step("Click to confirm sport baggage"):
       services.confirm_sport_baggage_modal()
-    
-    services.wait_for_loader_to_disappear()
-
-    # Click on add plus button to add lounge
-    with allure.step("Click to add lounge"):
+      services.wait_for_loader_to_disappear()
       services.add_bussines_lounge()
-
-    # Click on add plus button to add lounge
-    with allure.step("Add lounge"):
       services.click_on_some_lounge_plus_button()
-    
-    # Confirm lounge selection
-    with allure.step("Confirmar lounge"):
       services.confirm_lounge_bussiness_modal()
-    
-    services.wait_for_loader_to_disappear()
+      services.wait_for_loader_to_disappear()
+      services.continue_to_the_next_step()  
 
-    # Click on continue button to move to the next step "SeatMap"
-    with allure.step("Click contiue to SeatMap"):
-      services.continue_to_the_next_step()
-
-    seat_map.load()
-
+      
     # Select seats
     with allure.step("Select seats"):
-      seat_map.select_seats_based_on_quantity_of_passengers()   
+      seat_map.load()
+      seat_map.select_seats_based_on_quantity_of_passengers()
+      seat_map.continue_to_the_next_step()    
+      
 
-
-    # Click on continue button to move to the next step "Paynemt page"
-    with allure.step("Click contiue to Paynemt page"):
-      seat_map.continue_to_the_next_step()
-
-    payment_page.load()
-    payment_page.scroll_to_element(200)
 
     with allure.step("Fill payment form"):         
-      payment_page.fill_cardholder_name("Lola Perez")
-      # payment_page.scroll_to_element(200)
+      payment_page.load()
+      payment_page.scroll_to_element(200)
+      payment_page.fill_cardholder_name("Lola Perez")     
       payment_page.fill_card_number("4111111111111111")
       payment_page.select_expiration_month("12")
       payment_page.select_expiration_year("25")
@@ -178,6 +112,17 @@ def test_avtest_case_1(browser):
       payment_page.select_country("Colombia")
       payment_page.accept_terms_and_conditions()
       payment_page.click_continue()
+      payment_page.loader()
+      payment_page.loader()
+     
+
+    with allure.step("Iitinerary test validation"):
+      itinerary_page.get_reservation_code()
+      itinerary_page.validate_departure_city('Medellín')
+      itinerary_page.validate_arrival_city('Bogotá')
+      itinerary_page.validate_reserve_holder('Andres Perez')
+      itinerary_page.validate_passenger_adult_number('1')
+
 
 
 

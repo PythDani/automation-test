@@ -35,7 +35,7 @@ Haz clic en Editar → Nuevo → y pega: C:\Allure\bin
 Reinicia tu terminal o IDE para que tome los cambios.
 
 ```bash
-pytest --browser=chrome --alluredir=reports
+ pytest --browser=chrome --alluredir=allure-results  
 ```
 ## 📊Generar reporte 
  allure generate allure-results --clean -o allure-report
@@ -65,5 +65,5 @@ allure serve reports
 
 - POM para separar lógica de navegación
 - Fixtures reutilizables
-- Soporte para múltiples navegadores
+- Soporte para múltiples navegadores Nota: firefox no estable aún
 - Reportes profesionales con Allure
