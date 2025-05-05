@@ -12,8 +12,6 @@ class FormPassengersPage(Common):
     LOADER:                                tuple = (By.CLASS_NAME, "loader")
     # Loader that indicate that the page is loading in some cases.
     LOADER_B:                              tuple = (By.CLASS_NAME, "page-loader")        
-    # Container first passenger
-    CONTAINER_FIRST_PASSENGER:             tuple = (By.XPATH, "//*[@id='maincontent']/div/div[3]/div/div/passenger-details-container/personal-data-custom/div/div/div[1]/personal-data-form-custom")    
     # Container passenger group
     CONTAINERS_PASSENGERS:                 tuple = (By.XPATH, "//personal-data-form-custom")
     # Genre selector"
@@ -21,9 +19,10 @@ class FormPassengersPage(Common):
     # Male button option
     BUTTON_MALE_OPTION:                    tuple = (By.XPATH, "//li[@class='ui-dropdown_item ng-star-inserted']//button[@class='ui-dropdown_item_option']")
     # Input name field
-    INPUT_NAME:                            tuple = (By.XPATH, "//div[@class='ui-input_wrap']//input[@name='IdFirstName7E7E303030312D30312D30317E353334423438324433313244343535383534']")
+    INPUT_NAME:                            tuple = (By.XPATH, " //*[contains(@name,'IdFirstName')]")
+                                                           
     # Input last name field
-    INPUT_LAST_NAME:                       tuple = (By.XPATH, "//div[@class='ui-input_wrap']//input[@name='IdLastName7E7E303030312D30312D30317E353334423438324433313244343535383534']")
+    INPUT_LAST_NAME:                       tuple = (By.XPATH, "//*[contains(@name,'IdLastName')]")
     # Selector day of birth
     SELECTOR_DAY_OF_BIRTH:                 tuple = (By.XPATH, "//div[@class='ui-dropdown ng-star-inserted']//button[@class='ui-input' and @role='combobox' and @id='dateDayId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433313244343535383534_']")
     # Day of birth button
@@ -62,9 +61,6 @@ class FormPassengersPage(Common):
        self.logger = get_logger(self.__class__.__name__)
     
     def fill_passenger_form_method(self):
-        container_first_passenger = self.find(self.CONTAINER_FIRST_PASSENGER)
-        self.scroll_down_to_element(container_first_passenger).perform()
-
         # All forms passengers
         passenger_forms = self.find_all(self.CONTAINERS_PASSENGERS)  
         self.logger.info(f"Se encontraron {len(passenger_forms)} formularios de pasajeros.")

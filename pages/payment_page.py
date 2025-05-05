@@ -25,6 +25,11 @@ class PaymentPage(Common):
     ADDRESS_INPUT:            tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='address']")
     CITY_INPUT:               tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='city']")
     CONTINUE_BUTTON:          tuple = (By.XPATH, "//ds-button//button[span[text()=' Confirmar y pagar ']]")
+
+    #Modal content
+    MODAL_CONTENT:           tuple = (By.XPATH, "//*[contains(@class, 'modal-content')]")
+    #Close modal rejected payment
+    CLOSE_MODAL:             tuple = (By.XPATH, "//*[@class='modal-close ng-star-inserted']")
     def __init__(self, driver):
       """
       Initialize a PaymentPage instance.
@@ -323,3 +328,16 @@ class PaymentPage(Common):
         # element = self.find(self.PANEL_PAGO)
         # element.click()
         self.scroll_down_by_pixels(pixels)
+
+    def loader(self):
+            """
+            Waits for the page loader to disappear.
+
+            This method waits until the page loader disappears. If the loader does not
+            disappear within the timeout period, a TimeoutException is raised.
+
+            """
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+
+   
