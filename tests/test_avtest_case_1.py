@@ -89,15 +89,13 @@ def test_avtest_case_1(browser):
       services.wait_for_loader_to_disappear()
       services.continue_to_the_next_step()  
 
-      
     # Select seats
     with allure.step("Select seats"):
       seat_map.load()
       seat_map.select_seats_based_on_quantity_of_passengers()
       seat_map.continue_to_the_next_step()    
       
-
-
+    # Fill payment form
     with allure.step("Fill payment form"):         
       payment_page.load()
       payment_page.scroll_to_element(200)
@@ -115,7 +113,7 @@ def test_avtest_case_1(browser):
       payment_page.loader()
       payment_page.loader()
      
-
+    # Itinerary
     with allure.step("Iitinerary test validation"):
       itinerary_page.get_reservation_code()
       itinerary_page.validate_departure_city('Medellín')
