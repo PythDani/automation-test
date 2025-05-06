@@ -34,10 +34,14 @@ class BookingSelectPage(Common):
         ActionChains, clicks on it, and logs the action performed. If the button is not
         found or clickable within the timeout period, a TimeoutException is raised.
         """
-        flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)        
-        self._action.move_to_element(flight_button).perform()        
-        flight_button.click()
-        self.logger.info("Flight selected")
+        try:
+            flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)                
+            self._action.move_to_element(flight_button).perform()        
+            flight_button.click()
+            self.logger.info("Flight selected")
+        except Exception as e:
+            self.logger.error(f"No flights found: {str(e)}")
+            raise
 
     def click_on_fare_flight(self):
         """
@@ -47,10 +51,14 @@ class BookingSelectPage(Common):
         ActionChains, clicks on it, and logs the action performed. If the button is not
         found or clickable within the timeout period, a TimeoutException is raised.
         """
-        basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)        
-        self._action.move_to_element(basic_fare_button).perform()        
-        basic_fare_button.click()
-        self.logger.info("Fee selected")
+        try:
+            basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)        
+            self._action.move_to_element(basic_fare_button).perform()        
+            basic_fare_button.click()
+            self.logger.info("Fee selected")
+        except Exception as e:
+            self.logger.error(f"Error selecting fee: {str(e)}")
+            raise
     
     def loader_b(self):
         """
@@ -70,9 +78,13 @@ class BookingSelectPage(Common):
         using ActionChains, clicks on it, and logs the action performed. If the button
         is not found or clickable within the timeout period, a TimeoutException is raised.
         """
-        continue_button = self.find(self.CONTINUE_BUTTON)
+        try:
+            continue_button = self.find(self.CONTINUE_BUTTON)
 
-        #Scroll down to move to the button       
-        self._action.move_to_element(continue_button).perform()              
-        continue_button.click()
-        self.logger.info("Button continue clicked.") 
+            #Scroll down to move to the button       
+            self._action.move_to_element(continue_button).perform()              
+            continue_button.click()
+            self.logger.info("Button continue clicked.")
+        except Exception as e:
+            self.logger.error(f"Error clicking continue button: {str(e)}")
+            raise
