@@ -4,3 +4,4 @@ allure-pytest
 webdriver-manager
 python-dotenv
 pytest-xdist
+faker==24.8.0

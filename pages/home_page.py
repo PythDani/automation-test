@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 import time
 from logger import get_logger
+from utils.exception import catch_exceptions
 from .common import Common
 class HomePage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
@@ -16,11 +17,9 @@ class HomePage(Common):
     #currency_button
     BUTTON_CURRENCY:                                tuple = (By.XPATH, "//*[contains(@id, 'pointOfSaleSelectorId')]")
     #Button _to deploy the currency options
-    SELECT_CURRENCY_COUNTRY:                         tuple = (By.XPATH, "//*[@id= 'pointOfSaleListId']//*[@class= 'points-of-sale_list_item ng-star-inserted']//*[@class= 'points-of-sale_list_item_label' and contains(.,'{}')]")
+    SELECT_CURRENCY_COUNTRY:                        tuple = (By.XPATH, "//*[@id= 'pointOfSaleListId']//*[@class= 'points-of-sale_list_item ng-star-inserted']//*[@class= 'points-of-sale_list_item_label' and contains(.,'{}')]")
     #Button to apply currency selection
     CONFIRM_CURRENCY_BUTTON:                        tuple = (By.XPATH, "//*[@class='button points-of-sale_footer_action_button']//*[@class='button_label']")
-    #Close currncy window
-    CLOSE_CURRENCY_BUTTON:                          tuple = (By.XPATH, "//*[contains(@class,'points-of-sale_header_close-button')]")
     #Radio button that indicate one way flight 
     RADIO_ONE_WAY:                                  tuple = (By.ID, "journeytypeId_1")
     #Button in the origin city field 
@@ -37,18 +36,14 @@ class HomePage(Common):
     DATEPICKER_BUTTON:                              tuple = (By.XPATH, "//*[@id='ngbStartDatepickerId']/div[2]/div[2]/ngb-datepicker-month-view/div[2]/div[1]/span/div[1]")
     #DatePicker control month button
     DATEPICKER_CONTROL_MONTH_BUTTON:                tuple = (By.XPATH, "//*[@id='searchContentId_OW']/div[2]/date-control-custom/div/div[2]/div/div[2]/date-picker-custom/div/button[2]")
-    #  Adult + button
+    # Deploy passengers
+    DEPLOY_PASSENGERS_BUTTON:                       tuple = (By.XPATH, "//*[@class='control_field']")
+    # Adult + button
     ADULT_PLUS_BUTTON:                              tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/ul/li[1]/div[2]/ibe-minus-plus/div/button[2]")
     #Confirm button
     CONFIRM_BUTTON:                                 tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/div/button")
     #Search button
-    SEARCH_BUTTON:                                  tuple = (By.ID, "searchButton")
-    #Flight button
-    FLIGHT_BUTTON:                                  tuple = (By.XPATH, "//button[contains(@class, 'journey_price_button') and .//span[contains(text(), 'Seleccionar de tarifa')]]")
-    # BASIC_FARE_BUTTON 
-    BASIC_FARE_BUTTON:                              tuple = (By.XPATH, "//div[@role='button' and contains(@class, 'fare-control') and .//span[contains(text(), 'basic')]]")
-    # Continue button
-    CONTINUE_BUTTON:                                tuple = (By.XPATH, "//*[@id='maincontent']/div/div[2]/div/div/button-container/div/div/button")
+    SEARCH_BUTTON:                                  tuple = (By.ID, "searchButton")    
    
     def __init__(self, driver):
         """
@@ -59,7 +54,8 @@ class HomePage(Common):
         """       
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
-        
+
+    @catch_exceptions()    
     def load(self):
         """
         load home page.
@@ -74,8 +70,19 @@ class HomePage(Common):
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e    
-
+    
+    @catch_exceptions() 
     def select_language(self, language):
+        """
+        Selects a language from the language dropdown.
+
+        This method clicks on the language dropdown button, waits for the options to be
+        clickable, and selects the specified language.
+
+        Args:
+            language (str): The language to select from the dropdown.
+        """
+
         self.logger.info(f"Selecting language {language} in URL: {self.URL}")
         laguage_options =self.wait_to_be_clickable(self.DEPLOY_LANGUAGE_BUTTON)
         laguage_options.click()
@@ -83,8 +90,18 @@ class HomePage(Common):
         button_language = self.wait_to_be_clickable(tuple_language)
         button_language.click()
         self.logger.info(f"Language {language} selected.")
-
+    
+    @catch_exceptions() 
     def select_currency(self, currency):
+        """
+        Selects a currency from the currency dropdown.
+
+        This method clicks on the currency dropdown button, waits for the options to be
+        clickable, and selects the specified currency.
+
+        Args:
+            currency (str): The currency to select from the dropdown.
+        """
         if(currency == "Colombia"):
             self.logger.info(f"{currency} currency aleady selected")
         else:        
@@ -104,6 +121,7 @@ class HomePage(Common):
             confirm_currency.click()
             self.logger.info(f"Currency {currency} selected.")
     
+    @catch_exceptions() 
     def select_one_way_radio_button(self):
         """
         Select the one way radio button in the page.
@@ -120,6 +138,7 @@ class HomePage(Common):
             select_radio.click()
             self.logger.info("One way radio button selected.") 
 
+    @catch_exceptions() 
     def select_origin(self, city_origin):         
          """
         Select the origin city in the page.
@@ -134,7 +153,7 @@ class HomePage(Common):
          origin_button = self.find(self.BUTTON_ORIGIN)
          origin_button.click()
          self.logger.info("Origin button clicked") 
-         self.select_city_origin(self.FIELD_ORIGIN, city_origin)
+         self._select_city_origin(self.FIELD_ORIGIN, city_origin)
          # Wait till the city option appears
          self.logger.info("Waiting for city option...")
          city= (self.OPTION_CITY_ORIGIN [0], self.OPTION_CITY_ORIGIN [1].format(city_origin))
@@ -143,6 +162,7 @@ class HomePage(Common):
          city_option.click()
          self.logger.info("Origin city selected.") 
 
+    @catch_exceptions() 
     def select_destination(self, city_destination):
         """
         Select the destination city in the page.
@@ -159,38 +179,35 @@ class HomePage(Common):
         self.logger.info("Clearing destination field...") 
         destination_input.clear()
 
-        self.select_city_destination(city_destination, destination_input)
-
-    def select_random_month(self, times=1, wait_between_clicks=0.5):
-        """
-        Clicks multiple times on the same element.
-
-        :param locator: Your type locator (By.XPATH, "xpath of the button")
-        :param times: Number of times you want to click.
-        :param wait_between_clicks: Wait time between clicks in seconds.
-        """
-        element = self.wait_to_be_clickable(self.DATEPICKER_CONTROL_MONTH_BUTTON)        
+        self._select_city_destination(city_destination, destination_input)
         
-        for _ in range(times):
-            element.click()
-            self.logger.info("Selecting departure month.") 
-            time.sleep(wait_between_clicks)
+    @catch_exceptions() 
+    def select_deaperture_date(self, day: str, month: str, year: str):
+        self.logger.info("Selecting departure date...")
 
-    def select_date_departure(self):
-        """
-        Selects the departure date by clicking on the date picker button.
+        # Eliminar ceros a la izquierda
+        day = str(int(day)).zfill(2)
+        month = str(int(month)).zfill(2)
+        year = str(year)
 
-        Logs the actions performed, and raises an exception if the button
-        is not found or clickable within the timeout period.
-        """
-        try:
-            self.logger.info("Clicking on date picker button...")
-            day_element = self.wait_to_be_clickable(self.DATEPICKER_BUTTON)
-            day_element.click()       
-            self.logger.info("Departure date selected")
-        except TimeoutException as e:
-            raise Exception("Timeout Exception trying to select departure date") from e
-    
+        # Formato requerido por el input
+        formatted_date = f"{day}/{month}/{year}"
+        self.logger.info(f"Formatted date to input: {formatted_date}")
+
+        # Ejecutar JS para quitar readonly del input
+        self.driver.execute_script("document.getElementById('departureInputDatePickerId').removeAttribute('readonly');")
+
+        # Esperar que el input esté presente
+        input_elem =self.wait_for((By.ID, "departureInputDatePickerId"))
+        
+
+        # Limpiar y escribir la fecha
+        input_elem.clear()
+        input_elem.send_keys(formatted_date)
+
+        self.logger.info("Departure date input completed.")
+
+    @catch_exceptions() 
     def click_plus_adult(self, times, wait_between_clicks=0.5):
         """
         Clicks multiple times on the same element.
@@ -198,6 +215,10 @@ class HomePage(Common):
         :param times: Number of times you want to click.
         :param wait_between_clicks: Wait time between clicks in seconds.
         """
+        self.logger.info("Click on passengers button...")
+        button = self.wait_to_be_clickable(self.DEPLOY_PASSENGERS_BUTTON)
+        button.click()    
+
         element = self.wait_to_be_clickable(self.ADULT_PLUS_BUTTON)                
         
         for _ in range(times - 1):
@@ -205,11 +226,13 @@ class HomePage(Common):
             self.logger.info("Selecting passenger.") 
             time.sleep(wait_between_clicks)
 
+    @catch_exceptions() 
     def confirm_button_passengers_quantity(self):
         confirm_button = self.wait_to_be_clickable(self.CONFIRM_BUTTON)
         confirm_button.click()
         self.logger.info("Confirm button  passenger clicked.") 
 
+    @catch_exceptions() 
     def click_search_flight_button(self):
         """
         Clicks the search flight button on the home page.
@@ -221,6 +244,7 @@ class HomePage(Common):
         search_button.click()
         self.logger.info("Search button clicked.") 
 
+    @catch_exceptions() 
     def is_one_way_selected(self):
         """
         Return True if the one way radio button is selected, False otherwise.
@@ -228,7 +252,8 @@ class HomePage(Common):
         select_radio = self.find(self.RADIO_ONE_WAY)
         return select_radio.is_selected()   
                                                             
-    def select_city_destination(self, option_city_destination, destination_input):
+    @catch_exceptions() 
+    def _select_city_destination(self, option_city_destination, destination_input):
         """
         Select the destination city in the page.
 
@@ -248,7 +273,8 @@ class HomePage(Common):
         city_option.click()
         self.logger.info("Destination city selected.") 
 
-    def select_city_origin(self, field_city, city_name):
+    @catch_exceptions() 
+    def _select_city_origin(self, field_city, city_name):
         """
         Select the origin city in the page.
 
@@ -264,9 +290,11 @@ class HomePage(Common):
         # Write the city name
         input_origin_city.send_keys(city_name)
     
+    @catch_exceptions() 
     def loader_a(self):
         self.wait_for_invisibility(self.LOADER)
 
+    @catch_exceptions() 
     def loader_b(self):
         self.wait_for_invisibility(self.LOADER_B)
 
