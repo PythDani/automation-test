@@ -12,9 +12,7 @@ class ItineraryPage(Common):
     # Deaperture city
     DEPARTURE_CITY:     tuple = (By.XPATH, "//*[@class='summary_travel']//*[contains(@class,'summary_travel_departure')]")
     # Arrival city
-    ARRIVAL_CITY:       tuple = (By.XPATH, "//*[@class='summary_travel']//*[contains(@class,'summary_travel_arival')]") 
-    #Reserve holder
-    RESERVE_HOLDER:     tuple = (By.XPATH, "//*[@class='itinerary-pax_contact-name']//*[@class='ng-star-inserted']")
+    ARRIVAL_CITY:       tuple = (By.XPATH, "//*[@class='summary_travel']//*[contains(@class,'summary_travel_arival')]")   
     # Details button
     DETAILS_BUTTON:     tuple = (By.XPATH, "//*[contains(@class,'price-breakdown-header')]")
     # Passengers number
