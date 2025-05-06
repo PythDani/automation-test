@@ -27,21 +27,12 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-extensions")
         options.add_argument("--remote-debugging-port=9222")
-        # options.add_argument("--headless")
+        options.add_argument("--start-maximized")        
         if headless:
             options.add_argument("--headless")
         return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
     elif browser_name == "firefox":
-        options = webdriver.FirefoxOptions()
-        # options.set_preference("devtools.console.stdout.content", True)  # Mostrar logs si es posible
-        # options.set_preference("dom.webnotifications.enabled", False)    # Desactiva notificaciones
-        # options.set_preference("dom.push.enabled", False)                # Desactiva push API
-        # options.set_preference("dom.disable_open_during_load", False)    # Permitir popups si es necesario
-
-        # options.set_preference("security.sandbox.content.level", 0)
-        # options.add_argument("--disable-dev-shm-usage")
-        # options.add_argument("--disable-extensions")
-        # options.add_argument("--headless")
+        options = webdriver.FirefoxOptions()     
         if headless:
             options.add_argument("--headless")
         return webdriver.Firefox(service=FirefoxService(GeckoDriverManager().install()), options=options)

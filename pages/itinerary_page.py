@@ -3,6 +3,7 @@
 from selenium.webdriver.common.by import By
 from logger import get_logger
 from pages.common import Common
+from utils.exception import catch_exceptions
 
 
 class ItineraryPage(Common):
@@ -23,36 +24,36 @@ class ItineraryPage(Common):
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
 
+    @catch_exceptions()
     def get_reservation_code(self):
         reservation_code = self.find(self.RESERVATION_CODE).text
         self.logger.info(f"Reservation code: {reservation_code} ")
         return reservation_code
     
+    @catch_exceptions()
     def deaperture_city(self):        
         deaperture_city = self.find(self.DEPARTURE_CITY).text
         self.logger.info(f"Deaperture city: {deaperture_city} ")
         return deaperture_city
     
+    @catch_exceptions()
     def arrival_city(self):        
         arrival_city = self.find(self.ARRIVAL_CITY).text
         self.logger.info(f"Arrival city: {arrival_city} ")
         return arrival_city
-    
+    @catch_exceptions()
     def validate_departure_city(self, expected_city: str):        
         actual_city = self.find(self.DEPARTURE_CITY).text.strip()
         self.logger.info(f"Validating departure city. Expected: '{expected_city}', Found: '{actual_city}'")
         assert actual_city == expected_city, f"Expected '{expected_city}', but got '{actual_city}'"
     
+    @catch_exceptions()
     def validate_arrival_city(self, expected_city: str):
         actual_city = self.find(self.ARRIVAL_CITY).text.strip()
         self.logger.info(f"Validating arrival city. Expected: '{expected_city}', Found: '{actual_city}'")
         assert actual_city == expected_city, f"Expected arrival city '{expected_city}', but got '{actual_city}'"
     
-    def validate_reserve_holder(self, expected_reserve_holder: str):
-        actual_reserve_holder = self.find(self.RESERVE_HOLDER).text.strip()
-        self.logger.info(f"Validating reserve holder. Expected: '{expected_reserve_holder}', Found: '{actual_reserve_holder}'")
-        assert actual_reserve_holder == expected_reserve_holder, f"Expected reserve holder '{expected_reserve_holder}', but got '{actual_reserve_holder}'"
-
+    @catch_exceptions()
     def validate_passenger_adult_number(self, expected_passenger_number: str):
         detail_button = self.find(self.DETAILS_BUTTON)
         detail_button.click()

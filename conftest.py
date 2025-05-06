@@ -1,6 +1,55 @@
 import pytest
+from pages.booking_select_page import BookingSelectPage
+from pages.form_passengers_page import FormPassengersPage
+from pages.home_page import HomePage
+from pages.itinerary_page import ItineraryPage
+from pages.payment_page import PaymentPage
+from pages.seat_map_page import SeatMapPage
+from pages.services_page import ServicesPage
 from utils.browser_factory import get_driver
 from utils.db_utils import store_result, create_db
+from logger import get_logger
+import logging
+
+get_logger()
+logger = logging.getLogger(__name__)
+logger.info("Start pytest script")
+
+@pytest.fixture(scope="function")
+def booking_context(browser):
+    """
+    A pytest fixture that sets up the context for booking-related tests.
+
+    This fixture initializes page objects for different pages involved in the booking process,
+    including HomePage, FormPassengersPage, ServicesPage, SeatMapPage, PaymentPage, 
+    BookingSelectPage, and ItineraryPage, using the provided browser instance. It also 
+    includes a set of parameters for the booking process, such as language, currency, 
+    origin and destination cities, departure date, and the number of passengers.
+
+    Args:
+        browser (WebDriver): A selenium webdriver instance used to interact with web pages.
+
+    Returns:
+        dict: A dictionary containing initialized page objects and booking parameters.
+    """
+
+    return {
+        "page": HomePage(browser),
+        "form": FormPassengersPage(browser),
+        "services": ServicesPage(browser),
+        "seat_map": SeatMapPage(browser),
+        "payment_page": PaymentPage(browser),
+        "booking_select_page": BookingSelectPage(browser),
+        "itinerary_page": ItineraryPage(browser),
+        "params": {
+            "language": "Español",
+            "currency": "Colombia",
+            "city_origin": "Medellín",
+            "city_destination": "Bogotá",
+            "departure_date": {"day": "14", "month": "5", "year": "2025"},
+            "passenger_count": 2,
+        }
+    }
 
 def pytest_addoption(parser):
     """
@@ -79,4 +128,6 @@ def pytest_sessionstart(session):
     Returns:
         None
     """
-    create_db() 
+    create_db()
+
+

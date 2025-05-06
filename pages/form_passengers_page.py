@@ -1,7 +1,9 @@
 
 
+import random
 from selenium.webdriver.common.by import By
 from logger import get_logger
+from faker import Faker
 from pages.common import Common
 import time
 
@@ -61,153 +63,97 @@ class FormPassengersPage(Common):
        self.logger = get_logger(self.__class__.__name__)
     
     def fill_passenger_form_method(self):
-        # All forms passengers
+        faker = Faker()
+        
+        # Encuentra todos los formularios de pasajeros
         passenger_forms = self.find_all(self.CONTAINERS_PASSENGERS)  
         self.logger.info(f"Se encontraron {len(passenger_forms)} formularios de pasajeros.")
 
         for index, form in enumerate(passenger_forms, start=1):
-            print(f"Llenando pasajero #{index}...")
             self.logger.info(f"Llenando pasajero #{index}...")
-
             self.scroll_down_to_element(form).perform()
 
-            # --- Dentro del contenedor 'form' ---
-            # Click genre selector
+            # Click en el selector de género
             genre_selector = form.find_element(By.XPATH, ".//button[@role='combobox' and @aria-haspopup='listbox']")
             self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", genre_selector)
-            self.wait_to_be_clickable((By.XPATH, ".//button[@role='combobox' and @aria-haspopup='listbox']"))
             genre_selector.click()
-            
             option_male = self.wait_to_be_clickable(self.BUTTON_MALE_OPTION)
             option_male.click()
 
-            # Input first name
-            input_name = form.find_element(By.XPATH, ".//div[@class='ui-input_wrap']//input[contains(@name, 'IdFirstName')]")
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", input_name)
+            # Nombre aleatorio
+            first_name = faker.first_name_male()
+            last_name = faker.last_name()
+
+            input_name = form.find_element(By.XPATH, ".//input[contains(@name, 'IdFirstName')]")
             self.wait_for_visibility(input_name)
-            input_name.send_keys(f"Andres")
+            input_name.send_keys(first_name)
 
-            # Input last name
-            input_last_name = form.find_element(By.XPATH, ".//div[@class='ui-input_wrap']//input[contains(@name, 'IdLastName')]")
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", input_last_name)
+            input_last_name = form.find_element(By.XPATH, ".//input[contains(@name, 'IdLastName')]")
             self.wait_for_visibility(input_last_name)
-            input_last_name.send_keys(f"Perez")
+            input_last_name.send_keys(last_name)
 
-            # Day of birth
-            day_of_birth = form.find_element(By.XPATH, ".//button[contains(@id, 'dateDayId_IdDateOfBirthHidden')]")
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", day_of_birth)
-            day_of_birth.click()
+            # Fecha de nacimiento (día)
+            day_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateDayId_IdDateOfBirthHidden')]")
+            day_button.click()
+            day_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateDayId_IdDateOfBirthHidden')]/li")[5]
+            day_option.click()
 
-            if index == 1:
-                day_of_birth_option = self.wait_to_be_clickable(self.DAY_OF_BIRTH_BUTTON)
-                day_of_birth_option.click()
-            else:
-                day_of_birth_option = form.find_element(By.ID, "dateDayId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433323244343535383534_-26")
-                day_of_birth_option.click()
+            # Mes de nacimiento
+            month_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateMonthId_IdDateOfBirthHidden')]")
+            month_button.click()
+            month_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateMonthId_IdDateOfBirthHidden')]/li")[5]
+            month_option.click()
 
-            # Month of birth
-            month_of_birth = form.find_element(By.XPATH, ".//button[contains(@id, 'dateMonthId_IdDateOfBi" \
-            "rthHidden')]")
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", month_of_birth)
-            self.wait_to_be_clickable(month_of_birth)
-            month_of_birth.click()
+            # Año de nacimiento
+            year_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateYearId_IdDateOfBirthHidden')]")
+            year_button.click()
+            year_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateYearId_IdDateOfBirthHidden')]/li")[10]
+            year_option.click()
 
-            if index == 1:
-                month_of_birth_option = self.wait_to_be_clickable(self.MONTH_OF_BIRTH_BUTTON)
-                month_of_birth_option.click()
-            else:
-                month_of_birth_option = form.find_element(By.ID, "dateMonthId_IdDateOfBirthHidden_7E7E303030312D30312D30317E353334423438324433323244343535383534_-7")
-                month_of_birth_option.click()
+            # Nacionalidad
+            nationality_button = form.find_element(By.XPATH, ".//button[contains(@id, 'IdDocNationality')]")
+            nationality_button.click()
+            nationality_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'IdDocNationality')]/li")[0]
+            nationality_option.click()
 
-            # Year of birth
-            year_of_birth = form.find_element(By.XPATH, ".//button[contains(@id, 'dateYearId_IdDateOfBirthHidden')]")
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", year_of_birth)
-            self.wait_to_be_clickable(year_of_birth)
-            year_of_birth.click()
+            self.logger.info(f"Pasajero #{index} llenado: {first_name} {last_name}")
 
-            year_of_birth_option = self.wait_to_be_clickable(self.YEAR_OF_BIRTH_BUTTON)
-            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", year_of_birth_option)
-            year_of_birth_option.click()
-           
+        # ----------------------------
+        # Información de contacto (una sola vez fuera del bucle)
+        # ----------------------------
+        self.logger.info("Llenando datos de contacto...")
 
-            # Nationality
-            if index == 1:
-                nationality = form.find_element(*self.SELECTOR_OF_NATIONALITY)
-                self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", nationality)
-                self.wait_for_visibility(nationality)
-                nationality.click()
-
-                nationality_option = self.wait_to_be_clickable(self.NATIONALITY_BUTTON)
-                self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", nationality_option)
-                nationality_option.click()
-            else:
-                nationality = form.find_element(By.ID, "IdDocNationality_7E7E303030312D30312D30317E353334423438324433323244343535383534")
-                self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", nationality)
-                self.wait_for_visibility(nationality)
-                nationality.click()
-
-                nationality_option = form.find_element(By.ID, "IdDocNationality_7E7E303030312D30312D30317E353334423438324433323244343535383534-0")
-                self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", nationality_option)
-                nationality_option.click()
-
-            self.logger.info(f"Pasajero #{index} llenado.")
-        
-        # Click on prefix button to show prefix phone list
         prefix_button = self.wait_to_be_clickable(self.PHONE_PREFIX_SELECTOR)
         prefix_button.click()
-        time.sleep(3)
-        self.logger.info("Listado de prefijos mostrado.")
-
-        # Select prefix
-        self.driver.execute_script("window.scrollBy(0, 300);")
+        time.sleep(1)
         prefix_option = self.wait_to_be_clickable(self.PHONE_PREFIX_BUTTON)
         prefix_option.click()
-        self.logger.info("Prefix seleccionado.")
 
-
-
-        # Input phone number owner
-        input_phone_number_owner = form.find_element(*self.INPUT_PHONE_NUMBER_OWNER)
+        input_phone_number_owner = self.find(self.INPUT_PHONE_NUMBER_OWNER)
         self.wait_for_visibility(input_phone_number_owner)
-        self.scroll_down_to_element(input_phone_number_owner).perform()
         input_phone_number_owner.send_keys("3165555888")
-        self.logger.info("Número de telefono ingresado.")
 
-
-        # Input email owner
-        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        input_email_owner = form.find_element(*self.INPUT_EMAIL_OWNER)
+        email = f"{faker.first_name().lower()}{random.randint(100,999)}@gmail.com"
+        input_email_owner = self.find(self.INPUT_EMAIL_OWNER)
         self.wait_for_visibility(input_email_owner)
-        self.scroll_down_to_element(input_email_owner).perform()
-        input_email_owner.send_keys(f"andres{index}@gmail.com")
-        self.logger.info("Correo ingresado.")
+        input_email_owner.send_keys(email)
 
-       # Intentar encontrar el campo de confirmación del correo electrónico
-        input_confirm_email_owner_elements = form.find_elements(*self.INPUT_CONFIRM_EMAIL_OWNER)
+        confirm_email_elements = self.driver.find_elements(*self.INPUT_CONFIRM_EMAIL_OWNER)
+        if confirm_email_elements:
+            confirm_email = confirm_email_elements[0]
+            self.wait_for_visibility(confirm_email)
+            confirm_email.send_keys(email)
+            self.logger.info("Confirmación de correo ingresada.")
+        else:
+            self.logger.info("Campo de confirmación de correo no presente.")
 
-        # Verificar si el elemento existe
-        if input_confirm_email_owner_elements:
-            print("El campo de confirmación de correo electrónico fue encontrado.")
-            self.logger.info("El campo de confirmación de correo electrónico fue encontrado.")
-            input_confirm_email_owner = input_confirm_email_owner_elements[0]
-            self.wait_for_visibility(input_confirm_email_owner)
-            self.scroll_down_to_element(input_confirm_email_owner).perform()
-            input_confirm_email_owner.send_keys(f"andres{index}@gmail.com")
-        else:            
-            self.logger.info("El campo de confirmación de correo electrónico no está presente en esta versión.")
-        
-
-        # Click on checkbox
         check_box = self.find(self.CHECK_BOX)
         self.scroll_down_to_element(check_box).perform()
         check_box.click()
-        self.logger.info("Checkbox de terminos y condiciones clickeado.")
 
-        # Click on continue button
         continue_button = self.find((By.XPATH, "//button[contains(@class, 'btn-next')]//span[normalize-space(text())='Continuar']"))
-        self.driver.execute_script("arguments[0].click();", continue_button)       
-        self.logger.info("Botón de continuar clickeado.")
-    
+        self.driver.execute_script("arguments[0].click();", continue_button)
+        self.logger.info("Formulario completado.")
     def loader_b(self):
         self.wait_for_invisibility(self.LOADER_B)
     def loader_a(self):
