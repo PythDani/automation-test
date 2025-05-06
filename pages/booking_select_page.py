@@ -5,9 +5,7 @@ from pages.common import Common
 from selenium.webdriver.common.by import By
 
 
-class BookingSelectPage(Common):
-    #Loader
-    LOADER:                                         tuple = (By.CLASS_NAME, "loader")
+class BookingSelectPage(Common):   
     #Loader that indicate that the page is loading in some cases.
     LOADER_B:                                       tuple = (By.CLASS_NAME, "page-loader")
     #Flight button
