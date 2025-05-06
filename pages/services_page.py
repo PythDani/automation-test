@@ -9,36 +9,18 @@ import time
 
 class ServicesPage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
-    #Loader that indicate that the page is loading.
-    LOADER:                                      tuple = (By.CLASS_NAME, "loader")
-    #Loader that indicate that the page is loading in some cases.
-    LOADER_B:                                    tuple = (By.CLASS_NAME, "page-loader")
     #Loader that indicate that the page is loading in some cases.
     LOADER_C:                                    tuple = (By.CLASS_NAME, "loading")
     
     CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON:     tuple = (By.ID, "serviceButtonTypeBaggage")
     CARRY_ON_BAGGAGE_PLUS_BUTTON:                tuple = (By.XPATH, "//button[span[@id='434142477E4341525259204F4E20424147474147452031304B4720313135204C434D7E426167676167657E452E3031302E462E365F535431 increase']]")
     CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL:  tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
-
     SPORT_BAGGAGE_ADD_BUTTON:                    tuple = (By.ID, "serviceButtonTypeOversize")
     GOLF_EQUIPMENT_PLUS_BUTTON:                  tuple = (By.XPATH, "//button[contains(@class, 'ui-num-ud_button') and contains(@class, 'plus')]")
     CONFIRM_SPORT_BAGGAGE_MODAL:                 tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
-
     BUSSINESS_LOUNGE_ADD_BUTTON:                 tuple = (By.ID, "serviceButtonTypeBusinessLounge")
     LOUNGES_PLUS_BUTTON:                         tuple = (By.XPATH, "//span[@class='label_text' and normalize-space(text())='Añadir']")
     CONFIRM_LOUNGES_MODAL:                       tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
-
-    DOG_SERVICE_ADD_BUTTON:                      tuple = (By.XPATH, "//div[contains(@class, 'service_item_action')]//span[text()='Add']")
-    CONFIRM_SPECIAL_ASISTANCE_MODAL:             tuple = (By.XPATH, "//button[contains(@class, 'amount-summary_button-action')]//span[text()='Confirm']")
-
-    MEDICAL_ASSISTANCE_ADD_BUTTON:               tuple = (By.ID, "serviceButtonTypeMedicalInsurance")
-    TRAVEL_ASISTANCE_ADD_BUTTON:                 tuple = (By.XPATH, "//div[contains(@class, 'service_item_action')]//label[contains(@class, 'service_item_button')]")
-    CHECK_BOX_MEDICAL_ASSISTANCE:                tuple = (By.XPATH, "//div[contains(@class, 'ui-checkbox')]//span[text()='I agree to the terms & conditions']")
-    CONFIRM_MEDICAL_ASSISTANCE_MODAL:            tuple = (By.XPATH, "//button[@class='button amount-summary_button amount-summary_button-action is-action ng-star-inserted']//span[text()='Confirm']")
-
-
-    SPECIAL_ASISTANCE_ADD_BUTTON:                tuple = (By.ID, "serviceButtonTypeSpecialAssistance")
-    CONTINUE_BUTTON_TO_NEXT_STEP:                tuple = (By.ID, "//button[contains(@class, 'btn-next')]//span[text()='Continue']")
     CONFIRM_SERVICES_BUTTON:                     tuple = (By.XPATH, "//div[contains(@class, 'summary') and contains(@class, 'oneway')]//button[contains(@class, 'btn-next') and .//span[normalize-space()='Continuar']]")
     
     def __init__(self, driver):
