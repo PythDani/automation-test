@@ -46,6 +46,7 @@ def test_avtest_case_1(booking_context):
     # --- Form ---
     with allure.step("Test Form passengers page"):
         form.fill_passenger_form_method()
+        
 
     # --- Services ---
     with allure.step("Test services page"):

@@ -7,6 +7,8 @@ from faker import Faker
 from pages.common import Common
 import time
 
+from utils.exception import catch_exceptions
+
 
 class FormPassengersPage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
@@ -62,25 +64,26 @@ class FormPassengersPage(Common):
        super().__init__(driver)
        self.logger = get_logger(self.__class__.__name__)
     
+    @catch_exceptions()  
     def fill_passenger_form_method(self):
         faker = Faker()
         
-        # Encuentra todos los formularios de pasajeros
+        # Find all passenger forms
         passenger_forms = self.find_all(self.CONTAINERS_PASSENGERS)  
-        self.logger.info(f"Se encontraron {len(passenger_forms)} formularios de pasajeros.")
+        self.logger.info(f"It was found {len(passenger_forms)} passenger forms.")
 
         for index, form in enumerate(passenger_forms, start=1):
-            self.logger.info(f"Llenando pasajero #{index}...")
+            self.logger.info(f"Filling passenger form #{index}...")
             self.scroll_down_to_element(form).perform()
 
-            # Click en el selector de género
+            # Click on the gender selector
             genre_selector = form.find_element(By.XPATH, ".//button[@role='combobox' and @aria-haspopup='listbox']")
             self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", genre_selector)
             genre_selector.click()
             option_male = self.wait_to_be_clickable(self.BUTTON_MALE_OPTION)
             option_male.click()
 
-            # Nombre aleatorio
+            # Generate random names
             first_name = faker.first_name_male()
             last_name = faker.last_name()
 
@@ -92,36 +95,40 @@ class FormPassengersPage(Common):
             self.wait_for_visibility(input_last_name)
             input_last_name.send_keys(last_name)
 
-            # Fecha de nacimiento (día)
+            # Day of birth
             day_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateDayId_IdDateOfBirthHidden')]")
             day_button.click()
             day_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateDayId_IdDateOfBirthHidden')]/li")[5]
             day_option.click()
 
-            # Mes de nacimiento
+            # Month of birth
             month_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateMonthId_IdDateOfBirthHidden')]")
             month_button.click()
             month_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateMonthId_IdDateOfBirthHidden')]/li")[5]
             month_option.click()
 
-            # Año de nacimiento
+            # Year of birth
             year_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateYearId_IdDateOfBirthHidden')]")
             year_button.click()
             year_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateYearId_IdDateOfBirthHidden')]/li")[10]
             year_option.click()
 
-            # Nacionalidad
+            # Nationality
             nationality_button = form.find_element(By.XPATH, ".//button[contains(@id, 'IdDocNationality')]")
             nationality_button.click()
             nationality_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'IdDocNationality')]/li")[0]
             nationality_option.click()
 
-            self.logger.info(f"Pasajero #{index} llenado: {first_name} {last_name}")
+            self.logger.info(f"Passenger #{index} filled: {first_name} {last_name}")
 
         # ----------------------------
-        # Información de contacto (una sola vez fuera del bucle)
+        # Contact information
         # ----------------------------
-        self.logger.info("Llenando datos de contacto...")
+        self._fill_contact_information(faker)
+    
+    @catch_exceptions() 
+    def _fill_contact_information(self, faker):
+        self.logger.info("Filling contact information...")
 
         prefix_button = self.wait_to_be_clickable(self.PHONE_PREFIX_SELECTOR)
         prefix_button.click()
@@ -143,9 +150,9 @@ class FormPassengersPage(Common):
             confirm_email = confirm_email_elements[0]
             self.wait_for_visibility(confirm_email)
             confirm_email.send_keys(email)
-            self.logger.info("Confirmación de correo ingresada.")
+            self.logger.info("Email confirmation field filled.")
         else:
-            self.logger.info("Campo de confirmación de correo no presente.")
+            self.logger.info("Field confirm email not found.")
 
         check_box = self.find(self.CHECK_BOX)
         self.scroll_down_to_element(check_box).perform()
@@ -153,9 +160,13 @@ class FormPassengersPage(Common):
 
         continue_button = self.find((By.XPATH, "//button[contains(@class, 'btn-next')]//span[normalize-space(text())='Continuar']"))
         self.driver.execute_script("arguments[0].click();", continue_button)
-        self.logger.info("Formulario completado.")
+        self.logger.info("form filled.")
+    
+    @catch_exceptions()
     def loader_b(self):
         self.wait_for_invisibility(self.LOADER_B)
+    
+    @catch_exceptions()
     def loader_a(self):
         self.wait_for_invisibility(self.LOADER_A)
    
