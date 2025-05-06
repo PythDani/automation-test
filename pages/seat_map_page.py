@@ -48,30 +48,29 @@ class SeatMapPage(Common):
     def select_seats_based_on_quantity_of_passengers(self):
         """
         Select seats based on passengers count.
-
-        This method selects seats based on the count of passengers
-        found on the page. It refreshes the list of available seats
-        after each selection to avoid stale element errors.
-
-        If there are not enough available seats, an Exception is raised.
-
-        :return: None
         """
         try:
-            self.logger.info("Get passengers count...")
+            self.logger.info("Get passengers count...")            
 
-            # Get passengers count
-            passengers_element = self.wait_for(self.PAX_TYPE)
-            # Wait until passengers count is not empty
-            self._wait.until(lambda driver: passengers_element.text.strip() != '')
-            passengers_count = int(passengers_element.text.strip())
+            try:
+                # Try finding the main passenger counter
+                passengers_element = self.wait_for(self.PAX_TYPE)
+                self._wait.until(lambda driver: passengers_element.text.strip() != '')
+                passengers_count = int(passengers_element.text.strip())
+            except TimeoutException:
+                # If the main counter is not available (e.g., screen maximized), fallback to default or alternate
+                self.logger.warning("Could not find 'paxtype_total_value'. Trying alternative method...")
+                alt_locator = (By.CLASS_NAME, "paxtype_label")
+                alt_elements = self.find_all(alt_locator)
+                passengers_count = len(alt_elements)
+                if passengers_count == 0:
+                    raise Exception("No passengers info found using any method.")
 
             self.logger.info(f"Quantity of passengers found: {passengers_count}")
 
             selected_seats = 0
 
             while selected_seats < passengers_count:
-                # Re-obtain available seats in each iteration to avoid stale element issues
                 available_seats = self.find_all(self.AVAILABLE_SEATS)
 
                 self.logger.info(f"Number of available seats found: {len(available_seats)}")
@@ -89,12 +88,11 @@ class SeatMapPage(Common):
                         self.wait_for_loader_to_disappear(self.LOADER_C)
                         self.logger.info(f"Seat {seat_label} selected.")
                         selected_seats += 1
-                        break  # Break inner for-loop to refresh available seats list
+                        break
                     except Exception as click_error:
                         self.logger.warning(f"Could not click on seat {seat_label}: {click_error}. Trying next seat...")
 
                 else:
-                    # If no seat was selected in this iteration
                     raise Exception("Could not find a clickable available seat.")
 
         except Exception as e:
@@ -109,19 +107,22 @@ class SeatMapPage(Common):
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
 
         """
-        
-        # Wait for the button to appear
-        self.logger.info("Waiting for the button to appear...")
-        add_bussines_on_button = self.wait_for(self.CONFIRM_BUTTON)
+        try:
+            # Wait for the button to appear
+            self.logger.info("Waiting for the button to appear...")
+            add_bussines_on_button = self.wait_for(self.CONFIRM_BUTTON)
 
-        # Scroll to the button
-        self.scroll_down_move_to_element(add_bussines_on_button)
-        self.logger.info("Scroll to the button Continue...'")
+            # Scroll to the button
+            self.scroll_down_move_to_element(add_bussines_on_button)
+            self.logger.info("Scroll to the button Continue...'")
 
-        # SLEEP(1) added
-        time.sleep(1)
+            # SLEEP(1) added
+            time.sleep(1)
 
-        # Click the button            
-        self.driver.execute_script("arguments[0].click();", add_bussines_on_button)
-        self.logger.info("Seats added... Going to the payment page...")
+            # Click the button            
+            self.driver.execute_script("arguments[0].click();", add_bussines_on_button)
+            self.logger.info("Seats added... Going to the payment page...")
+        except Exception as e:
+            self.logger.error(f"Error clicking on continue button: {str(e)}")
+            raise
 
