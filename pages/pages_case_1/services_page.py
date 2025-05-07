@@ -10,23 +10,32 @@ import time
 class ServicesPage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
     #Loader that indicate that the page is loading in some cases.
-    LOADER_C:                                    tuple = (By.CLASS_NAME, "loading")
+    LOADER_C:                                    tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading')]")
     
-    CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON:     tuple = (By.ID, "serviceButtonTypeBaggage")
-    CARRY_ON_BAGGAGE_PLUS_BUTTON:                tuple = (By.XPATH, "//button[span[@id='434142477E4341525259204F4E20424147474147452031304B4720313135204C434D7E426167676167657E452E3031302E462E365F535431 increase']]")
+    CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON:     tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeBaggage')]")
+    CARRY_ON_BAGGAGE_PLUS_BUTTON:                tuple = (By.XPATH, "//button[contains(@class,'ui-num-ud_button plus')]")
     CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL:  tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
     SPORT_BAGGAGE_ADD_BUTTON:                    tuple = (By.ID, "serviceButtonTypeOversize")
-    GOLF_EQUIPMENT_PLUS_BUTTON:                  tuple = (By.XPATH, "//button[contains(@class, 'ui-num-ud_button') and contains(@class, 'plus')]")
+    SPORT_EQUIPMENT_PLUS_BUTTON:                  tuple = (By.XPATH, "//button[contains(@class,'ui-num-ud_button plus')]")
     CONFIRM_SPORT_BAGGAGE_MODAL:                 tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
-    BUSSINESS_LOUNGE_ADD_BUTTON:                 tuple = (By.ID, "serviceButtonTypeBusinessLounge")
-    LOUNGES_PLUS_BUTTON:                         tuple = (By.XPATH, "//span[@class='label_text' and normalize-space(text())='Añadir']")
+    BUSSINESS_LOUNGE_ADD_BUTTON:                 tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeBusinessLounge')]")
+    LOUNGES_PLUS_BUTTON:                         tuple = (By.XPATH, "//label[contains(@class,'service_item_button button')]")
     CONFIRM_LOUNGES_MODAL:                       tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
-    CONFIRM_SERVICES_BUTTON:                     tuple = (By.XPATH, "//div[contains(@class, 'summary') and contains(@class, 'oneway')]//button[contains(@class, 'btn-next') and .//span[normalize-space()='Continuar']]")
+    CONFIRM_SERVICES_BUTTON:                     tuple = (By.XPATH, "//*[contains(@class,'button page_button btn-action page_button-primary-flow ng-star-inserted')]//span[contains(@class,'button_label')]")
     
+    SPECIAL_ASISTANCE_ADD_BUTTON:                tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeSpecialAssistance')]")
+    ADD_SPECIAL_ASISTANCE_ALL:                   tuple = (By.XPATH, "//div[contains(@class,'service_item_action ng-star-inserted')]")
+    CONFIRM_SPECIAL_ASISTANCE_MODAL:             tuple = (By.XPATH, "//button[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
+
+
+
+
+    @catch_exceptions() 
     def __init__(self, driver):
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
     
+    @catch_exceptions() 
     def load(self):
         """
         Load the page and wait for the page loader to disappear.
@@ -46,7 +55,8 @@ class ServicesPage(Common):
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
-        
+
+    @catch_exceptions()     
     def add_carry_on_and_checked_baggage(self):
         """
         Adds a carry-on and checked baggage service.
@@ -67,27 +77,29 @@ class ServicesPage(Common):
             self.logger.info(f"{name} opened...")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {name}") from e
-        
-    def click_on_bagage_plus_button(self):
+
+    @catch_exceptions()     
+    def click_on_bagage_plus_button(self):       
         """
         Clicks on the "Add bagage" plus button.
 
         This method waits until the "Add bagage" plus button is visible and clickable, then clicks on it.
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
 
+        Raises:
+            Exception: If the "Add bagage" plus button is not found or clickable within the timeout period.
         """
-        
         try:
-            self.logger.info("Adding carry-on baggage...")
-            self.wait_for(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
-            time.sleep(2)
-            plus_button = self.wait_for(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
-            # time.sleep(4)
-            plus_button.click()           
-            self.logger.info("Adding carry-on baggage added...")
+            plus_buttons = self.find_all(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
+
+            for button in plus_buttons:    
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
+                button.click()   
+           
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to add carry-on baggage") from e
     
+    @catch_exceptions() 
     def confirm_carry_on_modal_and_checked_baggage_modal(self):
         """
         Confirms the carry-on and checked baggage modal.
@@ -110,7 +122,8 @@ class ServicesPage(Common):
             self.logger.info("Baggage confirmed...")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to confirm baggage") from e
-            
+    
+    @catch_exceptions()         
     def add_sport_baggage(self): 
         """
         Adds a sport baggage service.
@@ -128,9 +141,9 @@ class ServicesPage(Common):
             self.logger.info(f"{name} opened...")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {name}") from e
-
-    def click_on_sport_bagage_plus_button(self):       
-        
+    
+    @catch_exceptions() 
+    def click_on_sport_bagage_plus_button(self):      
         """
         Clicks on the "Add sport baggage" plus button.
 
@@ -141,14 +154,15 @@ class ServicesPage(Common):
             Exception: If the "Add sport baggage" plus button is not found or clickable within the timeout period.
         """
         try:
-            self.logger.info("Add sport baggage...")
-            plus_button = self.find(self.GOLF_EQUIPMENT_PLUS_BUTTON)
-            time.sleep(4)
-            plus_button.click()           
-            self.logger.info("Sport baggage added...")
+            plus_buttons = self.find_all(self.SPORT_EQUIPMENT_PLUS_BUTTON)
+            for button in plus_buttons:    
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
+                button.click()  
+
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to add sport baggage") from e
     
+    @catch_exceptions() 
     def confirm_sport_baggage_modal(self):
         """
         Confirms the sport baggage modal.
@@ -169,7 +183,8 @@ class ServicesPage(Common):
             self.logger.info("Sport baggage confirmed...")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to confirm sport baggage") from e
-        
+
+    @catch_exceptions() 
     def add_bussines_lounge(self):
         """
         Adds a bussines lounge service.
@@ -182,13 +197,15 @@ class ServicesPage(Common):
         """
         name = "Bussiness lounge service"
         try:
-            continue_next_step_button =self.wait_for_visibility_of_element_located(self.BUSSINESS_LOUNGE_ADD_BUTTON)
-            self._action.scroll_to_element(continue_next_step_button).perform()
-            continue_next_step_button.click()
-            self.logger.info(f" {name} opened")
+            self.wait_for_loader_to_disappear()
+            add_buttons = self.find_all(self.BUSSINESS_LOUNGE_ADD_BUTTON)
+            for button in add_buttons:    
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
+                button.click()            
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {name}") from e
-  
+    
+    @catch_exceptions()
     def click_on_some_lounge_plus_button(self):     
         """
         Clicks on the "Add lounge" plus button.
@@ -226,6 +243,65 @@ class ServicesPage(Common):
         continue_button.click()
         self.logger.info("Lounge business services confirmed")
     
+    @catch_exceptions()
+    def add_special_asistance_services(self):      
+        """
+        Adds a special asistance service.
+
+        This method waits until the "Add special asistance" button is visible and clickable, then clicks on it.
+        If the button is not found or clickable within the timeout period, a TimeoutException is raised.
+
+        Raises:
+            Exception: If the "Add special asistance" button is not found or clickable within the timeout period.
+        """
+        name = "Special asistance service"
+        try:
+            add_asistance_on_button =self.wait_for_visibility_of_element_located(self.SPECIAL_ASISTANCE_ADD_BUTTON)
+            add_asistance_on_button.click()
+            self.logger.info(f"{name} opened...")
+        except TimeoutException as e:
+            raise Exception(f"Timeout Exception trying to load {name}") from e
+    
+    @catch_exceptions() 
+    def click_on_add_special_asistance_plus_button(self):      
+        """
+        Clicks on the "Add special assistance" plus button.
+
+        This method waits until the "Add special assistance" plus button is visible and clickable, 
+        then clicks on the first one found. If no buttons are found, a warning is logged. 
+        If the button is not found or clickable within the timeout period, a TimeoutException is raised.
+
+        Raises:
+            Exception: If the "Add special assistance" plus button is not found or clickable 
+                    within the timeout period.
+        """
+        try:
+            plus_buttons = self.find_all(self.ADD_SPECIAL_ASISTANCE_ALL)
+            if plus_buttons:
+                button = plus_buttons[0]  # Solo el primer botón
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
+                button.click()
+            else:
+                self.logger.warning("No special assistance buttons found.")
+           
+        except TimeoutException as e:
+            raise Exception(f"Timeout Exception trying to add special asistance service") from e
+    
+    @catch_exceptions() 
+    def confirm_special_asistance_modal(self):                   
+        """
+        Confirms the special asistance modal.
+
+        This method waits until the confirmation button of the special asistance modal is visible and clickable, then clicks on it.
+        If the button is not found or clickable within the timeout period, a TimeoutException is raised.
+
+        """
+        self.logger.info("Click on confirm button...")              
+        continue_button = self.find(self.CONFIRM_SPECIAL_ASISTANCE_MODAL)
+        self._action.scroll_to_element(continue_button).perform()       
+        continue_button.click()
+        self.logger.info("special asistance services confirmed")
+
     @catch_exceptions()    
     def continue_to_the_next_step(self):     
         """
@@ -251,6 +327,7 @@ class ServicesPage(Common):
         self.driver.execute_script("arguments[0].click();", add_bussines_on_button)
         self.logger.info("Services added... Going to the seatmap page...")
     
+    @catch_exceptions() 
     def wait_for_loader_to_disappear(self):
         """
         Waits for the loader to disappear.
