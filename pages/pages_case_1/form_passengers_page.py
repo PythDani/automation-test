@@ -35,11 +35,12 @@ class FormPassengersPage(Common):
     # Button Continue
     BUTTON_CONTINUE:                       tuple = (By.XPATH, "//button[contains(@class, 'btn-next')]//span[normalize-space(text())='Continuar']")
 
+    @catch_exceptions()
     def __init__(self, driver):
        super().__init__(driver)
        self.logger = get_logger(self.__class__.__name__)
     
-    @catch_exceptions()  
+    @catch_exceptions()
     def fill_passenger_form_method(self):
         faker = Faker()
         
@@ -51,16 +52,17 @@ class FormPassengersPage(Common):
             self.logger.info(f"Filling passenger form #{index}...")
             self.scroll_down_to_element(form).perform()
 
-            # Click on the gender selector
+            # Gender
             genre_selector = form.find_element(By.XPATH, ".//button[@role='combobox' and @aria-haspopup='listbox']")
             self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", genre_selector)
             genre_selector.click()
             option_male = self.wait_to_be_clickable(self.BUTTON_MALE_OPTION)
             option_male.click()
 
-            # Generate random names
+            # Names
             first_name = faker.first_name_male()
             last_name = faker.last_name()
+            time.sleep(1)
 
             input_name = form.find_element(By.XPATH, ".//input[contains(@name, 'IdFirstName')]")
             self.wait_for_visibility(input_name)
@@ -70,35 +72,77 @@ class FormPassengersPage(Common):
             self.wait_for_visibility(input_last_name)
             input_last_name.send_keys(last_name)
 
+             # Year of birth
+            year_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateYearId_IdDateOfBirthHidden')]")
+            year_button.click()
+            year_options = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateYearId_IdDateOfBirthHidden')]/li")
+            if len(year_options) > 10:
+                year_options[10].click()                
+            elif year_options:
+                year_options[0].click()                
+            else:
+                self.logger.warning(f"No year options found for passenger #{index}")
+
             # Day of birth
             day_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateDayId_IdDateOfBirthHidden')]")
             day_button.click()
-            day_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateDayId_IdDateOfBirthHidden')]/li")[5]
-            day_option.click()
+            day_options = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateDayId_IdDateOfBirthHidden')]/li")
+            if len(day_options) > 5:
+                day_options[5].click()                
+            elif day_options:
+                day_options[0].click()               
+            else:
+                self.logger.warning(f"No day options found for passenger #{index}")
 
             # Month of birth
             month_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateMonthId_IdDateOfBirthHidden')]")
             month_button.click()
-            month_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateMonthId_IdDateOfBirthHidden')]/li")[5]
-            month_option.click()
-
-            # Year of birth
-            year_button = form.find_element(By.XPATH, ".//button[contains(@id, 'dateYearId_IdDateOfBirthHidden')]")
-            year_button.click()
-            year_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateYearId_IdDateOfBirthHidden')]/li")[10]
-            year_option.click()
+            month_options = form.find_elements(By.XPATH, ".//ul[contains(@id, 'dateMonthId_IdDateOfBirthHidden')]/li")
+            if len(month_options) > 5:
+                month_options[5].click()                
+            elif month_options:
+                month_options[0].click()                
+            else:
+                self.logger.warning(f"No month options found for passenger #{index}")           
 
             # Nationality
             nationality_button = form.find_element(By.XPATH, ".//button[contains(@id, 'IdDocNationality')]")
             nationality_button.click()
-            nationality_option = form.find_elements(By.XPATH, ".//ul[contains(@id, 'IdDocNationality')]/li")[0]
-            nationality_option.click()
+            nationality_options = form.find_elements(By.XPATH, ".//ul[contains(@id, 'IdDocNationality')]/li")
+            if nationality_options:
+                nationality_options[0].click()
+            else:
+                self.logger.warning(f"No nationality options found for passenger #{index}")
 
-            self.logger.info(f"Passenger #{index} filled: {first_name} {last_name}")
+            # Optional: Document type
+            doc_type_buttons = form.find_elements(By.XPATH, ".//button[contains(@id,'IdDocType_')]")
+            if doc_type_buttons:
+                doc_type_button = doc_type_buttons[0]
+                doc_type_button.click()
+                doc_type_options = form.find_elements(By.XPATH, ".//ul[contains(@id,'listId_IdDocType_')]/li")
+                if len(doc_type_options) >= 3:
+                    doc_type_options[0].click()  # 3rd option (index 2)
+                elif doc_type_options:
+                    doc_type_options[0].click()
+                else:
+                    self.logger.warning(f"No document type options found for passenger #{index}")
+            else:
+                self.logger.info(f"Document type button not present for passenger #{index}")
 
-       
+            # Optional: Document number
+            doc_number_inputs = form.find_elements(By.XPATH, ".//input[contains(@name,'IdDocNum_')]")
+            if doc_number_inputs:
+                doc_number_input = doc_number_inputs[0]
+                self.wait_for_visibility(doc_number_input)
+                doc_number = faker.random_number(digits=8, fix_len=True)
+                doc_number_input.send_keys(str(doc_number))
+                self.logger.info(f"Passenger #{index} filled: {first_name} {last_name} - Doc#: {doc_number}")
+            else:
+                self.logger.info(f"Document number input not present for passenger #{index}")        
+
+        # Fill contact info after all passengers
         self._fill_contact_information(faker)
-    
+
     @catch_exceptions() 
     def _fill_contact_information(self, faker):
          # ----------------------------

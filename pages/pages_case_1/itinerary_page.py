@@ -7,10 +7,12 @@ from utils.exception import catch_exceptions
 
 
 class ItineraryPage(Common):
+    # Page loader
+    LOADER_C:                  tuple = (By.XPATH, "//*[contains(@class,'loading')]")
     # Reservation code
     RESERVATION_CODE:   tuple = (By.XPATH, "//*[@class='booking-reference']//*[@class='code']")
     # Deaperture city
-    DEPARTURE_CITY:     tuple = (By.XPATH, "//*[@class='summary_travel']//*[contains(@class,'summary_travel_departure')]")
+    DEPARTURE_CITY:     tuple = (By.XPATH, "//*[contains(@class,'summary_travel_departure')]")
     # Arrival city
     ARRIVAL_CITY:       tuple = (By.XPATH, "//*[@class='summary_travel']//*[contains(@class,'summary_travel_arival')]")   
     # Details button
@@ -24,6 +26,7 @@ class ItineraryPage(Common):
 
     @catch_exceptions()
     def get_reservation_code(self):
+        self.wait_for_loader_c_disappear()
         reservation_code = self.find(self.RESERVATION_CODE).text
         self.logger.info(f"Reservation code: {reservation_code} ")
         return reservation_code
@@ -59,3 +62,6 @@ class ItineraryPage(Common):
         actual_passenger_number = self.find(self.PASSENGERS_NUMBER).text
         self.logger.info(f"Validating passenger number. Expected: '{expected_passenger_number}', Found: '{actual_passenger_number}'")
         assert actual_passenger_number == expected_passenger_number, f"Expected passenger number '{expected_passenger_number}', but got '{actual_passenger_number}'"
+
+    def wait_for_loader_c_disappear(self):        
+        self.wait_for_loader_to_disappear(self.LOADER_C)

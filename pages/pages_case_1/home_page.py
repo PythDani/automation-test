@@ -3,11 +3,12 @@ from selenium.common.exceptions import TimeoutException
 import time
 from logger import get_logger
 from utils.exception import catch_exceptions
-from .common import Common
+from pages.common import Common
+
 class HomePage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
     #Loader that indicate that the page is loading.
-    LOADER:                                         tuple = (By.CLASS_NAME, "loader")
+    LOADER:                                         tuple = (By.XPATH, "//*[contains(@class, 'loader') or contains(@class, 'loading')]")
     #Loader that indicate that the page is loading in some cases.
     LOADER_B:                                       tuple = (By.CLASS_NAME, "page-loader")
     #Button that indicate the language selectioned 
@@ -25,11 +26,11 @@ class HomePage(Common):
     #Button in the origin city field 
     BUTTON_ORIGIN:                                  tuple = (By.ID, "originBtn")
     #Input field of the origin city 
-    FIELD_ORIGIN:                                   tuple = (By.XPATH, "//button[@id='originBtn']/following-sibling::input[@class='control_field_input' and @aria-label='Search.DepartureArrivalFocusInfo']")
+    FIELD_ORIGIN:                                   tuple = (By.XPATH, "//*[contains(@class,'control_field_input')]")
     #Search result of the origin city 
     OPTION_CITY_ORIGIN:                             tuple =  (By.XPATH, "//li[contains(@class, 'station-control-list_item')]//span[contains(@class, 'station-control-list_item_link-city') and contains(., '{}')]")
     #Input field of the destination city 
-    FIELD_DESTINATION:                              tuple = (By.XPATH, "//div[@id='arrivalStationInputLabel']/following-sibling::input[@class='control_field_input' and @aria-label='Search.DepartureArrivalFocusInfo']")
+    FIELD_DESTINATION:                              tuple = (By.XPATH, "//*[contains(@class,'control_field control_field-inbound is-focused')]//*[@class='control_field_input']")
     #Search result of the destination city 
     OPTION_CITY_DESTINATION:                        tuple = (By.XPATH, "//li[contains(@class, 'station-control-list_item')]//span[contains(@class, 'station-control-list_item_link-city') and contains(., '{}')]")
     #Button to select the date  
@@ -40,6 +41,12 @@ class HomePage(Common):
     DEPLOY_PASSENGERS_BUTTON:                       tuple = (By.XPATH, "//*[@class='control_field']")
     # Adult + button
     ADULT_PLUS_BUTTON:                              tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/ul/li[1]/div[2]/ibe-minus-plus/div/button[2]")
+    # Young + button
+    YOUNG_PLUS_BUTTON:                              tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/ul/li[2]/div[2]/ibe-minus-plus/div/button[2]")
+    # Child + button
+    CHILD_PLUS_BUTTON:                              tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/ul/li[3]/div[2]/ibe-minus-plus/div/button[2]")
+    # Infant + button
+    INFANT_PLUS_BUTTON:                             tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/ul/li[4]/div[2]/ibe-minus-plus/div/button[2]")
     #Confirm button
     CONFIRM_BUTTON:                                 tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/div/button")
     #Search button
@@ -173,39 +180,63 @@ class HomePage(Common):
             option_city_destination (tuple): A tuple of (By, str) to locate the city option.
         """
 
-        self.logger.info("Waiting for destination field...") 
-        destination_input = self.wait_to_be_clickable(self.FIELD_DESTINATION)
-        
-        self.logger.info("Clearing destination field...") 
-        destination_input.clear()
-
+        self.logger.info("Waiting for destination field...")
+        time.sleep(0.5)   
+        destination_input = self.find(self.FIELD_DESTINATION)      
+  
         self._select_city_destination(city_destination, destination_input)
         
     @catch_exceptions() 
     def select_deaperture_date(self, day: str, month: str, year: str):
         self.logger.info("Selecting departure date...")
 
-        # Eliminar ceros a la izquierda
+        # Delete leading zeros from date 
         day = str(int(day)).zfill(2)
         month = str(int(month)).zfill(2)
         year = str(year)
 
-        # Formato requerido por el input
+        # Format required by the input
         formatted_date = f"{day}/{month}/{year}"
-        self.logger.info(f"Formatted date to input: {formatted_date}")
+        self.logger.info(f"Formatted deaperturedate to input: {formatted_date}")
 
-        # Ejecutar JS para quitar readonly del input
+        # Execute JS to remove readonly from input
         self.driver.execute_script("document.getElementById('departureInputDatePickerId').removeAttribute('readonly');")
 
-        # Esperar que el input esté presente
+        # Wait for input to be present
         input_elem =self.wait_for((By.ID, "departureInputDatePickerId"))
         
 
-        # Limpiar y escribir la fecha
+        # Clean and write the date
         input_elem.clear()
         input_elem.send_keys(formatted_date)
 
         self.logger.info("Departure date input completed.")
+
+    @catch_exceptions() 
+    def select_arrival_date(self, day: str, month: str, year: str):
+        self.logger.info("Selecting arrival date...")
+
+        # Delete leading zeros from date 
+        day = str(int(day)).zfill(2)
+        month = str(int(month)).zfill(2)
+        year = str(year)
+
+        # Format required by the input
+        formatted_date = f"{day}/{month}/{year}"
+        self.logger.info(f"Formatted arrival date to input: {formatted_date}")
+
+        # Execute JS to remove readonly from input
+        self.driver.execute_script("document.getElementById('arrivalInputDatePickerId').removeAttribute('readonly');")
+
+        # Wait for input to be present
+        input_elem =self.wait_for((By.ID, "arrivalInputDatePickerId"))
+        
+
+        # Clean and write the date
+        input_elem.clear()
+        input_elem.send_keys(formatted_date)
+
+        self.logger.info("Arrival date input completed.")
 
     @catch_exceptions() 
     def click_plus_adult(self, times, wait_between_clicks=0.5):
@@ -219,11 +250,59 @@ class HomePage(Common):
         button = self.wait_to_be_clickable(self.DEPLOY_PASSENGERS_BUTTON)
         button.click()    
 
-        element = self.wait_to_be_clickable(self.ADULT_PLUS_BUTTON)                
-        
+        self.logger.info(f"Adding {times} adults...")                    
+        adultt_button = self.wait_to_be_clickable(self.ADULT_PLUS_BUTTON)          
         for _ in range(times - 1):
-            element.click()
-            self.logger.info("Selecting passenger.") 
+            adultt_button.click()            
+            self.logger.info("Selecting adults.") 
+            time.sleep(wait_between_clicks)
+
+    @catch_exceptions() 
+    def click_plus_young(self, times, wait_between_clicks=0.5):     
+        """
+        Clicks multiple times on the same element.
+        
+        :param times: Number of times you want to click.
+        :param wait_between_clicks: Wait time between clicks in seconds.
+        """
+        self.logger.info(f"Adding {times} Young...")
+        young_button = self.wait_to_be_clickable(self.YOUNG_PLUS_BUTTON)             
+        for _ in range(times):            
+            young_button.click()           
+            self.logger.info("Selecting youngers.") 
+            time.sleep(wait_between_clicks)
+
+    @catch_exceptions() 
+    def click_plus_child(self, times, wait_between_clicks=0.5):                  
+        """
+        Clicks multiple times on the same element.
+        
+        :param times: Number of times you want to click.
+        :param wait_between_clicks: Wait time between clicks in seconds.
+        """
+        self.logger.info(f"Adding {times} child...")
+        child_button = self.wait_to_be_clickable(self.CHILD_PLUS_BUTTON)      
+                
+        for _ in range(times):           
+            child_button.click()
+            self.logger.info("Selecting children.") 
+            time.sleep(wait_between_clicks)
+
+    @catch_exceptions() 
+    def click_plus_infant(self, times, wait_between_clicks=0.5):                
+        """
+        Clicks multiple times on the same element.
+        
+        :param times: Number of times you want to click.
+        :param wait_between_clicks: Wait time between clicks in seconds.
+        """
+        
+        self.logger.info(f"Adding {times} infants...")
+        baby_button = self.wait_to_be_clickable(self.INFANT_PLUS_BUTTON)      
+                
+        for _ in range(times):           
+            baby_button.click()
+            self.logger.info("Selecting infants.") 
             time.sleep(wait_between_clicks)
 
     @catch_exceptions() 
@@ -286,7 +365,7 @@ class HomePage(Common):
         input_origin_city = self.find(field_city)
         self.logger.info("clicking on origin field...") 
         # Click on the input field
-        input_origin_city.click()
+        # input_origin_city.click()
         # Write the city name
         input_origin_city.send_keys(city_name)
     
