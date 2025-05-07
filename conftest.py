@@ -1,11 +1,16 @@
 import pytest
-from pages.booking_select_page import BookingSelectPage
-from pages.form_passengers_page import FormPassengersPage
-from pages.home_page import HomePage
-from pages.itinerary_page import ItineraryPage
-from pages.payment_page import PaymentPage
-from pages.seat_map_page import SeatMapPage
-from pages.services_page import ServicesPage
+"------------------------ ----- ------------------------------------------------"
+"                         Module CASE 1                                         "
+"--------------------------------------------------------------------------------"
+from pages.pages_case_1.booking_select_page import BookingSelectPage
+from pages.pages_case_1.form_passengers_page import FormPassengersPage
+from pages.pages_case_1.home_page import HomePage
+from pages.pages_case_1.itinerary_page import ItineraryPage
+from pages.pages_case_1.payment_page import PaymentPage
+from pages.pages_case_1.seat_map_page import SeatMapPage
+from pages.pages_case_1.services_page import ServicesPage
+
+
 from utils.browser_factory import get_driver
 from utils.db_utils import store_result, create_db
 from logger import get_logger
@@ -47,7 +52,50 @@ def booking_context(browser):
             "city_origin": "Medellín",
             "city_destination": "Bogotá",
             "departure_date": {"day": "14", "month": "5", "year": "2025"},
+            "arrival_date": {"day": "30", "month": "5", "year": "2025"},
             "passenger_count": 2,
+            "young_count": 3,
+            "child_count": 2,
+            "baby_count": 4
+        }
+    }
+
+@pytest.fixture(scope="function")
+def booking_context_case_2(browser):  
+    """
+    This fixture initializes page objects for different pages involved in the booking process,
+    including HomePage, FormPassengersPage, ServicesPage, SeatMapPage, PaymentPage, 
+    BookingSelectPage, and ItineraryPage, using the provided browser instance. It also 
+    includes a set of parameters for the booking process, such as language, currency, 
+    origin and destination cities, departure date, and the number of passengers.
+
+    Args:
+        browser (WebDriver): A selenium webdriver instance used to interact with web pages.
+
+    Returns:
+        dict: A dictionary containing initialized page objects and booking parameters.
+    """
+
+    return {
+        "page": HomePage(browser),
+        "form": FormPassengersPage(browser),
+        "services": ServicesPage(browser),
+        "seat_map": SeatMapPage(browser),
+        "payment_page": PaymentPage(browser),
+        "booking_select_page": BookingSelectPage(browser),
+        "itinerary_page": ItineraryPage(browser),
+        "params": {
+            "language": "Español",
+            "currency": "Colombia",
+            "city_origin": "Managua",
+            "city_destination": "Medellín",
+            "departure_date": {"day": "14", "month": "5", "year": "2025"},
+            "arrival_date": {"day": "30", "month": "5", "year": "2025"},
+            "passenger_count": 1,
+            "young_count": 0,
+            "child_count": 0,
+            "baby_count": 0,
+            "relative_day": "2 days before"
         }
     }
 

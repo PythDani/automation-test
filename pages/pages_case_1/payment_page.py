@@ -12,7 +12,7 @@ class PaymentPage(Common):
       
     # ----------------------------------LOCATORS----------------------------------------------------------
     ONE_TRUST_ACCEPT_BUTTON:   tuple = (By.ID, "onetrust-accept-btn-handler")
-    LOADER_C:                  tuple = (By.CLASS_NAME, "loading")
+    LOADER_C:                  tuple = (By.XPATH, "//*[contains(@class,'loading')]")
 
     PANEL_PAGO:                tuple = (By.XPATH, "//*[@id='IdHere']")
 
@@ -55,8 +55,7 @@ class PaymentPage(Common):
             one_trust_accept_button.click()
             #We wait unitll the page loader disapear.
             self.logger.info("Waiting for loader to disappear...")
-            self.wait_for_loader_to_disappear(self.LOADER_C)
-            # self.wait_for_invisibility(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)          
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
@@ -108,8 +107,7 @@ class PaymentPage(Common):
 
     def fill_card_number(self, number: str):
           
-        try:
-            # self.wait_for_loader_to_disappear(self.LOADER_C)
+        try:         
             self.scroll_down_move_to_element(self.find(self.CARD_NUMBER_INPUT))
             self.logger.info("Filling out card number field...")
             field = self.wait_to_be_clickable(self.CARD_NUMBER_INPUT)

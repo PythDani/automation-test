@@ -1,34 +1,37 @@
 """
-  Test case number 1
-  Caso automatizado 1: Realizar booking / reserva One-way (Solo ida).
+  Test case number 2 
+  Caso automatizado 2: Realizar booking Round-trip (Ida y vuelta)..
 
   @Author: Rafael Daniel Farfán
 """
 import allure
 
 
-@allure.title("Automated case 1: One way booking")
+@allure.title("Automated case 2: Round trip booking")
 @allure.severity(allure.severity_level.NORMAL)
-def test_avtest_case_1(booking_context):
-    page = booking_context["page"]
-    form = booking_context["form"]
-    services = booking_context["services"]
-    seat_map = booking_context["seat_map"]
-    payment_page = booking_context["payment_page"]
-    booking_select_page = booking_context["booking_select_page"]
-    itinerary_page = booking_context["itinerary_page"]
-    params = booking_context["params"]
+def test_avtest_case_1(booking_context_case_2):
+    page = booking_context_case_2["page"]
+    form = booking_context_case_2["form"]
+    services = booking_context_case_2["services"]
+    seat_map = booking_context_case_2["seat_map"]
+    payment_page = booking_context_case_2["payment_page"]
+    booking_select_page = booking_context_case_2["booking_select_page"]
+    itinerary_page = booking_context_case_2["itinerary_page"]
+    params = booking_context_case_2["params"]
 
     # --- Home Page ---
     with allure.step("Test Home page"):
         page.load()
         page.select_language(params["language"])
-        page.select_currency(params["currency"])
-        page.select_one_way_radio_button()
+        page.select_currency(params["currency"])   
         page.select_origin(params["city_origin"])
         page.select_destination(params["city_destination"])
         page.select_deaperture_date(**params["departure_date"])
+        page.select_arrival_date(**params["arrival_date"])
         page.click_plus_adult(times=params["passenger_count"])
+        page.click_plus_young(times=params["young_count"])
+        page.click_plus_child(times=params["child_count"])
+        page.click_plus_infant(times=params["baby_count"])
         page.confirm_button_passengers_quantity()
         page.click_search_flight_button()
 
@@ -36,7 +39,15 @@ def test_avtest_case_1(booking_context):
 
     # --- Booking Select ---
     with allure.step("Test Booking Select page"):
+        booking_select_page.loader_b()
+        booking_select_page.click_relative_date(label= params["relative_day"])
+        booking_select_page.loader_b()
         booking_select_page.click_drop_down_flight()
+        booking_select_page.click_on_fare_flight()
+        booking_select_page.loader_b()
+        booking_select_page.click_relative_date(label= params["relative_day"])
+        booking_select_page.loader_b()
+        booking_select_page.click_drop_down_return_flight()
         booking_select_page.click_on_fare_flight()
         booking_select_page.loader_b()
         booking_select_page.button_continue_to_move_to_passenger_form()
@@ -62,6 +73,10 @@ def test_avtest_case_1(booking_context):
         services.add_bussines_lounge()
         services.click_on_some_lounge_plus_button()
         services.confirm_lounge_bussiness_modal()
+        services.wait_for_loader_to_disappear()
+        services.add_special_asistance_services()
+        services.click_on_add_special_asistance_plus_button()
+        services.confirm_special_asistance_modal()
         services.wait_for_loader_to_disappear()
         services.continue_to_the_next_step()
 
@@ -91,6 +106,7 @@ def test_avtest_case_1(booking_context):
 
     # --- Itinerary ---
     with allure.step("Test itinerary page"):
+        itinerary_page.wait_for_loader_c_disappear()
         itinerary_page.get_reservation_code()
         itinerary_page.validate_departure_city(params["city_origin"])
         itinerary_page.validate_arrival_city(params["city_destination"])
