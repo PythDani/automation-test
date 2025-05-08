@@ -37,11 +37,36 @@ class FormPassengersPage(Common):
 
     @catch_exceptions()
     def __init__(self, driver):
+
+       """
+       Initialize a FormPassengersPage instance.   
+       Args:
+           driver (selenium.webdriver): A selenium webdriver instance.
+       """
+
+
        super().__init__(driver)
        self.logger = get_logger(self.__class__.__name__)
     
     @catch_exceptions()
     def fill_passenger_form_method(self):
+
+        """
+        Fills out the passenger form with fake data.
+
+        This method fills out all passenger forms it can find on the page with
+        fake data. It also fills out the contact information at the end.
+
+        Args:
+            None
+
+        Returns:
+            None
+
+        Raises:
+            Exception: If there is an error during any of the operations.
+        """
+
         faker = Faker()
         
         # Find all passenger forms
@@ -60,8 +85,15 @@ class FormPassengersPage(Common):
             option_male.click()
 
             # Names
-            first_name = faker.first_name_male()
-            last_name = faker.last_name()
+
+            # Use "Test" only for the first passenger
+            if index == 1:
+                first_name = "Test"
+                last_name = "Test"
+            else:
+                first_name = faker.first_name_male()
+                last_name = faker.last_name()
+
             time.sleep(1)
 
             input_name = form.find_element(By.XPATH, ".//input[contains(@name, 'IdFirstName')]")
@@ -144,10 +176,26 @@ class FormPassengersPage(Common):
         self._fill_contact_information(faker)
 
     @catch_exceptions() 
-    def _fill_contact_information(self, faker):
-         # ----------------------------
-        # Contact information
-        # ----------------------------
+
+    def _fill_contact_information(self, faker):         
+        """
+        Fills out the contact information form with fake data.
+
+        This method fills out the contact information form with fake data. It
+        selects a phone prefix, fills out the phone number, fills out an email
+        address, and checks a checkbox. It then clicks the continue button to
+        move on to the next step.
+
+        Args:
+            faker (Faker): A faker instance used to generate fake data.
+
+        Returns:
+            None
+
+        Raises:
+            Exception: If there is an error during any of the operations.
+        """
+
         self.logger.info("Filling contact information...")
 
         prefix_button = self.wait_to_be_clickable(self.PHONE_PREFIX_SELECTOR)
@@ -184,9 +232,27 @@ class FormPassengersPage(Common):
     
     @catch_exceptions()
     def loader_b(self):
+
+        """
+        Waits for the loader B to disappear.
+
+        This method waits until the loader B element becomes invisible.
+        If the loader B does not disappear within the timeout period, a 
+        TimeoutException is raised.
+        """
+
+
         self.wait_for_invisibility(self.LOADER_B)
     
     @catch_exceptions()
     def loader_a(self):
+        """
+        Waits for the loader A to disappear.
+
+        This method waits until the loader A element becomes invisible.
+        If the loader A does not disappear within the timeout period, a 
+        TimeoutException is raised.
+        """
+
         self.wait_for_invisibility(self.LOADER_A)
    

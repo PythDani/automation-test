@@ -10,6 +10,21 @@ import allure
 @allure.title("Automated case 2: Round trip booking")
 @allure.severity(allure.severity_level.NORMAL)
 def test_avtest_case_1(booking_context_case_2):
+
+    """
+        Test case for booking a round trip flight.
+
+        This test automates the process of booking a round trip flight, including
+        selecting the origin and destination cities, departure and arrival dates,
+        passenger details, and various services. It navigates through multiple
+        pages such as Home, Booking Select, Form, Services, Seats, Payment, and
+        Itinerary, verifying each step with Allure steps for better reporting.
+
+        Args:
+            booking_context_case_2 (dict): A dictionary containing initialized
+            page objects and booking parameters for the test.
+    """
+
     page = booking_context_case_2["page"]
     form = booking_context_case_2["form"]
     services = booking_context_case_2["services"]
@@ -83,22 +98,17 @@ def test_avtest_case_1(booking_context_case_2):
     # --- Seats ---
     with allure.step("Test select seats page"):
         seat_map.load()
-        seat_map.select_seats_based_on_quantity_of_passengers()
+
+        seat_map.select_seats_for_odd_passengers()
+
         seat_map.continue_to_the_next_step()
 
     # --- Payment ---
     with allure.step("Test fill payment form page"):
         payment_page.load()
-        payment_page.scroll_to_element(200)
-        payment_page.fill_cardholder_name("Lola Perez")
-        payment_page.fill_card_number("4111111111111111")
-        payment_page.select_expiration_month("12")
-        payment_page.select_expiration_year("25")
-        payment_page.fill_cvv("123")
-        payment_page.fill_email("test@test.com")
-        payment_page.fill_address("calle #13")
-        payment_page.fill_city("Medellin")
-        payment_page.select_country("Colombia")
+
+        payment_page.select_avianca_credits(params["a_credits_number"], params["a_credits_pin"])       
+
         payment_page.accept_terms_and_conditions()
         payment_page.click_continue()
         payment_page.loader()

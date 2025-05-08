@@ -7,6 +7,10 @@ from logger import get_logger
 import time
 
 
+from utils.exception import catch_exceptions
+
+
+
 class SeatMapPage(Common):
     #Loader that indicate that the page is loading in some cases.
     LOADER_C:             tuple = (By.CLASS_NAME, "loading")
@@ -14,6 +18,9 @@ class SeatMapPage(Common):
     AVAILABLE_SEATS:      tuple = (By.CSS_SELECTOR, "button.seat.ng-star-inserted")
     CONFIRM_BUTTON:       tuple = (By.XPATH, "//button[contains(@class, 'amount-summary_button') and .//span[normalize-space()='Continuar']]")
     
+
+    @catch_exceptions()
+
     def __init__(self, driver):
         """
         Initialize a SeatMapPage instance.
@@ -24,6 +31,9 @@ class SeatMapPage(Common):
 
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
+
+    
+    @catch_exceptions()
 
     def load(self):
         """
@@ -44,7 +54,10 @@ class SeatMapPage(Common):
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
-        
+
+
+    @catch_exceptions()    
+
     def select_seats_based_on_quantity_of_passengers(self):
         """
         Select seats based on passengers count.
@@ -98,6 +111,66 @@ class SeatMapPage(Common):
         except Exception as e:
             self.logger.error(f"Error selecting seats: {str(e)}")
             raise
+
+    
+    @catch_exceptions()
+    def select_seats_for_odd_passengers(self):
+        """
+        Select seats only for passengers in odd positions (1st, 3rd, 5th, etc.).
+        """
+        try:
+            self.logger.info("Searching for passenger items...")
+
+            # Find all passenger items
+            pax_selector_xpath = "//*[contains(@class,'pax-selector_list')]"
+            pax_list = self.wait_for((By.XPATH, pax_selector_xpath))
+            pax_items = pax_list.find_elements(By.XPATH, ".//div[contains(@class, 'pax-selector_item')]")
+
+            self.logger.info(f"Total passenger elements found: {len(pax_items)}")
+
+            selected_seats = 0
+
+            for index, item in enumerate(pax_items):
+                if index % 2 == 0:  
+                    try:
+                        # Click on "Seleccionar" button
+                        button = item.find_element(By.XPATH, ".//button")
+                        self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", button)
+                        button.click()
+                        self.logger.info(f"Passenger #{index + 1} selected.")
+
+                        # Find available seats
+                        available_seats = self.find_all(self.AVAILABLE_SEATS)
+
+                        self.logger.info(f"Available seats found: {len(available_seats)}")
+
+                        for seat in available_seats:
+                            seat_label = seat.text.strip() or seat.get_attribute('aria-label').strip()
+
+                            if "no disponible" in seat_label.lower():
+                                continue
+
+                            try:
+                                self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", seat)
+                                seat.click()
+                                self.wait_for_loader_to_disappear(self.LOADER_C)
+                                self.logger.info(f"Seat {seat_label} assigned to passenger #{index + 1}")
+                                selected_seats += 1
+                                break
+                            except Exception as seat_error:
+                                self.logger.warning(f"Could not click on seat {seat_label}: {seat_error}")
+                        else:
+                            self.logger.warning(f"No seat could be selected for passenger #{index + 1}")
+                    except Exception as item_error:
+                        self.logger.warning(f"Could not select passenger #{index + 1}: {item_error}")
+
+            self.logger.info(f"Total odd-position passengers with seats: {selected_seats}")
+
+        except Exception as e:
+            self.logger.error(f"Error assigning seats to odd passengers: {str(e)}")
+            raise
+
+    @catch_exceptions()
 
     def continue_to_the_next_step(self):     
         """

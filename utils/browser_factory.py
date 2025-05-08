@@ -8,18 +8,27 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
 def get_driver(browser_name, headless=False):
+
+   
+
     """
-    Return a WebDriver instance for the given browser name.
+    Initializes and returns a Selenium WebDriver instance based on the specified browser.
+
+    This function sets up a WebDriver instance for either Chrome, Firefox, or Edge, with
+    options to run in headless mode. It uses the `webdriver_manager` package to automatically
+    manage driver binaries.
 
     Args:
-        browser_name: one of "chrome" or "firefox"
+        browser_name (str): The name of the browser to use ("chrome", "firefox", or "edge").
+        headless (bool): Optional; whether to run the browser in headless mode. Default is False.
 
     Returns:
-        a WebDriver instance
+        selenium.webdriver: An instance of the Selenium WebDriver for the specified browser.
 
     Raises:
-        ValueError: if browser_name is not one of "chrome" or "firefox"
+        ValueError: If the specified browser is not supported.
     """
+
     if browser_name == "chrome":
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
@@ -45,22 +54,14 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--remote-debugging-port=9222")
        
         if headless:
-            options.add_argument("--headless=new")  # "new" para compatibilidad moderna
-            options.add_argument("--disable-gpu")
 
-       
-        # options.add_argument(f"user-data-dir=C:\\Users\\{os.environ.get('username')}\\AppData\\Local\\Microsoft\\Edge\\User Data\\Default")
-        # options.add_argument("--start-maximized") // We have a trooble with page size in seatmap page, for this reason we comment this line.
+            options.add_argument("--headless=new") 
+            options.add_argument("--disable-gpu")       
 
-        # Inicializa el driver con EdgeService
         return webdriver.Edge(
             service=EdgeService(EdgeChromiumDriverManager().install()),
             options=options
-        )
+        ) 
 
-    
-    
-    
-    
     else:
         raise ValueError(f"Unsupported browser: {browser_name}")

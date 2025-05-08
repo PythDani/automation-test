@@ -1,7 +1,9 @@
+import datetime
+import os
+import allure
+import pyscreenrec
 import pytest
-"------------------------ ----- ------------------------------------------------"
-"                         Module CASE 1                                         "
-"--------------------------------------------------------------------------------"
+
 from pages.pages_case_1.booking_select_page import BookingSelectPage
 from pages.pages_case_1.form_passengers_page import FormPassengersPage
 from pages.pages_case_1.home_page import HomePage
@@ -15,6 +17,15 @@ from utils.browser_factory import get_driver
 from utils.db_utils import store_result, create_db
 from logger import get_logger
 import logging
+
+
+VIDEO_DIR = os.path.join(os.getcwd(), "videos")
+SCREENSHOT_DIR = os.path.join(os.getcwd(), "screenshots")
+
+os.makedirs(VIDEO_DIR, exist_ok=True)
+os.makedirs(SCREENSHOT_DIR, exist_ok=True)
+
+
 
 get_logger()
 logger = logging.getLogger(__name__)
@@ -91,11 +102,15 @@ def booking_context_case_2(browser):
             "city_destination": "Medellín",
             "departure_date": {"day": "14", "month": "5", "year": "2025"},
             "arrival_date": {"day": "30", "month": "5", "year": "2025"},
-            "passenger_count": 1,
+
+            "passenger_count": 4,
             "young_count": 0,
             "child_count": 0,
             "baby_count": 0,
-            "relative_day": "2 days before"
+            "relative_day": "2 days before",
+            "a_credits_number": "1500014129935977",
+            "a_credits_pin": "145880",
+
         }
     }
 
@@ -146,7 +161,6 @@ def browser(request):
     yield driver
     driver.quit()
 
-
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_logreport(report):  
     """
@@ -177,5 +191,95 @@ def pytest_sessionstart(session):
         None
     """
     create_db()
+
+
+@pytest.hookimpl(tryfirst=True, hookwrapper=True)
+def pytest_runtest_makereport(item, call):
+    """
+    A pytest hook to generate and attach test execution reports.
+
+    This hook wraps the test execution process to yield control back to pytest, 
+    allowing the test report to be generated. The report is then attached to the 
+    test item object with a dynamic attribute based on the test execution phase.
+
+    If the test execution phase is 'call' and the test has failed, a screenshot 
+    is captured from the selenium driver instance. The screenshot is saved with 
+    a timestamped filename to a designated directory. The screenshot is then 
+    attached to the Allure report for the test.
+
+    Args:
+        item: The pytest test item object, which represents the test function.
+        call: The pytest call object, which contains information about the 
+              test execution phase and result.
+    """
+
+    outcome = yield
+    report = outcome.get_result()
+    setattr(item, f"rep_{report.when}", report)
+
+    # attach screenshot if test failed
+    if report.when == "call" and report.failed:
+        driver = item.funcargs.get("driver")
+        if driver:
+            test_id = get_test_file_name(item.nodeid)
+            timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+            file_name = f"{test_id}_{timestamp}.png"            
+            screenshot_path = os.path.join(SCREENSHOT_DIR, file_name)
+            driver.save_screenshot(screenshot_path)
+
+            with open(screenshot_path, "rb") as image_file:
+                allure.attach(
+                    image_file.read(),
+                    name="Screenshot",
+                    attachment_type=allure.attachment_type.PNG
+                )
+
+@pytest.fixture(scope="function", autouse=True)
+def record_screen(request):
+    """
+    A pytest fixture to record the screen during test execution.
+
+    This fixture automatically records the screen for the duration of each test function.
+    It starts recording before the test begins and stops recording after the test ends,
+    saving the video to a specified directory. The video file is then attached to the
+    Allure report for the test.
+
+    Args:
+        request: The pytest request object, which provides information about the
+                 executing test function.
+
+    Yields:
+        None
+
+    After the test function completes, the recording is stopped and attached to the
+    Allure report as an MP4 file.
+    """
+
+    test_name = get_test_file_name(request.node.nodeid)
+    video_path = os.path.join(VIDEO_DIR, f"{test_name}.mp4")
+
+    recorder = pyscreenrec.ScreenRecorder()
+    recorder.start_recording(video_path, fps=30)
+    yield
+    recorder.stop_recording()
+
+    
+    with open(video_path, "rb") as f:
+        allure.attach(f.read(), name=test_name, attachment_type=allure.attachment_type.MP4)
+   
+def get_test_file_name(nodeid: str) -> str:
+    
+    """
+    Returns the name of the test file without extension from a given nodeid.
+
+    Args:
+        nodeid (str): A pytest nodeid string.
+
+    Returns:
+        str: The name of the test file without extension.
+    """
+    path_part = nodeid.split("::")[0]  # 'tests/test_avtest_case_2.py'
+    return os.path.splitext(os.path.basename(path_part))[0]
+
 
 
