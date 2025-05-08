@@ -40,6 +40,7 @@ class Common:
         return self._wait.until(EC.presence_of_element_located(locator))
     
     def wait_for_unitll_not(self, locator):
+
         """
         Waits until the element identified by the given locator is not present.
 
@@ -52,6 +53,7 @@ class Common:
         Raises:
             selenium.common.exceptions.TimeoutException: If the element is still present within the timeout period.
         """
+
         return self._wait.until_not(EC.presence_of_element_located(locator))
     
     def wait_for_invisibility(self, locator):
@@ -85,6 +87,7 @@ class Common:
         return self._wait.until(EC.element_to_be_clickable(locator))
     
     def wait_for_visibility(self, element):
+
         """
         Waits until the specified web element is visible.
 
@@ -113,6 +116,7 @@ class Common:
         Raises:
             selenium.common.exceptions.TimeoutException: If the element does not become visible within the timeout period.
         """
+
 
         return self._wait.until(EC.visibility_of_element_located(locator))
 
@@ -176,6 +180,7 @@ class Common:
         return self._action.move_to_element(element)
 
     def scroll_down_move_to_element(self, element):
+
         
         """
         Scrolls the page down to the given element, and moves the element to the center of the screen.
@@ -196,6 +201,7 @@ class Common:
             pixels (int, optional): The number of pixels to scroll down. Defaults to 200.
         """
         self.driver.execute_script(f"window.scrollBy(0, {pixels});")    
+
     
     def wait_for_loader_to_disappear(self, locator):
         """

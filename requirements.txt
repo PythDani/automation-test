@@ -6,3 +6,4 @@ python-dotenv
 pytest-xdist
 faker==24.8.0
 pyscreenrec
+

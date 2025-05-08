@@ -8,7 +8,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
 def get_driver(browser_name, headless=False):
+
    
+
     """
     Initializes and returns a Selenium WebDriver instance based on the specified browser.
 
@@ -52,6 +54,7 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--remote-debugging-port=9222")
        
         if headless:
+
             options.add_argument("--headless=new") 
             options.add_argument("--disable-gpu")       
 
@@ -59,5 +62,6 @@ def get_driver(browser_name, headless=False):
             service=EdgeService(EdgeChromiumDriverManager().install()),
             options=options
         ) 
+
     else:
         raise ValueError(f"Unsupported browser: {browser_name}")

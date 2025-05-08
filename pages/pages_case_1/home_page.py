@@ -188,6 +188,7 @@ class HomePage(Common):
         
     @catch_exceptions() 
     def select_deaperture_date(self, day: str, month: str, year: str):
+
         """
         Selects the departure date from the date picker.
 
@@ -200,6 +201,7 @@ class HomePage(Common):
             TimeoutException: If the input element is not found within the timeout period.
         """
         self.logger.info("Selecting departure date...")
+
         self.logger.info("Selecting departure date...")
 
         # Delete leading zeros from date 
@@ -226,6 +228,7 @@ class HomePage(Common):
 
     @catch_exceptions() 
     def select_arrival_date(self, day: str, month: str, year: str):
+
         """
         Selects the arrival date from the date picker.
 
@@ -237,6 +240,7 @@ class HomePage(Common):
         Raises:
             TimeoutException: If the input element is not found within the timeout period.
         """
+
 
         self.logger.info("Selecting arrival date...")
 
@@ -338,6 +342,7 @@ class HomePage(Common):
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
 
         """
+
         confirm_button = self.wait_to_be_clickable(self.CONFIRM_BUTTON)
         confirm_button.click()
         self.logger.info("Confirm button  passenger clicked.") 

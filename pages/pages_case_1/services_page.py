@@ -27,6 +27,7 @@ class ServicesPage(Common):
     ADD_SPECIAL_ASISTANCE_ALL:                   tuple = (By.XPATH, "//div[contains(@class,'service_item_action ng-star-inserted')]")
     CONFIRM_SPECIAL_ASISTANCE_MODAL:             tuple = (By.XPATH, "//button[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
 
+
     @catch_exceptions() 
     def __init__(self, driver):
         """
@@ -35,6 +36,7 @@ class ServicesPage(Common):
         Args:
             driver (selenium.webdriver): A selenium webdriver instance.
         """
+
 
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
@@ -76,9 +78,11 @@ class ServicesPage(Common):
 
         name = "baggage service"
         try:
+
             self.wait_for_loader_to_disappear()
             add_carry_on_button =self.wait_for_visibility_of_element_located(self.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON)
             self.driver.implicitly_wait(1)   
+
             add_carry_on_button.click()
             self.logger.info(f"{name} opened...")
         except TimeoutException as e:
@@ -98,11 +102,13 @@ class ServicesPage(Common):
         try:
             plus_buttons = self.find_all(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
 
+
             if plus_buttons:
                 button = plus_buttons[0]
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
                 button.click()
                 self.driver.implicitly_wait(1)
+
            
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to add carry-on baggage") from e
@@ -125,8 +131,10 @@ class ServicesPage(Common):
             self.wait_for(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
             continue_button = self.wait_for(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
             self._action.scroll_to_element(continue_button).perform()
+
             self.scroll_down_move_to_element(continue_button)
             self.driver.implicitly_wait(1)
+
             continue_button.click()
             self.logger.info("Baggage confirmed...")
         except TimeoutException as e:
@@ -145,10 +153,12 @@ class ServicesPage(Common):
         """
         name = "Sport baggage service"
         try:
+
             self.wait_for_loader_to_disappear()
             add_sport_on_button =self.wait_for_visibility_of_element_located(self.SPORT_BAGGAGE_ADD_BUTTON)
             self.scroll_down_move_to_element(add_sport_on_button)
             self.driver.implicitly_wait(1)
+
             add_sport_on_button.click()
             self.logger.info(f"{name} opened...")
         except TimeoutException as e:
@@ -167,11 +177,13 @@ class ServicesPage(Common):
         """
         try:
             plus_buttons = self.find_all(self.SPORT_EQUIPMENT_PLUS_BUTTON)
+
             if plus_buttons:
                 button = plus_buttons[0]
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
                 button.click()
                 self.driver.implicitly_wait(1)
+
 
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to add sport baggage") from e
@@ -192,8 +204,10 @@ class ServicesPage(Common):
             self.logger.info("Click on confirm button...")            
             continue_button = self.find(self.CONFIRM_SPORT_BAGGAGE_MODAL)
             self._action.scroll_to_element(continue_button).perform()
+
             self.scroll_down_move_to_element(continue_button)
             self.driver.implicitly_wait(1)           
+
             continue_button.click()
             self.logger.info("Sport baggage confirmed...")
         except TimeoutException as e:
@@ -214,12 +228,14 @@ class ServicesPage(Common):
         try:
             self.wait_for_loader_to_disappear()
             add_buttons = self.find_all(self.BUSSINESS_LOUNGE_ADD_BUTTON)
+
             if add_buttons:
                 button = add_buttons[0]
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
                 self.scroll_down_move_to_element(button)
                 self.driver.implicitly_wait(1)
                 button.click()        
+
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {name}") from e
     
@@ -239,7 +255,9 @@ class ServicesPage(Common):
         try:
             self.logger.info("Add lounge bussines services...")
             plus_button = self.find(self.LOUNGES_PLUS_BUTTON)
+
             self.driver.implicitly_wait(1)           
+
             plus_button.click()           
             self.logger.info("Lounge bussines services added...")
         except TimeoutException as e:
@@ -256,9 +274,11 @@ class ServicesPage(Common):
         """
         self.logger.info("Click on confirm button...")              
         continue_button = self.find(self.CONFIRM_LOUNGES_MODAL)
+
         self._action.scroll_to_element(continue_button).perform() 
         self.scroll_down_move_to_element(continue_button)
         self.driver.implicitly_wait(1)    
+
         continue_button.click()
         self.logger.info("Lounge business services confirmed")
     

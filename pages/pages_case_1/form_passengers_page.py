@@ -1,3 +1,5 @@
+
+
 import random
 from selenium.webdriver.common.by import By
 from logger import get_logger
@@ -35,17 +37,20 @@ class FormPassengersPage(Common):
 
     @catch_exceptions()
     def __init__(self, driver):
+
        """
        Initialize a FormPassengersPage instance.   
        Args:
            driver (selenium.webdriver): A selenium webdriver instance.
        """
 
+
        super().__init__(driver)
        self.logger = get_logger(self.__class__.__name__)
     
     @catch_exceptions()
     def fill_passenger_form_method(self):
+
         """
         Fills out the passenger form with fake data.
 
@@ -61,6 +66,7 @@ class FormPassengersPage(Common):
         Raises:
             Exception: If there is an error during any of the operations.
         """
+
         faker = Faker()
         
         # Find all passenger forms
@@ -79,6 +85,7 @@ class FormPassengersPage(Common):
             option_male.click()
 
             # Names
+
             # Use "Test" only for the first passenger
             if index == 1:
                 first_name = "Test"
@@ -169,6 +176,7 @@ class FormPassengersPage(Common):
         self._fill_contact_information(faker)
 
     @catch_exceptions() 
+
     def _fill_contact_information(self, faker):         
         """
         Fills out the contact information form with fake data.
@@ -187,6 +195,7 @@ class FormPassengersPage(Common):
         Raises:
             Exception: If there is an error during any of the operations.
         """
+
         self.logger.info("Filling contact information...")
 
         prefix_button = self.wait_to_be_clickable(self.PHONE_PREFIX_SELECTOR)
@@ -223,6 +232,7 @@ class FormPassengersPage(Common):
     
     @catch_exceptions()
     def loader_b(self):
+
         """
         Waits for the loader B to disappear.
 
@@ -230,6 +240,7 @@ class FormPassengersPage(Common):
         If the loader B does not disappear within the timeout period, a 
         TimeoutException is raised.
         """
+
 
         self.wait_for_invisibility(self.LOADER_B)
     
@@ -242,5 +253,6 @@ class FormPassengersPage(Common):
         If the loader A does not disappear within the timeout period, a 
         TimeoutException is raised.
         """
+
         self.wait_for_invisibility(self.LOADER_A)
    

@@ -3,6 +3,7 @@ import os
 import allure
 import pyscreenrec
 import pytest
+
 from pages.pages_case_1.booking_select_page import BookingSelectPage
 from pages.pages_case_1.form_passengers_page import FormPassengersPage
 from pages.pages_case_1.home_page import HomePage
@@ -17,11 +18,14 @@ from utils.db_utils import store_result, create_db
 from logger import get_logger
 import logging
 
+
 VIDEO_DIR = os.path.join(os.getcwd(), "videos")
 SCREENSHOT_DIR = os.path.join(os.getcwd(), "screenshots")
 
 os.makedirs(VIDEO_DIR, exist_ok=True)
 os.makedirs(SCREENSHOT_DIR, exist_ok=True)
+
+
 
 get_logger()
 logger = logging.getLogger(__name__)
@@ -98,6 +102,7 @@ def booking_context_case_2(browser):
             "city_destination": "Medellín",
             "departure_date": {"day": "14", "month": "5", "year": "2025"},
             "arrival_date": {"day": "30", "month": "5", "year": "2025"},
+
             "passenger_count": 4,
             "young_count": 0,
             "child_count": 0,
@@ -105,6 +110,7 @@ def booking_context_case_2(browser):
             "relative_day": "2 days before",
             "a_credits_number": "1500014129935977",
             "a_credits_pin": "145880",
+
         }
     }
 
@@ -185,6 +191,7 @@ def pytest_sessionstart(session):
         None
     """
     create_db()
+
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -273,3 +280,6 @@ def get_test_file_name(nodeid: str) -> str:
     """
     path_part = nodeid.split("::")[0]  # 'tests/test_avtest_case_2.py'
     return os.path.splitext(os.path.basename(path_part))[0]
+
+
+
