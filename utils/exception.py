@@ -2,6 +2,7 @@ from functools import wraps
 import traceback
 
 def catch_exceptions(method_name=""):
+
     """
     Decorator to catch exceptions and log them, re-raising the error afterwards.
 
@@ -44,12 +45,14 @@ def catch_exceptions(method_name=""):
             :rtype: The type of the result of the original function
             """
 
+
             try:
                 return func(self, *args, **kwargs)
             except Exception as e:
                 # Capture error + traceback
                 error_message = f"{type(e).__name__}: {str(e) if str(e) else traceback.format_exc()}"
                 self.logger.error(f"Error in {method_name or func.__name__}: {error_message}")
+
                 raise
         return wrapper
     return decorator

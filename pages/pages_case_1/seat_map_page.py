@@ -6,7 +6,9 @@ from pages.common import Common
 from logger import get_logger
 import time
 
+
 from utils.exception import catch_exceptions
+
 
 
 class SeatMapPage(Common):
@@ -16,7 +18,9 @@ class SeatMapPage(Common):
     AVAILABLE_SEATS:      tuple = (By.CSS_SELECTOR, "button.seat.ng-star-inserted")
     CONFIRM_BUTTON:       tuple = (By.XPATH, "//button[contains(@class, 'amount-summary_button') and .//span[normalize-space()='Continuar']]")
     
+
     @catch_exceptions()
+
     def __init__(self, driver):
         """
         Initialize a SeatMapPage instance.
@@ -27,8 +31,10 @@ class SeatMapPage(Common):
 
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
+
     
     @catch_exceptions()
+
     def load(self):
         """
         Load the page and wait for the page loader to disappear.
@@ -49,7 +55,9 @@ class SeatMapPage(Common):
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
 
+
     @catch_exceptions()    
+
     def select_seats_based_on_quantity_of_passengers(self):
         """
         Select seats based on passengers count.
@@ -103,6 +111,7 @@ class SeatMapPage(Common):
         except Exception as e:
             self.logger.error(f"Error selecting seats: {str(e)}")
             raise
+
     
     @catch_exceptions()
     def select_seats_for_odd_passengers(self):
@@ -162,6 +171,7 @@ class SeatMapPage(Common):
             raise
 
     @catch_exceptions()
+
     def continue_to_the_next_step(self):     
         """
         Continues to the next step by clicking the "Continuar" button.

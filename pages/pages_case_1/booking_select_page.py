@@ -58,6 +58,7 @@ class BookingSelectPage(Common):
 
         self.logger.info(f"Clicking on element with label '{label}' and xpath: {xpath}")
         button = self.wait_to_be_clickable(locator)
+
         self.driver.implicitly_wait(2)
         button.click()
     
@@ -73,8 +74,10 @@ class BookingSelectPage(Common):
         try:
             self.loader_b()
             flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)                
+
             self._action.move_to_element(flight_button).perform()
             self.driver.implicitly_wait(2)        
+
             flight_button.click()
             self.logger.info("Flight selected")
         except Exception as e:
@@ -94,8 +97,10 @@ class BookingSelectPage(Common):
             self.loader_b()
             self.scroll_down_by_pixels(350)
             flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON_RETURN)                         
+
             self._action.move_to_element(flight_button).perform()
             self.driver.implicitly_wait(2)            
+
             flight_button.click()
             self.logger.info("Return flight selected")
         except Exception as e:
@@ -113,9 +118,11 @@ class BookingSelectPage(Common):
         """
         try:
             basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)        
+
             self._action.move_to_element(basic_fare_button).perform()
             self.scroll_down_by_pixels(350)
             self.driver.implicitly_wait(1)        
+
             basic_fare_button.click()
             self.logger.info("Fee selected")
         except Exception as e:
