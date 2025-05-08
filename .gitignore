@@ -59,3 +59,6 @@ selenium_tests/reports/
 
 #test results db
 test_results.db
+
+*.mp4
+/videos/
