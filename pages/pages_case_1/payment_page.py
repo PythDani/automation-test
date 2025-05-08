@@ -8,8 +8,7 @@ from pages.common import Common
 from utils.exception import catch_exceptions
 
 
-class PaymentPage(Common):     
-      
+class PaymentPage(Common):  
     # ----------------------------------LOCATORS----------------------------------------------------------
     ONE_TRUST_ACCEPT_BUTTON:     tuple = (By.ID, "onetrust-accept-btn-handler")
     LOADER_C:                    tuple = (By.XPATH, "//*[contains(@class,'loading')]")
