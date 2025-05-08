@@ -8,8 +8,7 @@ from pages.common import Common
 from utils.exception import catch_exceptions
 
 
-class PaymentPage(Common):     
-      
+class PaymentPage(Common):  
     # ----------------------------------LOCATORS----------------------------------------------------------
 
     ONE_TRUST_ACCEPT_BUTTON:     tuple = (By.ID, "onetrust-accept-btn-handler")
@@ -43,7 +42,6 @@ class PaymentPage(Common):
     CLOSE_MODAL:                 tuple = (By.XPATH, "//*[@class='modal-close ng-star-inserted']")
     
     @catch_exceptions()
-
     def __init__(self, driver):
       """
       Initialize a PaymentPage instance.
@@ -73,7 +71,6 @@ class PaymentPage(Common):
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
-
     
     @catch_exceptions()
     def select_avianca_credits(self, number: str, pin: str):
@@ -122,7 +119,6 @@ class PaymentPage(Common):
             raise
 
     @catch_exceptions()
-
     def fill_cardholder_name(self, name: str):
         """
         Fills the card holder name field in the payment form.
@@ -168,7 +164,6 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling out cardholder name field: {str(e)}")
             raise
 
-    
     @catch_exceptions()
     def fill_card_number(self, number: str):
           
@@ -196,9 +191,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling out card number field: {str(e)}")
             raise
 
-    
     @catch_exceptions()
-
     def select_expiration_month(self, month: str):
         """
         Selects the expiration month from a custom dropdown.
@@ -225,7 +218,6 @@ class PaymentPage(Common):
             raise
 
     @catch_exceptions()
-
     def select_expiration_year(self, year: str):
         
         """
@@ -269,9 +261,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error selecting expiration year: {str(e)}")
             raise
 
-
     @catch_exceptions()
-
     def fill_cvv(self, cvv: str):
         """
         Fills the CVV field with the given value.
@@ -293,9 +283,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling out CVV field: {str(e)}")
             raise
       
-
     @catch_exceptions()
-
     def fill_email(self, email: str):        
         """
         Fills in the email input field.
@@ -313,9 +301,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling email: {str(e)}")
             raise
 
-
     @catch_exceptions()
-
     def fill_address(self, address: str):
         """
         Fills in the address input field.
@@ -333,9 +319,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling address: {str(e)}")
             raise
 
-
     @catch_exceptions()
-
     def fill_city(self, city: str):
         """
         Fills in the city input field.
@@ -351,10 +335,8 @@ class PaymentPage(Common):
         except Exception as e:
             self.logger.error(f"Error filling city: {str(e)}")
             raise
-    
 
     @catch_exceptions()
-
     def select_country(self, country_name: str):
         """
         Selects a country from the custom dropdown.
@@ -378,9 +360,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error selecting country '{country_name}': {str(e)}")
             raise
     
-
     @catch_exceptions()
-
     def accept_terms_and_conditions(self):
         """
         Clicks on the checkbox to accept terms and conditions.
@@ -396,9 +376,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error clicking on terms and conditions checkbox: {str(e)}")
             raise
 
-
     @catch_exceptions()        
-
     def click_continue(self):
         """
             Clicks the "Continuar" button.
@@ -418,9 +396,7 @@ class PaymentPage(Common):
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to click continue button") from e
 
- 
     @catch_exceptions()  
-
     def scroll_to_element(self, pixels: int = 200):
         """
         Hace scroll hacia el elemento ubicado por el locator.

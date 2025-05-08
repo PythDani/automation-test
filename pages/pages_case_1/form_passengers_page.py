@@ -175,8 +175,7 @@ class FormPassengersPage(Common):
         # Fill contact info after all passengers
         self._fill_contact_information(faker)
 
-    @catch_exceptions() 
-
+    @catch_exceptions()
     def _fill_contact_information(self, faker):         
         """
         Fills out the contact information form with fake data.

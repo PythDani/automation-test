@@ -202,7 +202,6 @@ class Common:
         """
         self.driver.execute_script(f"window.scrollBy(0, {pixels});")    
 
-    
     def wait_for_loader_to_disappear(self, locator):
         """
         Waits for the loader to disappear.
