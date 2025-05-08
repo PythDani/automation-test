@@ -188,6 +188,18 @@ class HomePage(Common):
         
     @catch_exceptions() 
     def select_deaperture_date(self, day: str, month: str, year: str):
+        """
+        Selects the departure date from the date picker.
+
+        Args:
+            day (str): The day of the month (1-31) to select.
+            month (str): The month of the year (1-12) to select.
+            year (str): The year to select.
+
+        Raises:
+            TimeoutException: If the input element is not found within the timeout period.
+        """
+        self.logger.info("Selecting departure date...")
         self.logger.info("Selecting departure date...")
 
         # Delete leading zeros from date 
@@ -214,6 +226,18 @@ class HomePage(Common):
 
     @catch_exceptions() 
     def select_arrival_date(self, day: str, month: str, year: str):
+        """
+        Selects the arrival date from the date picker.
+
+        Args:
+            day (str): The day of the month (1-31) to select.
+            month (str): The month of the year (1-12) to select.
+            year (str): The year to select.
+
+        Raises:
+            TimeoutException: If the input element is not found within the timeout period.
+        """
+
         self.logger.info("Selecting arrival date...")
 
         # Delete leading zeros from date 
@@ -307,6 +331,13 @@ class HomePage(Common):
 
     @catch_exceptions() 
     def confirm_button_passengers_quantity(self):
+        """
+        Confirms the passengers quantity.
+
+        This method waits until the confirmation button of the passengers modal is clickable, then clicks on it.
+        If the button is not found or clickable within the timeout period, a TimeoutException is raised.
+
+        """
         confirm_button = self.wait_to_be_clickable(self.CONFIRM_BUTTON)
         confirm_button.click()
         self.logger.info("Confirm button  passenger clicked.") 

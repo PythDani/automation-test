@@ -11,25 +11,37 @@ from utils.exception import catch_exceptions
 class PaymentPage(Common):     
       
     # ----------------------------------LOCATORS----------------------------------------------------------
-    ONE_TRUST_ACCEPT_BUTTON:   tuple = (By.ID, "onetrust-accept-btn-handler")
-    LOADER_C:                  tuple = (By.XPATH, "//*[contains(@class,'loading')]")
-
-    PANEL_PAGO:                tuple = (By.XPATH, "//*[@id='IdHere']")
-
+    ONE_TRUST_ACCEPT_BUTTON:     tuple = (By.ID, "onetrust-accept-btn-handler")
+    LOADER_C:                    tuple = (By.XPATH, "//*[contains(@class,'loading')]")
+    # Check Avianca credits
+    CHECK_AVIANCA_CREDITS:       tuple = (By.XPATH, "//*[@class='toggle_input']//input[contains(@type,'checkbox')]")
+    # Input number avianca credits
+    INPUT_NUMBER_AVIANCA_CREDITS:tuple = (By.XPATH, "//input[contains(@id,'number') and contains(@name,'number')]")
+    # Input pin avianca credits
+    INPUT_PIN_AVIANCA_CREDITS:   tuple = (By.XPATH, "//input[contains(@id,'pin')]")
+    # Input button
+    BUTTON_ENTER_AVIANCA_CREDITS:tuple = (By.XPATH, "//*[contains(@id,'buttonAviancaCredits')]")  
+    # Apply Avianca credits
+    APPLY_AVIANCA_CREDITS:       tuple = (By.XPATH, "//*[contains(@class,'ds-button ds-btn-primary ds-btn-small')]") 
+    
+    # Click modal confirmation
+    CONFIRM_MODAL:               tuple = (By.XPATH, "//button[contains(@class,'ds-button ds-btn-primary ds-btn-medium')]")
+    # Payment panel
+    PANEL_PAGO:                  tuple = (By.XPATH, "//*[@id='IdHere']")
     # Payment form
-    CARD_HOLDER_NAME_INPUT:    tuple = (By.NAME, "Holder") 
-    CARD_NUMBER_INPUT:        tuple = (By.NAME, "Data")
-    CVV_INPUT:                tuple = (By.NAME, "Cvv")
-    EMAIL_INPUT:              tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='email']")
-
-    ADDRESS_INPUT:            tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='address']")
-    CITY_INPUT:               tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='city']")
-    CONTINUE_BUTTON:          tuple = (By.XPATH, "//ds-button//button[span[text()=' Confirmar y pagar ']]")
-
+    CARD_HOLDER_NAME_INPUT:      tuple = (By.NAME, "Holder") 
+    CARD_NUMBER_INPUT:           tuple = (By.NAME, "Data")
+    CVV_INPUT:                   tuple = (By.NAME, "Cvv")
+    EMAIL_INPUT:                 tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='email']")
+    ADDRESS_INPUT:               tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='address']")
+    CITY_INPUT:                  tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='city']")
+    CONTINUE_BUTTON:             tuple = (By.XPATH, "//ds-button//button[span[text()=' Confirmar y pagar ']]")
     #Modal content
-    MODAL_CONTENT:           tuple = (By.XPATH, "//*[contains(@class, 'modal-content')]")
+    MODAL_CONTENT:               tuple = (By.XPATH, "//*[contains(@class, 'modal-content')]")
     #Close modal rejected payment
-    CLOSE_MODAL:             tuple = (By.XPATH, "//*[@class='modal-close ng-star-inserted']")
+    CLOSE_MODAL:                 tuple = (By.XPATH, "//*[@class='modal-close ng-star-inserted']")
+    
+    @catch_exceptions()
     def __init__(self, driver):
       """
       Initialize a PaymentPage instance.
@@ -59,7 +71,54 @@ class PaymentPage(Common):
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
+    
+    @catch_exceptions()
+    def select_avianca_credits(self, number: str, pin: str):
+        """
+        Select Avianca credits and fill in number and PIN.
 
+        This method clicks on the Avianca credits checkbox, waits for the loader to disappear,
+        then fills in the provided number and PIN.
+        
+        :param number: Avianca credits number
+        :param pin: Avianca credits PIN
+        """
+        try:
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            # Click on the checkbox
+            check_avianca_credits = self.find(self.CHECK_AVIANCA_CREDITS)
+            check_avianca_credits.click()          
+
+            # Fill number
+            input_number = self.find(self.INPUT_NUMBER_AVIANCA_CREDITS)
+            input_number.clear()
+            input_number.send_keys(number)
+
+            # Fill PIN
+            input_pin = self.find(self.INPUT_PIN_AVIANCA_CREDITS)
+            input_pin.clear()
+            input_pin.send_keys(pin)
+
+            self.logger.info("Avianca credits form filled successfully.")
+
+            submit_button = self.find(self.BUTTON_ENTER_AVIANCA_CREDITS)
+            submit_button.click()
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+
+            # Apply Avianca credits
+            apply_avianca_credits = self.wait_for_visibility_of_element_located(self.APPLY_AVIANCA_CREDITS)
+            apply_avianca_credits.click()
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)      
+
+
+            
+        except Exception as e:
+            self.logger.error(f"Error filling Avianca credits: {str(e)}")
+            raise
+
+    @catch_exceptions()
     def fill_cardholder_name(self, name: str):
         """
         Fills the card holder name field in the payment form.
@@ -104,9 +163,19 @@ class PaymentPage(Common):
         except Exception as e:
             self.logger.error(f"Error filling out cardholder name field: {str(e)}")
             raise
-
+    
+    @catch_exceptions()
     def fill_card_number(self, number: str):
           
+        """
+        Fills out the card number field with the given number.
+
+        Args:
+            number (str): The card number to be entered into the input field.
+
+        Raises:
+            Exception: If there is an error during any of the operations.
+        """
         try:         
             self.scroll_down_move_to_element(self.find(self.CARD_NUMBER_INPUT))
             self.logger.info("Filling out card number field...")
@@ -120,7 +189,8 @@ class PaymentPage(Common):
         except Exception as e:
             self.logger.error(f"Error filling out card number field: {str(e)}")
             raise
-
+    
+    @catch_exceptions()
     def select_expiration_month(self, month: str):
         """
         Selects the expiration month from a custom dropdown.
@@ -145,7 +215,8 @@ class PaymentPage(Common):
         except Exception as e:
             self.logger.error(f"Error selecting expiration month: {str(e)}")
             raise
-
+    
+    @catch_exceptions()
     def select_expiration_year(self, year: str):
         
         """
@@ -189,6 +260,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error selecting expiration year: {str(e)}")
             raise
 
+    @catch_exceptions()
     def fill_cvv(self, cvv: str):
         """
         Fills the CVV field with the given value.
@@ -210,6 +282,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling out CVV field: {str(e)}")
             raise
       
+    @catch_exceptions()
     def fill_email(self, email: str):        
         """
         Fills in the email input field.
@@ -227,6 +300,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling email: {str(e)}")
             raise
 
+    @catch_exceptions()
     def fill_address(self, address: str):
         """
         Fills in the address input field.
@@ -244,6 +318,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling address: {str(e)}")
             raise
 
+    @catch_exceptions()
     def fill_city(self, city: str):
         """
         Fills in the city input field.
@@ -260,6 +335,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error filling city: {str(e)}")
             raise
     
+    @catch_exceptions()
     def select_country(self, country_name: str):
         """
         Selects a country from the custom dropdown.
@@ -283,6 +359,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error selecting country '{country_name}': {str(e)}")
             raise
     
+    @catch_exceptions()
     def accept_terms_and_conditions(self):
         """
         Clicks on the checkbox to accept terms and conditions.
@@ -298,6 +375,7 @@ class PaymentPage(Common):
             self.logger.error(f"Error clicking on terms and conditions checkbox: {str(e)}")
             raise
 
+    @catch_exceptions()        
     def click_continue(self):
         """
             Clicks the "Continuar" button.
@@ -316,7 +394,8 @@ class PaymentPage(Common):
             self.logger.info("Continue button clicked...")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to click continue button") from e
-
+ 
+    @catch_exceptions()    
     def scroll_to_element(self, pixels: int = 200):
         """
         Hace scroll hacia el elemento ubicado por el locator.
