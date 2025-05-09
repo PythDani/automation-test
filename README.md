@@ -21,7 +21,7 @@
 
 ## Introduction
 
-This repository contains a robust and scalable test automation framework for a flight booking web application using Python, Pytest, and Selenium. The design follows the Page Object Model (POM) and includes integration with Allure for reporting.
+This repository contains a suit test automation for a flight booking web application using Python, Pytest, and Selenium. The design follows the Page Object Model (POM) and includes integration with Allure for reporting.
 
 ---
 
@@ -29,7 +29,7 @@ This repository contains a robust and scalable test automation framework for a f
 
 > This technical test aims to evaluate my skills in automated testing and the use of tools such as Selenium WebDriver with Python.
 
-This automation framework is intended to showcase your understanding and application of modern testing tools and methodologies. It provides a scalable foundation for developing, executing, and reporting on end-to-end automated tests.
+This automation is intended to showcase your understanding and application of modern testing tools and methodologies. It provides a scalable foundation for developing, executing, and reporting on end-to-end automated tests.
 
 ---
 
@@ -44,7 +44,7 @@ This automation framework is intended to showcase your understanding and applica
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/automation-test.git
+git clone https://github.com/PythDani/automation-test.git
 cd automation-test
 ```
 
@@ -70,6 +70,7 @@ Install the dependencies:
 pip install -r requirements.txt
 ```
 
+Make sure create `.env` file in the root of the project with `HOME_URL` variable. Then you can change the urls according to the test case.
 ---
 
 ## Project Structure
@@ -362,6 +363,14 @@ To execute all test cases:
 pytest tests/
 ```
 
+To run specific tests using flag --broswer
+
+By default, Tests run in chrome, also you can switch to edge, firefox or safari
+
+```bash
+pytest --browser=chrome  tests/test_avtest_case_3.py
+```
+
 To run tests in parallel (e.g. 3 workers):
 
 ```bash
@@ -396,7 +405,7 @@ allure serve reports
 
 ## 📦 Test Result Storage with SQLite
 
-This test framework also integrates a lightweight **SQLite** database to store the result of each test run.
+This suit test also integrates a lightweight **SQLite** database to store the result of each test run.
 
 ### How It Works
 
