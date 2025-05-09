@@ -15,7 +15,7 @@
 - [Setting up tests](#setting-up-tests)
 - [Running the Tests](#running-the-tests)
 - [Generating the Report](#generating-the-report)
-- [Test Result Storage with SQLite](#test-result-storage-with-SQLite)
+- [Test Result Storage with SQLite](#test-result-storage-with-sqlite)
 
 ---
 
@@ -424,3 +424,4 @@ CREATE TABLE IF NOT EXISTS test_results (
   )
 )
 ```
+---
