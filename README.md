@@ -15,6 +15,7 @@
 - [Setting up tests](#setting-up-tests)
 - [Running the Tests](#running-the-tests)
 - [Generating the Report](#generating-the-report)
+- [Test Result Storage with SQLite](#test-result-storage-with-SQLite)
 
 ---
 
@@ -120,7 +121,7 @@ Each page class:
 - Contains locators and methods that interact with the page.
 - Is imported and used in test files to perform end-to-end user actions.
 
-For example:
+For instance:
 
 ```python
 # Example: pages/pages_case_1/home_page.py
@@ -198,7 +199,7 @@ Initializes page objects like `HomePage`, `FormPassengersPage`, `ServicesPage`, 
 
 ```python
 
-# Example: conftest..py
+# e.g: conftest.py
 
 @pytest.fixture(scope="function")
 def booking_context(browser):   
@@ -231,7 +232,7 @@ def booking_context(browser):
 Sets up **Case 2**, involving a more complex booking scenario with additional parameters such as `relative_day`, and a dummy `a_credits_number` and `a_credits_pin`.
 
 ```python
-# Example: conftest..py
+# e.g: conftest.py
 
 @pytest.fixture(scope="function")
 def booking_context_case_2(browser): 
@@ -269,7 +270,7 @@ def booking_context_case_2(browser):
 Initializes the booking flow for **Case 3**, extending the test input further with child, baby, and young passenger counts, and additional fields like `user_name` and `user_password`.
 
 ```python
-# Example: conftest..py
+# e.g: conftest.py
 
 @pytest.fixture(scope="function")
 def booking_context_case_3(browser): 
@@ -310,6 +311,8 @@ Each fixture returns a `dict` structure that includes:
 - Parameterized test data that guides the booking flow.
 
 This approach enables each test to call a single fixture and access all required components without redefining the setup for each individual test.
+
+NOTE: At this point we could have used only one configuration method and avoided repeating code, but for the sake of clarity, we decided to create all three.
 
 ###  Test Invocation and Modularity
 
@@ -373,16 +376,51 @@ To record the screen during test execution, ensure `pyscreenrec` is installed an
 
 Generate the Allure test report after a test run:
 
-```bash
-allure serve allure-results
-```
-
-This will open the report in your default browser. Alternatively, you can generate static HTML:
+This will open the report in your default browser. 
 
 ```bash
 allure generate allure-results -o allure-report --clean
 ```
 
-Then open `allure-report/index.html` in your browser.
+Open serve to see the reports
+
+```bash
+allure open allure-report
+```
+
+```bash
+allure serve reports
+```
 
 ---
+
+## 📦 Test Result Storage with SQLite
+
+This test framework also integrates a lightweight **SQLite** database to store the result of each test run.
+
+### How It Works
+
+- A file named `test_results.db` is used as the database.
+- A table `test_results` is created (if it doesn't exist) using the utility function `create_db()` from `utils/db_utils.py`.
+- Each time a test finishes, the result is saved automatically using the function `store_result()`.
+
+The structure of the table is:
+
+| Column     | Type      | Description                         |
+|------------|-----------|-------------------------------------|
+| id         | INTEGER   | Primary key                         |
+| test_name  | TEXT      | The name of the test case           |
+| result     | TEXT      | Result of the test ('passed', etc.) |
+| timestamp  | DATETIME  | Automatically set to current time   |
+
+```python
+# Create table if not exists
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS test_results (
+    id INTEGER PRIMARY KEY,
+    test_name TEXT,
+    result TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+  )
+)
+```
