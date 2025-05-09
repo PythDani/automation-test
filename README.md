@@ -434,4 +434,17 @@ CREATE TABLE IF NOT EXISTS test_results (
   )
 )
 ```
+```python
+  # Insert results into the database
+    cursor.execute('''
+    INSERT INTO test_results (test_name, result)
+    VALUES (?, ?)
+    ''', (test_name, result))
+    
+    conn.commit()
+    conn.close()
+```
+
+
+
 ---
