@@ -33,7 +33,7 @@ class FormPassengersPage(Common):
     # CHECKBOX
     CHECK_BOX:                             tuple = (By.XPATH, "//input[@id='sendNewsLetter']")
     # Button Continue
-    BUTTON_CONTINUE:                       tuple = (By.XPATH, "//button[contains(@class, 'btn-next')]//span[normalize-space(text())='Continuar']")
+    BUTTON_CONTINUE:                       tuple = (By.XPATH, "//*[contains(@class,'button page_button btn-action page_button-primary-flow ng-star-inserted')]//*[contains(@class,'button_label')]")
 
     @catch_exceptions()
     def __init__(self, driver):
@@ -198,24 +198,42 @@ class FormPassengersPage(Common):
         self.logger.info("Filling contact information...")
 
         prefix_button = self.wait_to_be_clickable(self.PHONE_PREFIX_SELECTOR)
-        prefix_button.click()
-        time.sleep(1)
-        prefix_option = self.wait_to_be_clickable(self.PHONE_PREFIX_BUTTON)
-        prefix_option.click()
+        current_prefix = prefix_button.text.strip()
+        self.logger.info(f"Prefix actual: '{current_prefix}'")
+
+        if current_prefix == "": # No prefix selected
+            prefix_button.click()
+            time.sleep(1)
+            prefix_option = self.wait_to_be_clickable(self.PHONE_PREFIX_BUTTON)
+            prefix_option.click()
+            self.logger.info("Prefix selected")
+        else:
+            self.logger.info("Prefix already selected.")
 
         input_phone_number_owner = self.find(self.INPUT_PHONE_NUMBER_OWNER)
         self.wait_for_visibility(input_phone_number_owner)
-        input_phone_number_owner.send_keys("3165555888")
+        current_phone = input_phone_number_owner.get_attribute("value").strip()
+        if current_phone == "":
+            input_phone_number_owner.send_keys("3165555888")
+            self.logger.info("Phone number filled.")
+        else:
+            self.logger.info(f"Phone number already filled: {current_phone}")
 
-        email = f"{faker.first_name().lower()}{random.randint(100,999)}@gmail.com"
         input_email_owner = self.find(self.INPUT_EMAIL_OWNER)
         self.wait_for_visibility(input_email_owner)
-        input_email_owner.send_keys(email)
+        current_email = input_email_owner.get_attribute("value").strip()
 
-        confirm_email_elements = self.driver.find_elements(*self.INPUT_CONFIRM_EMAIL_OWNER)
+        if current_email == "":
+            email = f"{faker.first_name().lower()}{random.randint(100,999)}@gmail.com"
+            input_email_owner.send_keys(email)
+            self.logger.info(f"Mail filled: {email}")
+        else:
+            self.logger.info(f"mail already filled: {current_email}")
+
+        confirm_email_elements = self.driver.find_elements(*self.INPUT_CONFIRM_EMAIL_OWNER)       
         if confirm_email_elements:
             confirm_email = confirm_email_elements[0]
-            self.wait_for_visibility(confirm_email)
+            self.wait_for_visibility(confirm_email)         
             confirm_email.send_keys(email)
             self.logger.info("Email confirmation field filled.")
         else:

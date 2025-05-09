@@ -12,7 +12,7 @@ class PaymentPage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
 
     ONE_TRUST_ACCEPT_BUTTON:     tuple = (By.ID, "onetrust-accept-btn-handler")
-    LOADER_C:                    tuple = (By.XPATH, "//*[contains(@class,'loading')]")
+    LOADER_C:                    tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading') or contains(@class, 'loader')]")
     # Check Avianca credits
     CHECK_AVIANCA_CREDITS:       tuple = (By.XPATH, "//*[@class='toggle_input']//input[contains(@type,'checkbox')]")
     # Input number avianca credits
@@ -35,7 +35,7 @@ class PaymentPage(Common):
     EMAIL_INPUT:                 tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='email']")
     ADDRESS_INPUT:               tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='address']")
     CITY_INPUT:                  tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='city']")
-    CONTINUE_BUTTON:             tuple = (By.XPATH, "//ds-button//button[span[text()=' Confirmar y pagar ']]")
+    CONTINUE_BUTTON:             tuple = (By.XPATH, "//button[contains(@class,'ds-button ds-btn-primary ds-btn-medium')]")
     #Modal content
     MODAL_CONTENT:               tuple = (By.XPATH, "//*[contains(@class, 'modal-content')]")
     #Close modal rejected payment
@@ -63,6 +63,7 @@ class PaymentPage(Common):
 
         try:               
             # Click on the One Trust accept button
+            self.wait_for_loader_to_disappear(self.LOADER_C)  
             one_trust_accept_button = self.wait_to_be_clickable(self.ONE_TRUST_ACCEPT_BUTTON)
             one_trust_accept_button.click()
             #We wait unitll the page loader disapear.

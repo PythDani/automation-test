@@ -10,17 +10,17 @@ import time
 class ServicesPage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
     #Loader that indicate that the page is loading in some cases.
-    LOADER_C:                                    tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading')]")
+    LOADER_C:                                    tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading') or contains(@class, 'loader')]")
     
     CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON:     tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeBaggage')]")
     CARRY_ON_BAGGAGE_PLUS_BUTTON:                tuple = (By.XPATH, "//button[contains(@class,'ui-num-ud_button plus')]")
-    CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL:  tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
+    CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL:  tuple = (By.XPATH, "//*[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
     SPORT_BAGGAGE_ADD_BUTTON:                    tuple = (By.ID, "serviceButtonTypeOversize")
     SPORT_EQUIPMENT_PLUS_BUTTON:                  tuple = (By.XPATH, "//button[contains(@class,'ui-num-ud_button plus')]")
-    CONFIRM_SPORT_BAGGAGE_MODAL:                 tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
+    CONFIRM_SPORT_BAGGAGE_MODAL:                 tuple = (By.XPATH, "//*[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
     BUSSINESS_LOUNGE_ADD_BUTTON:                 tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeBusinessLounge')]")
     LOUNGES_PLUS_BUTTON:                         tuple = (By.XPATH, "//label[contains(@class,'service_item_button button')]")
-    CONFIRM_LOUNGES_MODAL:                       tuple = (By.XPATH, "//button[.//span[normalize-space(text())='Confirmar']]")
+    CONFIRM_LOUNGES_MODAL:                       tuple = (By.XPATH, "//*[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
     CONFIRM_SERVICES_BUTTON:                     tuple = (By.XPATH, "//*[contains(@class,'button page_button btn-action page_button-primary-flow ng-star-inserted')]//span[contains(@class,'button_label')]")
     
     SPECIAL_ASISTANCE_ADD_BUTTON:                tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeSpecialAssistance')]")
@@ -56,8 +56,8 @@ class ServicesPage(Common):
         try:
             self.logger.info("Waiting for page to load disappear...")
             # EXecute the wait_for_loader_to_disappear method twice
-            self.wait_for_loader_to_disappear()
-            self.wait_for_loader_to_disappear()
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e
@@ -79,7 +79,7 @@ class ServicesPage(Common):
         name = "baggage service"
         try:
 
-            self.wait_for_loader_to_disappear()
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             add_carry_on_button =self.wait_for_visibility_of_element_located(self.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON)
             self.driver.implicitly_wait(1)   
 
@@ -154,7 +154,8 @@ class ServicesPage(Common):
         name = "Sport baggage service"
         try:
 
-            self.wait_for_loader_to_disappear()
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             add_sport_on_button =self.wait_for_visibility_of_element_located(self.SPORT_BAGGAGE_ADD_BUTTON)
             self.scroll_down_move_to_element(add_sport_on_button)
             self.driver.implicitly_wait(1)
@@ -226,7 +227,7 @@ class ServicesPage(Common):
         """
         name = "Bussiness lounge service"
         try:
-            self.wait_for_loader_to_disappear()
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             add_buttons = self.find_all(self.BUSSINESS_LOUNGE_ADD_BUTTON)
 
             if add_buttons:
@@ -253,6 +254,7 @@ class ServicesPage(Common):
                     within the timeout period.
         """
         try:
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             self.logger.info("Add lounge bussines services...")
             plus_button = self.find(self.LOUNGES_PLUS_BUTTON)
 
@@ -295,6 +297,7 @@ class ServicesPage(Common):
         """
         name = "Special asistance service"
         try:
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             add_asistance_on_button =self.wait_for_visibility_of_element_located(self.SPECIAL_ASISTANCE_ADD_BUTTON)
             add_asistance_on_button.click()
             self.logger.info(f"{name} opened...")
@@ -350,7 +353,7 @@ class ServicesPage(Common):
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
 
         """
-        
+        self.wait_for_loader_to_disappear(self.LOADER_C)
         # Wait for the button to appear
         self.logger.info("Waiting for the button to appear...")
         add_bussines_on_button = self.wait_for(self.CONFIRM_SERVICES_BUTTON)
@@ -366,29 +369,7 @@ class ServicesPage(Common):
         self.driver.execute_script("arguments[0].click();", add_bussines_on_button)
         self.logger.info("Services added... Going to the seatmap page...")
     
-    @catch_exceptions() 
-    def wait_for_loader_to_disappear(self):
-        """
-        Waits for the loader to disappear.
-
-        This method waits until the loader appears, and then waits until the loader disappears.
-
-        If the loader does not appear or does not disappear within the timeout period, a TimeoutException is raised.
-
-        This method is used to wait for the loader to disappear after performing an action that triggers it to appear.
-
-        """        
-        try:
-            
-            loader_locator = (self.LOADER_C)  # ejemplo
-            
-            # Wait for the loader to appear
-            self.wait_for(loader_locator)
-            
-            # Wait for the loader to disappear
-            self.wait_for_unitll_not(loader_locator)
-        except:            
-            pass
+    
         
 
         

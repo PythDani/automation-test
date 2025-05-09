@@ -53,20 +53,18 @@ def test_avtest_case_1(booking_context):
         services.load()
         services.add_carry_on_and_checked_baggage()
         services.click_on_bagage_plus_button()
-        services.confirm_carry_on_modal_and_checked_baggage_modal()
-        services.wait_for_loader_to_disappear()
+        services.confirm_carry_on_modal_and_checked_baggage_modal()        
         services.add_sport_baggage()
         services.click_on_sport_bagage_plus_button()
         services.confirm_sport_baggage_modal()
-        services.wait_for_loader_to_disappear()
         services.add_bussines_lounge()
         services.click_on_some_lounge_plus_button()
         services.confirm_lounge_bussiness_modal()
-        services.wait_for_loader_to_disappear()
         services.continue_to_the_next_step()
 
     # --- Seats ---
     with allure.step("Test select seats page"):
+        
         seat_map.load()
         seat_map.select_seats_based_on_quantity_of_passengers()
         seat_map.continue_to_the_next_step()

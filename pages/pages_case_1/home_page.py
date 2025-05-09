@@ -8,7 +8,7 @@ from pages.common import Common
 class HomePage(Common):
     # ----------------------------------LOCATORS----------------------------------------------------------
     #Loader that indicate that the page is loading.
-    LOADER:                                         tuple = (By.XPATH, "//*[contains(@class, 'loader') or contains(@class, 'loading')]")
+    LOADER:                                         tuple = (By.XPATH, "//*[contains(@class, 'loader') or contains(@class, 'loading') or contains(@class, 'page-loader')]")
     #Loader that indicate that the page is loading in some cases.
     LOADER_B:                                       tuple = (By.CLASS_NAME, "page-loader")
     #Button that indicate the language selectioned 
@@ -50,7 +50,16 @@ class HomePage(Common):
     #Confirm button
     CONFIRM_BUTTON:                                 tuple = (By.XPATH, "//*[@id='paxControlSearchId']/div/div[2]/div/div/button")
     #Search button
-    SEARCH_BUTTON:                                  tuple = (By.ID, "searchButton")    
+    SEARCH_BUTTON:                                  tuple = (By.ID, "searchButton")
+    
+    # Log in button
+    BUTTON_LOGIN:                                   tuple = (By.XPATH, "//*[contains(@id,'auth-component')]")
+    # iNPUT 
+    USER_FIELD:                                     tuple = (By.XPATH, "//*[contains(@id,'u-username')]")
+    # Pasword field  
+    PASSWORD_FIELD:                                     tuple = (By.XPATH, "//*[contains(@id,'u-password')]")
+    # login confirm  
+    LOGIN_CONFIRM:                                     tuple = (By.XPATH, "//*[contains(@id,'Login-confirm')]")  
    
     def __init__(self, driver):
         """
@@ -89,9 +98,11 @@ class HomePage(Common):
         Args:
             language (str): The language to select from the dropdown.
         """
-
+        self.logger.info("Waiting for page to load disappear...")
+        self.wait_for_loader_to_disappear(self.LOADER)       
         self.logger.info(f"Selecting language {language} in URL: {self.URL}")
-        laguage_options =self.wait_to_be_clickable(self.DEPLOY_LANGUAGE_BUTTON)
+        self.wait_for_invisibility(self.LOADER_B)
+        laguage_options =self.wait_to_be_clickable(self.DEPLOY_LANGUAGE_BUTTON)        
         laguage_options.click()
         tuple_language = ( self.BUTTON_LANGUAGE[0],  self.BUTTON_LANGUAGE[1].format(language))
         button_language = self.wait_to_be_clickable(tuple_language)
@@ -115,6 +126,7 @@ class HomePage(Common):
             self.logger.info(f"Selecting currency {currency}")
             self.driver.maximize_window()
             self.logger.info(f"Deploying currency options...")
+            self.wait_for_loader_to_disappear(self.LOADER) 
             currency_options =self.wait_to_be_clickable(self.BUTTON_CURRENCY)
             currency_options.click()
             self.logger.info(f"Selecting currency from the list...")
@@ -157,7 +169,7 @@ class HomePage(Common):
                 option_city_origin (tuple): A tuple of (By, str) to locate the city option.
         """
          self.logger.info("Waiting for origin button...") 
-         origin_button = self.find(self.BUTTON_ORIGIN)
+         origin_button = self.wait_to_be_clickable(self.BUTTON_ORIGIN)
          origin_button.click()
          self.logger.info("Origin button clicked") 
          self._select_city_origin(self.FIELD_ORIGIN, city_origin)
@@ -412,6 +424,36 @@ class HomePage(Common):
     @catch_exceptions() 
     def loader_b(self):
         self.wait_for_invisibility(self.LOADER_B)
+
+
+    def login(self, username: str, password: str):
+       
+        # 1. Click initial login button
+        self.wait_to_be_clickable(self.BUTTON_LOGIN).click()
+        
+        # 2. Wait for new window to appear and switch to it
+        self.wait_for_new_window()
+        self.logger.info("Switching to login window...")
+        new_window = self.driver.window_handles[-1]
+        self.logger.info(f"New window opened {new_window}...")
+        self.driver.switch_to.window(new_window)
+        
+        # 3. Optional: wait for loader to disappear or presence of the login form
+        self.wait_for(self.USER_FIELD)
+        self.logger.info(f"Waiting for login form...")
+      
+        # 4. Fill login form
+        self.find(self.USER_FIELD).send_keys(username)
+        self.find(self.PASSWORD_FIELD).send_keys(password)
+        self.find(self.LOGIN_CONFIRM).click()
+               
+        # 5. Wait until the window is closed and return to main
+        self.wait_for_window_close(new_window)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        self.logger.info(f"User logged...")   
+    
+    
+
 
 
 

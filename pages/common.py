@@ -23,6 +23,7 @@ class Common:
         self._wait = WebDriverWait(self.driver, 10)
         self._action = ActionChains(self.driver)
         self.URL = HOME_URL
+        
 
     def wait_for(self, locator):
         """
@@ -224,3 +225,35 @@ class Common:
             self.wait_for_unitll_not(loader_locator)
         except:            
             pass
+
+    
+    def wait_for_new_window(self, timeout=10):
+        """
+        Waits for a new window to appear.
+
+        This method waits until a new window is openend.
+
+        If the window does not appear within the timeout period, a TimeoutException is raised.
+
+        This method is used to wait for a new window to appear after performing an action that triggers it to appear.
+
+        """
+        WebDriverWait(self.driver, timeout).until(lambda d: len(d.window_handles) > 1)
+    
+    def wait_for_window_close(self, window_handle, timeout=15):
+        """
+        Waits for a window to close.
+
+        This method waits until the specified window is closed and is no longer 
+        part of the available window handles.
+
+        Args:
+            window_handle (str): The handle of the window to wait for closure.
+            timeout (int, optional): The maximum time to wait for the window to close
+                in seconds. Defaults to 15 seconds.
+
+        Raises:
+            selenium.common.exceptions.TimeoutException: If the window is not closed
+                within the timeout period.
+        """
+        WebDriverWait(self.driver, timeout).until(lambda d: window_handle not in d.window_handles)

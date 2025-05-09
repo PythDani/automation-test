@@ -4,6 +4,11 @@ from pages.common import Common
 from logger import get_logger
 from selenium.webdriver.common.by import By
 from utils.exception import catch_exceptions
+import json
+import time
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 
 class BookingSelectPage(Common):   
     #Loader that indicate that the page is loading in some cases.
@@ -159,4 +164,18 @@ class BookingSelectPage(Common):
         except Exception as e:
             self.logger.error(f"Error clicking continue button: {str(e)}")
             raise
+    
+    def get_sesion_params(self):
 
+        for request in self.driver.requests:
+            if request.url.startswith(self.BASE_URL):
+                if request.response:
+                    self.logger.info("Response urls:")
+                    self.logger.info(request.url)
+                    self.logger.info("Response headers:")
+                    self.logger.info(request.response.headers)
+                    self.logger.info("Response body:")
+                    self.logger.info(request.response.body)
+                    
+        
+        return self.driver.get_cookies()

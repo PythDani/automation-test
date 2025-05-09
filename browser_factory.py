@@ -1,4 +1,4 @@
-from selenium import webdriver
+from seleniumwire import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -52,7 +52,7 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-extensions")
         options.add_argument("--remote-debugging-port=9222")
-       
+        options.add_argument("--start-maximized")
         if headless:
 
             options.add_argument("--headless=new") 
