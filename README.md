@@ -39,14 +39,15 @@ This automation is intended to showcase your understanding and application of mo
 
 - Python 3.8 or higher
 - Git
-- Google Chrome (or another supported browser)
+- Google Chrome, Edge or Firefox
 
 Clone the repository:
 
 ```bash
 git clone https://github.com/PythDani/automation-test.git
-cd automation-test
+
 ```
+cd automation-test
 
 Create and activate a virtual environment:
 
