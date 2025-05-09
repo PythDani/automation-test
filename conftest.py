@@ -13,7 +13,7 @@ from pages.pages_case_1.seat_map_page import SeatMapPage
 from pages.pages_case_1.services_page import ServicesPage
 
 
-from utils.browser_factory import get_driver
+from browser_factory import get_driver
 from utils.db_utils import store_result, create_db
 from logger import get_logger
 import logging
@@ -65,9 +65,9 @@ def booking_context(browser):
             "departure_date": {"day": "14", "month": "5", "year": "2025"},
             "arrival_date": {"day": "30", "month": "5", "year": "2025"},
             "passenger_count": 2,
-            "young_count": 3,
-            "child_count": 2,
-            "baby_count": 4
+            "young_count": 0,
+            "child_count": 0,
+            "baby_count": 0
         }
     }
 
@@ -114,6 +114,51 @@ def booking_context_case_2(browser):
         }
     }
 
+@pytest.fixture(scope="function")
+def booking_context_case_3(browser):  
+    """
+    This fixture initializes page objects for different pages involved in the booking process,
+    including HomePage, FormPassengersPage, ServicesPage, SeatMapPage, PaymentPage, 
+    BookingSelectPage, and ItineraryPage, using the provided browser instance. It also 
+    includes a set of parameters for the booking process, such as language, currency, 
+    origin and destination cities, departure date, and the number of passengers.
+
+    Args:
+        browser (WebDriver): A selenium webdriver instance used to interact with web pages.
+
+    Returns:
+        dict: A dictionary containing initialized page objects and booking parameters.
+    """
+
+    return {
+        "page": HomePage(browser),
+        "form": FormPassengersPage(browser),
+        "services": ServicesPage(browser),
+        "seat_map": SeatMapPage(browser),
+        "payment_page": PaymentPage(browser),
+        "booking_select_page": BookingSelectPage(browser),
+        "itinerary_page": ItineraryPage(browser),
+        "params": {
+            "language": "Français",
+            "currency": "France",
+            "city_origin": "Managua",
+            "city_destination": "Medellín",
+            "departure_date": {"day": "14", "month": "5", "year": "2025"},
+            "arrival_date": {"day": "30", "month": "5", "year": "2025"},
+
+            "passenger_count": 3,
+            "young_count": 1,
+            "child_count": 0,
+            "baby_count": 0,
+            "relative_day": "2 days before",
+            "user_name": "21734198706",
+            "user_password": "Lifemiles1",
+            "a_credits_number": "1500014124792137",
+            "a_credits_pin": "151233",
+
+        }
+    }
+
 def pytest_addoption(parser):
     """
     Registers a pytest command-line option to specify the browser to use.
@@ -140,6 +185,15 @@ def pytest_addoption(parser):
         default="false",
         help="Run tests in headless mode: true or false"
     )
+    parser.addoption(
+        "--home_url", 
+        action="store", 
+        default=os.getenv("HOME_URL"), 
+        help="Base URL for the tests")
+
+@pytest.fixture(scope="session")
+def base_url(request):
+    return request.config.getoption("--home_url")
 
 @pytest.fixture(scope="function")
 def browser(request):

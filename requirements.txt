@@ -1,9 +1,22 @@
-selenium==4.31.0
-pytest
-allure-pytest
-webdriver-manager
-python-dotenv
-pytest-xdist
-faker==24.8.0
-pyscreenrec
+
+# Web automation
+selenium==4.31.0              # Web automation library to control browsers like Chrome or Firefox
+
+# Testing tools
+pytest                        # Testing framework for writing and running test cases
+allure-pytest                 # Plugin to generate Allure test reports from pytest results
+pytest-xdist                  # Enables running tests in parallel using pytest
+
+# Drivers and environment
+webdriver-manager             # Automatically downloads and manages browser drivers (e.g. chromedriver)
+python-dotenv                 # Loads environment variables from a .env file
+
+# Data and recording
+faker==24.8.0                 # Generates fake data (e.g. names, addresses) for testing
+pyscreenrec                   # Library to record screen during test execution
+
+# Network inspection and support
+selenium-wire                 # Extension of Selenium to capture and modify HTTP requests and responses
+blinker==1.4                  # Provides support for signal/event dispatching (used internally by some libraries)
+setuptools==80.3.1            # Package development and distribution tool, required for many packages
 

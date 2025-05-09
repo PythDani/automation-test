@@ -13,10 +13,10 @@ from utils.exception import catch_exceptions
 
 class SeatMapPage(Common):
     #Loader that indicate that the page is loading in some cases.
-    LOADER_C:             tuple = (By.CLASS_NAME, "loading")
+    LOADER_C:             tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading') or contains(@class, 'loader')]")
     PAX_TYPE:             tuple = (By.CLASS_NAME, "paxtype_total_value")
     AVAILABLE_SEATS:      tuple = (By.CSS_SELECTOR, "button.seat.ng-star-inserted")
-    CONFIRM_BUTTON:       tuple = (By.XPATH, "//button[contains(@class, 'amount-summary_button') and .//span[normalize-space()='Continuar']]")
+    CONFIRM_BUTTON:       tuple = (By.XPATH, "(//button[contains(@class, 'amount-summary_button-action')])[1]")
     
 
     @catch_exceptions()

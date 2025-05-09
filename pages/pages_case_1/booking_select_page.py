@@ -1,13 +1,16 @@
 
-
+import json
+from seleniumwire.utils import decode
 from pages.common import Common
 from logger import get_logger
 from selenium.webdriver.common.by import By
 from utils.exception import catch_exceptions
 
+from config import HOME_URL
+
 class BookingSelectPage(Common):   
     #Loader that indicate that the page is loading in some cases.
-    LOADER_B:                            tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading')]")
+    LOADER_B:                            tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading') or contains(@class, 'loader')]")
     # Select another date button
     SELECT_ANOTHER_DATE_BUTTON:          tuple = (By.XPATH, "//*[@class='day-selector_item ng-star-inserted'][{}]//*[contains(@class,'day-control') and contains(@aria-label,'Schedule.A11y.CalendarDay.AriaLabel')]")   
     #Flight button
@@ -159,4 +162,62 @@ class BookingSelectPage(Common):
         except Exception as e:
             self.logger.error(f"Error clicking continue button: {str(e)}")
             raise
+    
+    def get_sesion_params(self):
+       
+        """
+        Searches for a response with "session" in the URL and returns a JSON object with the response body.
 
+        Iterates over the requests history and searches for a response that contains "session" in its URL.
+        If found, decodes the response body according to the encoding, converts it to a JSON object and
+        logs the JSON object. If any error occurs during this process, logs the error and returns None.
+
+        Returns:
+            dict: A JSON object with the response body if found, None otherwise.
+        """
+        for request in self.driver.requests:
+            if request.response:
+                if request.url == "https://nuxqa.avtest.ink/booking/api/v1/booking/session":
+                    try:
+                        self.logger.info(f"Session response (url): {request.url}")
+                        # Decode the body according to the encoding
+                        body = decode(request.response.body, request.response.headers.get('Content-Encoding', 'identity'))
+                        body_content = body.decode('utf-8')                        
+                                             
+                        # Convert the body to a JSON object
+                        json_data = json.loads(body_content)
+                        self.logger.info(f"Session response (json): {json.dumps(json_data, indent=2)}")
+                        
+                        # Get the "Data required from network - session"
+                        journeys = json_data.get("booking", {}).get("journeys", [])
+                        result = []
+                        for journey in journeys:
+                            origin = journey.get("origin")
+                            self.logger.info(f"Origin: {origin}")
+                            destination = journey.get("destination")
+                            std = journey.get("std")
+                            self.logger.info(f"Journey: Origin: {origin}, Destination: {destination}, STD: {std}")
+                            fares = journey.get("fares", [])
+                            product_classes = [fare.get("productClass") for fare in fares if "productClass" in fare]
+                            self.logger.info(f"Product classes: {product_classes}")
+
+                            result.append({
+                                "origin": origin,
+                                "destination": destination,
+                                "std": std,
+                                "productClass": product_classes
+                            })
+
+                        return result
+
+                    except Exception as e:
+                        self.logger.error(f"Error decoding session response: {e}")
+                        return None
+
+        # Si no se encontró ninguna sesión
+        self.logger.warning("No session url response found")
+        return None
+          
+                    
+        
+        

@@ -1,4 +1,5 @@
-from selenium import webdriver
+import platform
+from seleniumwire import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
 from selenium.webdriver.edge.service import Service as EdgeService
@@ -52,7 +53,7 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-extensions")
         options.add_argument("--remote-debugging-port=9222")
-       
+        options.add_argument("--start-maximized")
         if headless:
 
             options.add_argument("--headless=new") 
@@ -61,7 +62,14 @@ def get_driver(browser_name, headless=False):
         return webdriver.Edge(
             service=EdgeService(EdgeChromiumDriverManager().install()),
             options=options
-        ) 
+        )
+    elif browser_name == "safari":
+        if platform.system() != "Darwin":
+            raise EnvironmentError("Safari is only supported on macOS.")
+        if headless:
+            raise ValueError("Safari does not support headless mode.")
+        return webdriver.Safari()
+ 
 
     else:
         raise ValueError(f"Unsupported browser: {browser_name}")
