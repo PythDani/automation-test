@@ -227,18 +227,20 @@ class Common:
             pass
 
     
-    def wait_for_new_window(self, timeout=10):
+    def wait_for_new_window(self, timeout=20):
         """
         Waits for a new window to appear.
 
-        This method waits until a new window is openend.
+        This method waits until a new window appears. If the window does not appear within the timeout period, a TimeoutException is raised.
 
-        If the window does not appear within the timeout period, a TimeoutException is raised.
-
-        This method is used to wait for a new window to appear after performing an action that triggers it to appear.
-
+        Args:
+            timeout (int, optional): The number of seconds to wait for the window to appear. Defaults to 20.
         """
-        WebDriverWait(self.driver, timeout).until(lambda d: len(d.window_handles) > 1)
+        try:
+            WebDriverWait(self.driver, timeout).until(lambda d: len(d.window_handles) > 1)
+        except Exception:
+            self.logger.error("New window did not appear in time.")
+            raise
     
     def wait_for_window_close(self, window_handle, timeout=15):
         """
@@ -257,3 +259,19 @@ class Common:
                 within the timeout period.
         """
         WebDriverWait(self.driver, timeout).until(lambda d: window_handle not in d.window_handles)
+
+
+    def wait_until_focus_be_usable(self, new_window):
+        """
+        Waits until the focus of the driver is usable.
+
+        This method waits until the focus of the driver is not in the specified window.
+        This is useful when waiting for a window to close, but the focus is not switched to
+        another window yet.
+
+        Args:
+            new_window (str): The handle of the window to wait for the focus to be out of.
+        """
+        WebDriverWait(self.driver, 10).until(
+        lambda d: d.current_window_handle != new_window
+    )

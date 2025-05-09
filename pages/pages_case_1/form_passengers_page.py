@@ -35,6 +35,7 @@ class FormPassengersPage(Common):
     # Button Continue
     BUTTON_CONTINUE:                       tuple = (By.XPATH, "//*[contains(@class,'button page_button btn-action page_button-primary-flow ng-star-inserted')]//*[contains(@class,'button_label')]")
 
+    BUTTON_LOGGED_IN:                      tuple = (By.XPATH, "//*[contains(@class,'account-passenger_item ng-star-inserted')]//*[contains(@class,'account-passenger_avatar')]")
     @catch_exceptions()
     def __init__(self, driver):
 
@@ -69,7 +70,8 @@ class FormPassengersPage(Common):
 
         faker = Faker()
         
-        # Find all passenger forms
+        time.sleep(1)
+        
         passenger_forms = self.find_all(self.CONTAINERS_PASSENGERS)  
         self.logger.info(f"It was found {len(passenger_forms)} passenger forms.")
 
@@ -172,9 +174,11 @@ class FormPassengersPage(Common):
             else:
                 self.logger.info(f"Document number input not present for passenger #{index}")        
 
-        # Fill contact info after all passengers
-        self._fill_contact_information(faker)
-
+        if not self.is_logged_in():
+            self.logger.info("User not logged in, filling contact information...")
+            self._fill_contact_information(faker)
+        else:
+            self.logger.info("User logged in, skipping contact information...")
     @catch_exceptions()
     def _fill_contact_information(self, faker):         
         """
@@ -273,3 +277,20 @@ class FormPassengersPage(Common):
 
         self.wait_for_invisibility(self.LOADER_A)
    
+
+    def is_logged_in(self) -> bool:
+        """
+        Checks if the user is logged in.
+
+        This method tries to find the element with the BUTTON_LOGGED_IN
+        locator. If the element is found, the method returns True, otherwise
+        it returns False.
+
+        Returns:
+            bool: Whether the user is logged in or not.
+        """
+        try:
+            self.find(self.BUTTON_LOGGED_IN)
+            return True
+        except Exception:
+            return False

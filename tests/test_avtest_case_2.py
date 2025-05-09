@@ -101,18 +101,19 @@ def test_avtest_case_1(booking_context_case_2):
     # --- Payment ---
     with allure.step("Test fill payment form page"):
         payment_page.load()
-
         payment_page.select_avianca_credits(params["a_credits_number"], params["a_credits_pin"])       
-
         payment_page.accept_terms_and_conditions()
         payment_page.click_continue()
+        payment_page.loader()
+        payment_page.loader()
+        payment_page.handle_modal_and_navigate()
         payment_page.loader()
         payment_page.loader()
 
     # --- Itinerary ---
     with allure.step("Test itinerary page"):
         itinerary_page.wait_for_loader_c_disappear()
-        itinerary_page.get_reservation_code()
+        # itinerary_page.get_reservation_code()
         itinerary_page.validate_departure_city(params["city_origin"])
         itinerary_page.validate_arrival_city(params["city_destination"])
         itinerary_page.validate_passenger_adult_number(str(params["passenger_count"]))

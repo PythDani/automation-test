@@ -40,7 +40,8 @@ class PaymentPage(Common):
     MODAL_CONTENT:               tuple = (By.XPATH, "//*[contains(@class, 'modal-content')]")
     #Close modal rejected payment
     CLOSE_MODAL:                 tuple = (By.XPATH, "//*[@class='modal-close ng-star-inserted']")
-    
+    # Button modal rejected payment
+    BUTTON_MODAL_PAYMENT_REJECTED:  tuple = (By.XPATH, "//button[contains(@class,'ds-button ds-btn-primary ds-btn-medium')]")
     @catch_exceptions()
     def __init__(self, driver):
       """
@@ -419,4 +420,34 @@ class PaymentPage(Common):
             self.wait_for_loader_to_disappear(self.LOADER_C)
             self.wait_for_loader_to_disappear(self.LOADER_C)
 
-   
+    @catch_exceptions()  
+    def handle_modal_and_navigate(self):
+        
+        """
+        Handles the modal that appears when the payment is rejected and navigates to the
+        itinerary page.
+
+        If the modal is detected, the method waits for the modal to appear, goes back to the
+        previous page, waits for the page to finish loading, and then navigates to the
+        itinerary page.
+
+        If the modal is not detected, the method simply continues with the normal flow.
+
+        :return: None
+        """
+        try:
+            self.wait_for_visibility_of_element_located(self.BUTTON_MODAL_PAYMENT_REJECTED)
+            
+            print("Modal detected → going back...")
+
+            self.driver.back()
+
+            # Wait for the page to finish loading
+            self._wait.until(
+                lambda d: d.execute_script("return document.readyState") == "complete"
+            )
+            # Navigate to the itinerary page
+            self.driver.get(f"{self.URL}/itinerary")
+
+        except TimeoutException:
+            print("Modal NO detectado → continuando con el flujo normal...")

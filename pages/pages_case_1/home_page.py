@@ -57,9 +57,12 @@ class HomePage(Common):
     # iNPUT 
     USER_FIELD:                                     tuple = (By.XPATH, "//*[contains(@id,'u-username')]")
     # Pasword field  
-    PASSWORD_FIELD:                                     tuple = (By.XPATH, "//*[contains(@id,'u-password')]")
+    PASSWORD_FIELD:                                 tuple = (By.XPATH, "//*[contains(@id,'u-password')]")
     # login confirm  
-    LOGIN_CONFIRM:                                     tuple = (By.XPATH, "//*[contains(@id,'Login-confirm')]")  
+    LOGIN_CONFIRM:                                  tuple = (By.XPATH, "//*[contains(@id,'Login-confirm')]")
+
+    # Validate is logged
+    LOGGED:                                         tuple = (By.XPATH, "//*[contains(@class,'auth_trigger_button auth-trigger_logged')]//*[contains(@class,'button_name ng-star-inserted')]")  
    
     def __init__(self, driver):
         """
@@ -86,6 +89,38 @@ class HomePage(Common):
             self.logger.info("Page loaded correctly.")
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {self.__class__.__name__}") from e    
+    
+    @catch_exceptions() 
+    def login(self, username: str, password: str):
+       
+        # 1. Click initial login button
+        self.wait_to_be_clickable(self.BUTTON_LOGIN).click()
+        
+        # 2. Wait for new window to appear and switch to it
+        self.wait_for_new_window()
+        self.logger.info("Switching to login window...")
+        new_window = self.driver.window_handles[-1]
+        self.logger.info(f"New window opened {new_window}...")
+
+        self.wait_until_focus_be_usable( new_window)     
+     
+        self.driver.switch_to.window(new_window)
+
+        self.driver.maximize_window() 
+        
+        # 3. Optional: wait for loader to disappear or presence of the login form
+        self.wait_for(self.USER_FIELD)
+        self.logger.info(f"Waiting for login form...")
+      
+        # 4. Fill login form
+        self.find(self.USER_FIELD).send_keys(username)
+        self.find(self.PASSWORD_FIELD).send_keys(password)
+        self.find(self.LOGIN_CONFIRM).click()
+               
+        # 5. Wait until the window is closed and return to main
+        self.wait_for_window_close(new_window)
+        self.driver.switch_to.window(self.driver.window_handles[0])
+        self.logger.info(f"User logged...")
     
     @catch_exceptions() 
     def select_language(self, language):
@@ -425,32 +460,22 @@ class HomePage(Common):
     def loader_b(self):
         self.wait_for_invisibility(self.LOADER_B)
 
+    def is_logged_in(self) -> bool:
+            """
+            Checks if the user is logged in.
 
-    def login(self, username: str, password: str):
-       
-        # 1. Click initial login button
-        self.wait_to_be_clickable(self.BUTTON_LOGIN).click()
-        
-        # 2. Wait for new window to appear and switch to it
-        self.wait_for_new_window()
-        self.logger.info("Switching to login window...")
-        new_window = self.driver.window_handles[-1]
-        self.logger.info(f"New window opened {new_window}...")
-        self.driver.switch_to.window(new_window)
-        
-        # 3. Optional: wait for loader to disappear or presence of the login form
-        self.wait_for(self.USER_FIELD)
-        self.logger.info(f"Waiting for login form...")
-      
-        # 4. Fill login form
-        self.find(self.USER_FIELD).send_keys(username)
-        self.find(self.PASSWORD_FIELD).send_keys(password)
-        self.find(self.LOGIN_CONFIRM).click()
-               
-        # 5. Wait until the window is closed and return to main
-        self.wait_for_window_close(new_window)
-        self.driver.switch_to.window(self.driver.window_handles[0])
-        self.logger.info(f"User logged...")   
+            This method tries to find the element with the BUTTON_LOGGED_IN
+            locator. If the element is found, the method returns True, otherwise
+            it returns False.
+
+            Returns:
+                bool: Whether the user is logged in or not.
+            """
+            try:
+                self.find(self.LOGGED)
+                return True
+            except Exception:
+                return False
     
     
 

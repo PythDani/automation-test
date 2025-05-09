@@ -41,6 +41,7 @@ def test_avtest_case_1(booking_context_case_3):
         page.select_currency(params["currency"])
         page.select_origin(params["city_origin"])
         page.select_destination(params["city_destination"])
+        assert page.is_logged_in(), "User not logged in"
         page.select_deaperture_date(**params["departure_date"])
         page.select_arrival_date(**params["arrival_date"])
         page.click_plus_adult(times=params["passenger_count"])
@@ -54,13 +55,11 @@ def test_avtest_case_1(booking_context_case_3):
 
     # --- Booking Select ---
     with allure.step("Test Booking Select page"):
-        booking_select_page.loader_b()
-        booking_select_page.click_relative_date(label= params["relative_day"])
-        booking_select_page.loader_b()
+        booking_select_page.loader_b()        
         booking_select_page.click_drop_down_flight()
         booking_select_page.click_on_fare_flight()
         booking_select_page.loader_b()
-        booking_select_page.click_relative_date(label= params["relative_day"])
+      
         booking_select_page.loader_b()
         booking_select_page.click_drop_down_return_flight()
         booking_select_page.click_on_fare_flight()
@@ -72,6 +71,7 @@ def test_avtest_case_1(booking_context_case_3):
 
     # --- Form ---
     with allure.step("Test Form passengers page"):
+        assert form.is_logged_in(), "User not logged in"
         form.fill_passenger_form_method()        
         
 
@@ -106,9 +106,7 @@ def test_avtest_case_1(booking_context_case_3):
     # --- Payment ---
     with allure.step("Test fill payment form page"):
         payment_page.load()
-
         payment_page.select_avianca_credits(params["a_credits_number"], params["a_credits_pin"])       
-
         payment_page.accept_terms_and_conditions()
         payment_page.click_continue()
         payment_page.loader()

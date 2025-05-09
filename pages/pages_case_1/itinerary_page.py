@@ -46,7 +46,7 @@ class ItineraryPage(Common):
         Returns:
             str: The reservation code extracted from the itinerary page.
         """
-
+        self.logger.info(f"Reservation code: {reservation_code} ")
         self.wait_for_loader_c_disappear()
         reservation_code = self.find(self.RESERVATION_CODE).text
         self.logger.info(f"Reservation code: {reservation_code} ")

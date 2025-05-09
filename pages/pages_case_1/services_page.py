@@ -228,6 +228,7 @@ class ServicesPage(Common):
         name = "Bussiness lounge service"
         try:
             self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             add_buttons = self.find_all(self.BUSSINESS_LOUNGE_ADD_BUTTON)
 
             if add_buttons:
