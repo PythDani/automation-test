@@ -97,7 +97,7 @@ class PaymentPage(Common):
             input_number.send_keys(number)
 
             # Fill PIN
-            input_pin = self.wait_for_visibility_of_element_located(self.INPUT_PIN_AVIANCA_CREDITS)
+            input_pin = self.wait_for_visibility_of_element_located(self.INPUT_PIN_AVIANCA_CREDITS) #nONE  TYPE?
             input_pin.clear()
             input_pin.send_keys(pin)
 
