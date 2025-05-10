@@ -1,0 +1,7 @@
+pages\_case\_1.booking\_select\_page 
+-------------------------------------------
+
+.. automodule:: pages_case_1.booking_select_page
+   :members:
+   :show-inheritance:
+   :undoc-members:

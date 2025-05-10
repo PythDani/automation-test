@@ -1,0 +1,527 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class HomePage(Common) &mdash; Automation test 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Class BookingSelectPage(Common)" href="booking_select_page.html" />
+    <link rel="prev" title="Class Common" href="../common.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automation test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../conftest.html">conftest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common.html">Class Common</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Class HomePage(Common)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage"><code class="docutils literal notranslate"><span class="pre">HomePage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.ADULT_PLUS_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.ADULT_PLUS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.BUTTON_CURRENCY"><code class="docutils literal notranslate"><span class="pre">HomePage.BUTTON_CURRENCY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.BUTTON_LANGUAGE"><code class="docutils literal notranslate"><span class="pre">HomePage.BUTTON_LANGUAGE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.BUTTON_LOGIN"><code class="docutils literal notranslate"><span class="pre">HomePage.BUTTON_LOGIN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.BUTTON_ORIGIN"><code class="docutils literal notranslate"><span class="pre">HomePage.BUTTON_ORIGIN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.CHILD_PLUS_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.CHILD_PLUS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.CONFIRM_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.CONFIRM_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.CONFIRM_CURRENCY_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.CONFIRM_CURRENCY_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.DATEPICKER_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.DATEPICKER_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.DATEPICKER_CONTROL_MONTH_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.DATEPICKER_CONTROL_MONTH_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.DEPLOY_LANGUAGE_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.DEPLOY_LANGUAGE_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.DEPLOY_PASSENGERS_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.DEPLOY_PASSENGERS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.FIELD_DESTINATION"><code class="docutils literal notranslate"><span class="pre">HomePage.FIELD_DESTINATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.FIELD_ORIGIN"><code class="docutils literal notranslate"><span class="pre">HomePage.FIELD_ORIGIN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.INFANT_PLUS_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.INFANT_PLUS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.LOADER"><code class="docutils literal notranslate"><span class="pre">HomePage.LOADER</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.LOADER_B"><code class="docutils literal notranslate"><span class="pre">HomePage.LOADER_B</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.LOGGED"><code class="docutils literal notranslate"><span class="pre">HomePage.LOGGED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.LOGIN_CONFIRM"><code class="docutils literal notranslate"><span class="pre">HomePage.LOGIN_CONFIRM</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.OPTION_CITY_DESTINATION"><code class="docutils literal notranslate"><span class="pre">HomePage.OPTION_CITY_DESTINATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.OPTION_CITY_ORIGIN"><code class="docutils literal notranslate"><span class="pre">HomePage.OPTION_CITY_ORIGIN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.PASSWORD_FIELD"><code class="docutils literal notranslate"><span class="pre">HomePage.PASSWORD_FIELD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.RADIO_ONE_WAY"><code class="docutils literal notranslate"><span class="pre">HomePage.RADIO_ONE_WAY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.SEARCH_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.SEARCH_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.SELECT_CURRENCY_COUNTRY"><code class="docutils literal notranslate"><span class="pre">HomePage.SELECT_CURRENCY_COUNTRY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.USER_FIELD"><code class="docutils literal notranslate"><span class="pre">HomePage.USER_FIELD</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.YOUNG_PLUS_BUTTON"><code class="docutils literal notranslate"><span class="pre">HomePage.YOUNG_PLUS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.click_plus_adult"><code class="docutils literal notranslate"><span class="pre">HomePage.click_plus_adult()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.click_plus_child"><code class="docutils literal notranslate"><span class="pre">HomePage.click_plus_child()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.click_plus_infant"><code class="docutils literal notranslate"><span class="pre">HomePage.click_plus_infant()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.click_plus_young"><code class="docutils literal notranslate"><span class="pre">HomePage.click_plus_young()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.click_search_flight_button"><code class="docutils literal notranslate"><span class="pre">HomePage.click_search_flight_button()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.confirm_button_passengers_quantity"><code class="docutils literal notranslate"><span class="pre">HomePage.confirm_button_passengers_quantity()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.is_logged_in"><code class="docutils literal notranslate"><span class="pre">HomePage.is_logged_in()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.is_one_way_selected"><code class="docutils literal notranslate"><span class="pre">HomePage.is_one_way_selected()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.load"><code class="docutils literal notranslate"><span class="pre">HomePage.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.loader_a"><code class="docutils literal notranslate"><span class="pre">HomePage.loader_a()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.loader_b"><code class="docutils literal notranslate"><span class="pre">HomePage.loader_b()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.login"><code class="docutils literal notranslate"><span class="pre">HomePage.login()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.select_arrival_date"><code class="docutils literal notranslate"><span class="pre">HomePage.select_arrival_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.select_currency"><code class="docutils literal notranslate"><span class="pre">HomePage.select_currency()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.select_deaperture_date"><code class="docutils literal notranslate"><span class="pre">HomePage.select_deaperture_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.select_destination"><code class="docutils literal notranslate"><span class="pre">HomePage.select_destination()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.select_language"><code class="docutils literal notranslate"><span class="pre">HomePage.select_language()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.select_one_way_radio_button"><code class="docutils literal notranslate"><span class="pre">HomePage.select_one_way_radio_button()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.home_page.HomePage.select_origin"><code class="docutils literal notranslate"><span class="pre">HomePage.select_origin()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="booking_select_page.html">Class BookingSelectPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="form_passengers_page.html">Class FormPassengersPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services_page.html">Class ServicesPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seat_map_page.html">Class SeatMapPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="payment_page.html">Class PaymentPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/db_utils.html">db_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/exception.html">Exception</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automation test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Class HomePage(Common)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/pages_case_1/home_page.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-homepage-common">
+<h1>Class HomePage(Common)<a class="headerlink" href="#class-homepage-common" title="Link to this heading"></a></h1>
+<dl class="py class" id="module-pages.pages_case_1.home_page">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pages.pages_case_1.home_page.</span></span><span class="sig-name descname"><span class="pre">HomePage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../common.html#pages.common.Common" title="pages.common.Common"><code class="xref py py-class docutils literal notranslate"><span class="pre">Common</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.ADULT_PLUS_BUTTON">
+<span class="sig-name descname"><span class="pre">ADULT_PLUS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='paxControlSearchId']/div/div[2]/div/ul/li[1]/div[2]/ibe-minus-plus/div/button[2]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.ADULT_PLUS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.BUTTON_CURRENCY">
+<span class="sig-name descname"><span class="pre">BUTTON_CURRENCY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;id,</span> <span class="pre">'pointOfSaleSelectorId')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.BUTTON_CURRENCY" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.BUTTON_LANGUAGE">
+<span class="sig-name descname"><span class="pre">BUTTON_LANGUAGE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[.//span[normalize-space(.)='{}']]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.BUTTON_LANGUAGE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.BUTTON_LOGIN">
+<span class="sig-name descname"><span class="pre">BUTTON_LOGIN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;id,'auth-component')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.BUTTON_LOGIN" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.BUTTON_ORIGIN">
+<span class="sig-name descname"><span class="pre">BUTTON_ORIGIN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('id',</span> <span class="pre">'originBtn')</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.BUTTON_ORIGIN" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.CHILD_PLUS_BUTTON">
+<span class="sig-name descname"><span class="pre">CHILD_PLUS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='paxControlSearchId']/div/div[2]/div/ul/li[3]/div[2]/ibe-minus-plus/div/button[2]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.CHILD_PLUS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.CONFIRM_BUTTON">
+<span class="sig-name descname"><span class="pre">CONFIRM_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='paxControlSearchId']/div/div[2]/div/div/button&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.CONFIRM_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.CONFIRM_CURRENCY_BUTTON">
+<span class="sig-name descname"><span class="pre">CONFIRM_CURRENCY_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;class='button</span> <span class="pre">points-of-sale_footer_action_button']//*[&#64;class='button_label']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.CONFIRM_CURRENCY_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.DATEPICKER_BUTTON">
+<span class="sig-name descname"><span class="pre">DATEPICKER_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='ngbStartDatepickerId']/div[2]/div[2]/ngb-datepicker-month-view/div[2]/div[1]/span/div[1]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.DATEPICKER_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.DATEPICKER_CONTROL_MONTH_BUTTON">
+<span class="sig-name descname"><span class="pre">DATEPICKER_CONTROL_MONTH_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='searchContentId_OW']/div[2]/date-control-custom/div/div[2]/div/div[2]/date-picker-custom/div/button[2]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.DATEPICKER_CONTROL_MONTH_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.DEPLOY_LANGUAGE_BUTTON">
+<span class="sig-name descname"><span class="pre">DEPLOY_LANGUAGE_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;id,</span> <span class="pre">'languageListTriggerId')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.DEPLOY_LANGUAGE_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.DEPLOY_PASSENGERS_BUTTON">
+<span class="sig-name descname"><span class="pre">DEPLOY_PASSENGERS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;class='control_field']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.DEPLOY_PASSENGERS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.FIELD_DESTINATION">
+<span class="sig-name descname"><span class="pre">FIELD_DESTINATION</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'control_field</span> <span class="pre">control_field-inbound</span> <span class="pre">is-focused')]//*[&#64;class='control_field_input']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.FIELD_DESTINATION" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.FIELD_ORIGIN">
+<span class="sig-name descname"><span class="pre">FIELD_ORIGIN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'control_field_input')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.FIELD_ORIGIN" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.INFANT_PLUS_BUTTON">
+<span class="sig-name descname"><span class="pre">INFANT_PLUS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='paxControlSearchId']/div/div[2]/div/ul/li[4]/div[2]/ibe-minus-plus/div/button[2]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.INFANT_PLUS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.LOADER">
+<span class="sig-name descname"><span class="pre">LOADER</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,</span> <span class="pre">'loader')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loading')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'page-loader')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.LOADER" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.LOADER_B">
+<span class="sig-name descname"><span class="pre">LOADER_B</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('class</span> <span class="pre">name',</span> <span class="pre">'page-loader')</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.LOADER_B" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.LOGGED">
+<span class="sig-name descname"><span class="pre">LOGGED</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'auth_trigger_button</span> <span class="pre">auth-trigger_logged')]//*[contains(&#64;class,'button_name</span> <span class="pre">ng-star-inserted')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.LOGGED" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.LOGIN_CONFIRM">
+<span class="sig-name descname"><span class="pre">LOGIN_CONFIRM</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;id,'Login-confirm')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.LOGIN_CONFIRM" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.OPTION_CITY_DESTINATION">
+<span class="sig-name descname"><span class="pre">OPTION_CITY_DESTINATION</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//li[contains(&#64;class,</span> <span class="pre">'station-control-list_item')]//span[contains(&#64;class,</span> <span class="pre">'station-control-list_item_link-city')</span> <span class="pre">and</span> <span class="pre">contains(.,</span> <span class="pre">'{}')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.OPTION_CITY_DESTINATION" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.OPTION_CITY_ORIGIN">
+<span class="sig-name descname"><span class="pre">OPTION_CITY_ORIGIN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//li[contains(&#64;class,</span> <span class="pre">'station-control-list_item')]//span[contains(&#64;class,</span> <span class="pre">'station-control-list_item_link-city')</span> <span class="pre">and</span> <span class="pre">contains(.,</span> <span class="pre">'{}')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.OPTION_CITY_ORIGIN" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.PASSWORD_FIELD">
+<span class="sig-name descname"><span class="pre">PASSWORD_FIELD</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;id,'u-password')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.PASSWORD_FIELD" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.RADIO_ONE_WAY">
+<span class="sig-name descname"><span class="pre">RADIO_ONE_WAY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('id',</span> <span class="pre">'journeytypeId_1')</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.RADIO_ONE_WAY" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.SEARCH_BUTTON">
+<span class="sig-name descname"><span class="pre">SEARCH_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('id',</span> <span class="pre">'searchButton')</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.SEARCH_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.SELECT_CURRENCY_COUNTRY">
+<span class="sig-name descname"><span class="pre">SELECT_CURRENCY_COUNTRY</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id=</span> <span class="pre">'pointOfSaleListId']//*[&#64;class=</span> <span class="pre">'points-of-sale_list_item</span> <span class="pre">ng-star-inserted']//*[&#64;class=</span> <span class="pre">'points-of-sale_list_item_label'</span> <span class="pre">and</span> <span class="pre">contains(.,'{}')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.SELECT_CURRENCY_COUNTRY" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.USER_FIELD">
+<span class="sig-name descname"><span class="pre">USER_FIELD</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;id,'u-username')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.USER_FIELD" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.YOUNG_PLUS_BUTTON">
+<span class="sig-name descname"><span class="pre">YOUNG_PLUS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='paxControlSearchId']/div/div[2]/div/ul/li[2]/div[2]/ibe-minus-plus/div/button[2]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.YOUNG_PLUS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.click_plus_adult">
+<span class="sig-name descname"><span class="pre">click_plus_adult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_between_clicks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.click_plus_adult" title="Link to this definition"></a></dt>
+<dd><p>Clicks multiple times on the same element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> – Number of times you want to click.</p></li>
+<li><p><strong>wait_between_clicks</strong> – Wait time between clicks in seconds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.click_plus_child">
+<span class="sig-name descname"><span class="pre">click_plus_child</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_between_clicks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.click_plus_child" title="Link to this definition"></a></dt>
+<dd><p>Clicks multiple times on the same element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> – Number of times you want to click.</p></li>
+<li><p><strong>wait_between_clicks</strong> – Wait time between clicks in seconds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.click_plus_infant">
+<span class="sig-name descname"><span class="pre">click_plus_infant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_between_clicks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.click_plus_infant" title="Link to this definition"></a></dt>
+<dd><p>Clicks multiple times on the same element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> – Number of times you want to click.</p></li>
+<li><p><strong>wait_between_clicks</strong> – Wait time between clicks in seconds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.click_plus_young">
+<span class="sig-name descname"><span class="pre">click_plus_young</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">times</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_between_clicks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.click_plus_young" title="Link to this definition"></a></dt>
+<dd><p>Clicks multiple times on the same element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>times</strong> – Number of times you want to click.</p></li>
+<li><p><strong>wait_between_clicks</strong> – Wait time between clicks in seconds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.click_search_flight_button">
+<span class="sig-name descname"><span class="pre">click_search_flight_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.click_search_flight_button" title="Link to this definition"></a></dt>
+<dd><p>Clicks the search flight button on the home page.</p>
+<p>This method waits for the search button to become clickable,
+clicks it, and logs the action for tracking purposes.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.confirm_button_passengers_quantity">
+<span class="sig-name descname"><span class="pre">confirm_button_passengers_quantity</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.confirm_button_passengers_quantity" title="Link to this definition"></a></dt>
+<dd><p>Confirms the passengers quantity.</p>
+<p>This method waits until the confirmation button of the passengers modal is clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.is_logged_in">
+<span class="sig-name descname"><span class="pre">is_logged_in</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.is_logged_in" title="Link to this definition"></a></dt>
+<dd><p>Checks if the user is logged in.</p>
+<p>This method tries to find the element with the BUTTON_LOGGED_IN
+locator. If the element is found, the method returns True, otherwise
+it returns False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Whether the user is logged in or not.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.is_one_way_selected">
+<span class="sig-name descname"><span class="pre">is_one_way_selected</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.is_one_way_selected" title="Link to this definition"></a></dt>
+<dd><p>Return True if the one way radio button is selected, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.load" title="Link to this definition"></a></dt>
+<dd><p>load home page.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.loader_a">
+<span class="sig-name descname"><span class="pre">loader_a</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.loader_a" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.loader_b">
+<span class="sig-name descname"><span class="pre">loader_b</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.loader_b" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.login">
+<span class="sig-name descname"><span class="pre">login</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.login" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.select_arrival_date">
+<span class="sig-name descname"><span class="pre">select_arrival_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.select_arrival_date" title="Link to this definition"></a></dt>
+<dd><p>Selects the arrival date from the date picker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>day</strong> (<em>str</em>) – The day of the month (1-31) to select.</p></li>
+<li><p><strong>month</strong> (<em>str</em>) – The month of the year (1-12) to select.</p></li>
+<li><p><strong>year</strong> (<em>str</em>) – The year to select.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TimeoutException</strong> – If the input element is not found within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.select_currency">
+<span class="sig-name descname"><span class="pre">select_currency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">currency</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.select_currency" title="Link to this definition"></a></dt>
+<dd><p>Selects a currency from the currency dropdown.</p>
+<p>This method clicks on the currency dropdown button, waits for the options to be
+clickable, and selects the specified currency.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>currency</strong> (<em>str</em>) – The currency to select from the dropdown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.select_deaperture_date">
+<span class="sig-name descname"><span class="pre">select_deaperture_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">day</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.select_deaperture_date" title="Link to this definition"></a></dt>
+<dd><p>Selects the departure date from the date picker.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>day</strong> (<em>str</em>) – The day of the month (1-31) to select.</p></li>
+<li><p><strong>month</strong> (<em>str</em>) – The month of the year (1-12) to select.</p></li>
+<li><p><strong>year</strong> (<em>str</em>) – The year to select.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>TimeoutException</strong> – If the input element is not found within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.select_destination">
+<span class="sig-name descname"><span class="pre">select_destination</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">city_destination</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.select_destination" title="Link to this definition"></a></dt>
+<dd><p>Select the destination city in the page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wait</strong> (<em>selenium.webdriver.support.ui.WebDriverWait</em>) – A WebDriverWait instance.</p></li>
+<li><p><strong>field_destination</strong> (<em>tuple</em>) – A tuple of (By, str) to locate the destination field.</p></li>
+<li><p><strong>option_city_destination</strong> (<em>tuple</em>) – A tuple of (By, str) to locate the city option.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.select_language">
+<span class="sig-name descname"><span class="pre">select_language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">language</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.select_language" title="Link to this definition"></a></dt>
+<dd><p>Selects a language from the language dropdown.</p>
+<p>This method clicks on the language dropdown button, waits for the options to be
+clickable, and selects the specified language.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>language</strong> (<em>str</em>) – The language to select from the dropdown.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.select_one_way_radio_button">
+<span class="sig-name descname"><span class="pre">select_one_way_radio_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.select_one_way_radio_button" title="Link to this definition"></a></dt>
+<dd><p>Select the one way radio button in the page.</p>
+<p>If the radio button is not selected, it will be clicked.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.home_page.HomePage.select_origin">
+<span class="sig-name descname"><span class="pre">select_origin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">city_origin</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.home_page.HomePage.select_origin" title="Link to this definition"></a></dt>
+<dd><p>Select the origin city in the page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wait</strong> (<em>selenium.webdriver.support.ui.WebDriverWait</em>) – A WebDriverWait instance.</p></li>
+<li><p><strong>button_origin</strong> (<em>tuple</em>) – A tuple of (By, str) to locate the origin button.</p></li>
+<li><p><strong>field_origin</strong> (<em>tuple</em>) – A tuple of (By, str) to locate the origin field.</p></li>
+<li><p><strong>option_city_origin</strong> (<em>tuple</em>) – A tuple of (By, str) to locate the city option.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../common.html" class="btn btn-neutral float-left" title="Class Common" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="booking_select_page.html" class="btn btn-neutral float-right" title="Class BookingSelectPage(Common)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rafael Farfan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

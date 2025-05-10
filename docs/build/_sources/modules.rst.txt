@@ -1,0 +1,7 @@
+automation-test
+===============
+
+.. toctree::
+   :maxdepth: 4
+
+   pages_case_1

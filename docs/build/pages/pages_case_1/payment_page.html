@@ -1,0 +1,429 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class PaymentPage(Common) &mdash; Automation test 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="db_utils" href="../../utils/db_utils.html" />
+    <link rel="prev" title="Class SeatMapPage(Common)" href="seat_map_page.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automation test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../conftest.html">conftest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common.html">Class Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="home_page.html">Class HomePage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_select_page.html">Class BookingSelectPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="form_passengers_page.html">Class FormPassengersPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services_page.html">Class ServicesPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seat_map_page.html">Class SeatMapPage(Common)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Class PaymentPage(Common)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage"><code class="docutils literal notranslate"><span class="pre">PaymentPage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.ADDRESS_INPUT"><code class="docutils literal notranslate"><span class="pre">PaymentPage.ADDRESS_INPUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.APPLY_AVIANCA_CREDITS"><code class="docutils literal notranslate"><span class="pre">PaymentPage.APPLY_AVIANCA_CREDITS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.BUTTON_ENTER_AVIANCA_CREDITS"><code class="docutils literal notranslate"><span class="pre">PaymentPage.BUTTON_ENTER_AVIANCA_CREDITS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.BUTTON_MODAL_PAYMENT_REJECTED"><code class="docutils literal notranslate"><span class="pre">PaymentPage.BUTTON_MODAL_PAYMENT_REJECTED</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CARD_HOLDER_NAME_INPUT"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CARD_HOLDER_NAME_INPUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CARD_NUMBER_INPUT"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CARD_NUMBER_INPUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CHECK_AVIANCA_CREDITS"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CHECK_AVIANCA_CREDITS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CITY_INPUT"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CITY_INPUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CLOSE_MODAL"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CLOSE_MODAL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CONFIRM_MODAL"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CONFIRM_MODAL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CONTINUE_BUTTON"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CONTINUE_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.CVV_INPUT"><code class="docutils literal notranslate"><span class="pre">PaymentPage.CVV_INPUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.EMAIL_INPUT"><code class="docutils literal notranslate"><span class="pre">PaymentPage.EMAIL_INPUT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.INPUT_NUMBER_AVIANCA_CREDITS"><code class="docutils literal notranslate"><span class="pre">PaymentPage.INPUT_NUMBER_AVIANCA_CREDITS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.INPUT_PIN_AVIANCA_CREDITS"><code class="docutils literal notranslate"><span class="pre">PaymentPage.INPUT_PIN_AVIANCA_CREDITS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.LOADER_C"><code class="docutils literal notranslate"><span class="pre">PaymentPage.LOADER_C</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.MODAL_CONTENT"><code class="docutils literal notranslate"><span class="pre">PaymentPage.MODAL_CONTENT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.ONE_TRUST_ACCEPT_BUTTON"><code class="docutils literal notranslate"><span class="pre">PaymentPage.ONE_TRUST_ACCEPT_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.PANEL_PAGO"><code class="docutils literal notranslate"><span class="pre">PaymentPage.PANEL_PAGO</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.accept_terms_and_conditions"><code class="docutils literal notranslate"><span class="pre">PaymentPage.accept_terms_and_conditions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.click_continue"><code class="docutils literal notranslate"><span class="pre">PaymentPage.click_continue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.fill_address"><code class="docutils literal notranslate"><span class="pre">PaymentPage.fill_address()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.fill_card_number"><code class="docutils literal notranslate"><span class="pre">PaymentPage.fill_card_number()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.fill_cardholder_name"><code class="docutils literal notranslate"><span class="pre">PaymentPage.fill_cardholder_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.fill_city"><code class="docutils literal notranslate"><span class="pre">PaymentPage.fill_city()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.fill_cvv"><code class="docutils literal notranslate"><span class="pre">PaymentPage.fill_cvv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.fill_email"><code class="docutils literal notranslate"><span class="pre">PaymentPage.fill_email()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.handle_modal_and_navigate"><code class="docutils literal notranslate"><span class="pre">PaymentPage.handle_modal_and_navigate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.load"><code class="docutils literal notranslate"><span class="pre">PaymentPage.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.loader"><code class="docutils literal notranslate"><span class="pre">PaymentPage.loader()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.scroll_to_element"><code class="docutils literal notranslate"><span class="pre">PaymentPage.scroll_to_element()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.select_avianca_credits"><code class="docutils literal notranslate"><span class="pre">PaymentPage.select_avianca_credits()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.select_country"><code class="docutils literal notranslate"><span class="pre">PaymentPage.select_country()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.select_expiration_month"><code class="docutils literal notranslate"><span class="pre">PaymentPage.select_expiration_month()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.payment_page.PaymentPage.select_expiration_year"><code class="docutils literal notranslate"><span class="pre">PaymentPage.select_expiration_year()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/db_utils.html">db_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/exception.html">Exception</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automation test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Class PaymentPage(Common)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/pages_case_1/payment_page.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-paymentpage-common">
+<h1>Class PaymentPage(Common)<a class="headerlink" href="#class-paymentpage-common" title="Link to this heading"></a></h1>
+<dl class="py class" id="module-pages.pages_case_1.payment_page">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pages.pages_case_1.payment_page.</span></span><span class="sig-name descname"><span class="pre">PaymentPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../common.html#pages.common.Common" title="pages.common.Common"><code class="xref py py-class docutils literal notranslate"><span class="pre">Common</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.ADDRESS_INPUT">
+<span class="sig-name descname"><span class="pre">ADDRESS_INPUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//div[contains(&#64;class,</span> <span class="pre">'ds-input-container')]//input[&#64;id='address']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.ADDRESS_INPUT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.APPLY_AVIANCA_CREDITS">
+<span class="sig-name descname"><span class="pre">APPLY_AVIANCA_CREDITS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'ds-button</span> <span class="pre">ds-btn-primary</span> <span class="pre">ds-btn-small')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.APPLY_AVIANCA_CREDITS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.BUTTON_ENTER_AVIANCA_CREDITS">
+<span class="sig-name descname"><span class="pre">BUTTON_ENTER_AVIANCA_CREDITS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;id,'buttonAviancaCredits')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.BUTTON_ENTER_AVIANCA_CREDITS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.BUTTON_MODAL_PAYMENT_REJECTED">
+<span class="sig-name descname"><span class="pre">BUTTON_MODAL_PAYMENT_REJECTED</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;class,'ds-button</span> <span class="pre">ds-btn-primary</span> <span class="pre">ds-btn-medium')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.BUTTON_MODAL_PAYMENT_REJECTED" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CARD_HOLDER_NAME_INPUT">
+<span class="sig-name descname"><span class="pre">CARD_HOLDER_NAME_INPUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('name',</span> <span class="pre">'Holder')</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CARD_HOLDER_NAME_INPUT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CARD_NUMBER_INPUT">
+<span class="sig-name descname"><span class="pre">CARD_NUMBER_INPUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('name',</span> <span class="pre">'Data')</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CARD_NUMBER_INPUT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CHECK_AVIANCA_CREDITS">
+<span class="sig-name descname"><span class="pre">CHECK_AVIANCA_CREDITS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;class='toggle_input']//input[contains(&#64;type,'checkbox')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CHECK_AVIANCA_CREDITS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CITY_INPUT">
+<span class="sig-name descname"><span class="pre">CITY_INPUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//div[contains(&#64;class,</span> <span class="pre">'ds-input-container')]//input[&#64;id='city']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CITY_INPUT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CLOSE_MODAL">
+<span class="sig-name descname"><span class="pre">CLOSE_MODAL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;class='modal-close</span> <span class="pre">ng-star-inserted']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CLOSE_MODAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CONFIRM_MODAL">
+<span class="sig-name descname"><span class="pre">CONFIRM_MODAL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;class,'ds-button</span> <span class="pre">ds-btn-primary</span> <span class="pre">ds-btn-medium')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CONFIRM_MODAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CONTINUE_BUTTON">
+<span class="sig-name descname"><span class="pre">CONTINUE_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;class,'ds-button</span> <span class="pre">ds-btn-primary</span> <span class="pre">ds-btn-medium')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CONTINUE_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.CVV_INPUT">
+<span class="sig-name descname"><span class="pre">CVV_INPUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('name',</span> <span class="pre">'Cvv')</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.CVV_INPUT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.EMAIL_INPUT">
+<span class="sig-name descname"><span class="pre">EMAIL_INPUT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//div[contains(&#64;class,</span> <span class="pre">'ds-input-container')]//input[&#64;id='email']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.EMAIL_INPUT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.INPUT_NUMBER_AVIANCA_CREDITS">
+<span class="sig-name descname"><span class="pre">INPUT_NUMBER_AVIANCA_CREDITS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//input[contains(&#64;id,'number')</span> <span class="pre">and</span> <span class="pre">contains(&#64;name,'number')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.INPUT_NUMBER_AVIANCA_CREDITS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.INPUT_PIN_AVIANCA_CREDITS">
+<span class="sig-name descname"><span class="pre">INPUT_PIN_AVIANCA_CREDITS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//input[contains(&#64;id,'pin')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.INPUT_PIN_AVIANCA_CREDITS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.LOADER_C">
+<span class="sig-name descname"><span class="pre">LOADER_C</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,</span> <span class="pre">'page-loader')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loading')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loader')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.LOADER_C" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.MODAL_CONTENT">
+<span class="sig-name descname"><span class="pre">MODAL_CONTENT</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,</span> <span class="pre">'modal-content')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.MODAL_CONTENT" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.ONE_TRUST_ACCEPT_BUTTON">
+<span class="sig-name descname"><span class="pre">ONE_TRUST_ACCEPT_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('id',</span> <span class="pre">'onetrust-accept-btn-handler')</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.ONE_TRUST_ACCEPT_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.PANEL_PAGO">
+<span class="sig-name descname"><span class="pre">PANEL_PAGO</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='IdHere']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.PANEL_PAGO" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.accept_terms_and_conditions">
+<span class="sig-name descname"><span class="pre">accept_terms_and_conditions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.accept_terms_and_conditions" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the checkbox to accept terms and conditions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.click_continue">
+<span class="sig-name descname"><span class="pre">click_continue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.click_continue" title="Link to this definition"></a></dt>
+<dd><p>Clicks the “Continuar” button.</p>
+<p>This method waits until the button is clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.fill_address">
+<span class="sig-name descname"><span class="pre">fill_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">address</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.fill_address" title="Link to this definition"></a></dt>
+<dd><p>Fills in the address input field.
+:param address: The address to input.
+:type address: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.fill_card_number">
+<span class="sig-name descname"><span class="pre">fill_card_number</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.fill_card_number" title="Link to this definition"></a></dt>
+<dd><p>Fills out the card number field with the given number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>number</strong> (<em>str</em>) – The card number to be entered into the input field.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If there is an error during any of the operations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.fill_cardholder_name">
+<span class="sig-name descname"><span class="pre">fill_cardholder_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.fill_cardholder_name" title="Link to this definition"></a></dt>
+<dd><p>Fills the card holder name field in the payment form.</p>
+<p>This method waits for the loader to disappear, switches to the iframe containing the
+card input field, scrolls the card holder name field into view, and fills it using
+JavaScript. Logs all significant steps, and raises an exception if an error occurs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – The name of the cardholder to be entered into the input field.</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If there is an error during any of the operations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.fill_city">
+<span class="sig-name descname"><span class="pre">fill_city</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">city</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.fill_city" title="Link to this definition"></a></dt>
+<dd><p>Fills in the city input field.
+:param city: The city name to input.
+:type city: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.fill_cvv">
+<span class="sig-name descname"><span class="pre">fill_cvv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cvv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.fill_cvv" title="Link to this definition"></a></dt>
+<dd><p>Fills the CVV field with the given value.
+:param cvv: The CVV number to enter.
+:type cvv: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.fill_email">
+<span class="sig-name descname"><span class="pre">fill_email</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.fill_email" title="Link to this definition"></a></dt>
+<dd><p>Fills in the email input field.
+:param email: The email address to input.
+:type email: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.handle_modal_and_navigate">
+<span class="sig-name descname"><span class="pre">handle_modal_and_navigate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.handle_modal_and_navigate" title="Link to this definition"></a></dt>
+<dd><p>Handles the modal that appears when the payment is rejected and navigates to the
+itinerary page.</p>
+<p>If the modal is detected, the method waits for the modal to appear, goes back to the
+previous page, waits for the page to finish loading, and then navigates to the
+itinerary page.</p>
+<p>If the modal is not detected, the method simply continues with the normal flow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.load" title="Link to this definition"></a></dt>
+<dd><p>Load the payment page and handle page elements.</p>
+<p>This method clicks on the One Trust accept button and waits for the page loader
+to disappear before confirming that the page is loaded. If the loader does not
+disappear within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.loader">
+<span class="sig-name descname"><span class="pre">loader</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.loader" title="Link to this definition"></a></dt>
+<dd><p>Waits for the page loader to disappear.</p>
+<p>This method waits until the page loader disappears. If the loader does not
+disappear within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.scroll_to_element">
+<span class="sig-name descname"><span class="pre">scroll_to_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.scroll_to_element" title="Link to this definition"></a></dt>
+<dd><p>Hace scroll hacia el elemento ubicado por el locator.
+:param driver: instancia de WebDriver
+:param locator: tupla (By, valor)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.select_avianca_credits">
+<span class="sig-name descname"><span class="pre">select_avianca_credits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.select_avianca_credits" title="Link to this definition"></a></dt>
+<dd><p>Select Avianca credits and fill in number and PIN.</p>
+<p>This method clicks on the Avianca credits checkbox, waits for the loader to disappear,
+then fills in the provided number and PIN.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>number</strong> – Avianca credits number</p></li>
+<li><p><strong>pin</strong> – Avianca credits PIN</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.select_country">
+<span class="sig-name descname"><span class="pre">select_country</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">country_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.select_country" title="Link to this definition"></a></dt>
+<dd><p>Selects a country from the custom dropdown.
+:param country_name: The visible name of the country to select (e.g., “Colombia”).
+:type country_name: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.select_expiration_month">
+<span class="sig-name descname"><span class="pre">select_expiration_month</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">month</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.select_expiration_month" title="Link to this definition"></a></dt>
+<dd><p>Selects the expiration month from a custom dropdown.
+:param month: The expiration month to select (e.g., ‘3’).
+:type month: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.payment_page.PaymentPage.select_expiration_year">
+<span class="sig-name descname"><span class="pre">select_expiration_year</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">year</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.payment_page.PaymentPage.select_expiration_year" title="Link to this definition"></a></dt>
+<dd><p>Selects the expiration year from a custom dropdown.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>year</strong> (<em>str</em>) – The expiration year to select (e.g., ‘22’).</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the year is not a two-digit number.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="seat_map_page.html" class="btn btn-neutral float-left" title="Class SeatMapPage(Common)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../utils/db_utils.html" class="btn btn-neutral float-right" title="db_utils" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rafael Farfan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -147,9 +147,9 @@ def booking_context_case_3(browser):
             "arrival_date": {"day": "30", "month": "5", "year": "2025"},
 
             "passenger_count": 3,
-            "young_count": 1,
-            "child_count": 0,
-            "baby_count": 0,
+            "young_count": 3,
+            "child_count": 3,
+            "baby_count": 3,
             "relative_day": "2 days before",
             "user_name": "21734198706",
             "user_password": "Lifemiles1",

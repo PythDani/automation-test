@@ -1,0 +1,251 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class BookingSelectPage(Common) &mdash; Automation test 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Class FormPassengersPage(Common)" href="form_passengers_page.html" />
+    <link rel="prev" title="Class HomePage(Common)" href="home_page.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automation test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../conftest.html">conftest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common.html">Class Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="home_page.html">Class HomePage(Common)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Class BookingSelectPage(Common)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.BASIC_FARE_BUTTON"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.BASIC_FARE_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.CONTINUE_BUTTON"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.CONTINUE_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.FLIGHT_BUTTON"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.FLIGHT_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.FLIGHT_BUTTON_RETURN"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.FLIGHT_BUTTON_RETURN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.LOADER_B"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.LOADER_B</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.RELATIVE_DAY_MAPPING"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.RELATIVE_DAY_MAPPING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.SELECT_ANOTHER_DATE_BUTTON"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.SELECT_ANOTHER_DATE_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.button_continue_to_move_to_passenger_form"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.button_continue_to_move_to_passenger_form()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_drop_down_flight"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.click_drop_down_flight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_drop_down_return_flight"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.click_drop_down_return_flight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_on_fare_flight"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.click_on_fare_flight()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_relative_date"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.click_relative_date()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.get_sesion_params"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.get_sesion_params()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.loader_b"><code class="docutils literal notranslate"><span class="pre">BookingSelectPage.loader_b()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="form_passengers_page.html">Class FormPassengersPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services_page.html">Class ServicesPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="seat_map_page.html">Class SeatMapPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="payment_page.html">Class PaymentPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/db_utils.html">db_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/exception.html">Exception</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automation test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Class BookingSelectPage(Common)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/pages_case_1/booking_select_page.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-bookingselectpage-common">
+<h1>Class BookingSelectPage(Common)<a class="headerlink" href="#class-bookingselectpage-common" title="Link to this heading"></a></h1>
+<dl class="py class" id="module-pages.pages_case_1.booking_select_page">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pages.pages_case_1.booking_select_page.</span></span><span class="sig-name descname"><span class="pre">BookingSelectPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../common.html#pages.common.Common" title="pages.common.Common"><code class="xref py py-class docutils literal notranslate"><span class="pre">Common</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.BASIC_FARE_BUTTON">
+<span class="sig-name descname"><span class="pre">BASIC_FARE_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//div[&#64;role='button'</span> <span class="pre">and</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'fare-control')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.BASIC_FARE_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.CONTINUE_BUTTON">
+<span class="sig-name descname"><span class="pre">CONTINUE_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;id='maincontent']/div/div[2]/div/div/button-container/div/div/button&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.CONTINUE_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.FLIGHT_BUTTON">
+<span class="sig-name descname"><span class="pre">FLIGHT_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;(//*[&#64;class='journey-select_list</span> <span class="pre">ng-star-inserted']/*)[1]//*[&#64;class='journey_price']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.FLIGHT_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.FLIGHT_BUTTON_RETURN">
+<span class="sig-name descname"><span class="pre">FLIGHT_BUTTON_RETURN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;(//*[&#64;class='journey-select_journey-filter</span> <span class="pre">ng-star-inserted']/following-sibling::*[&#64;class='journey-select_list</span> <span class="pre">ng-star-inserted']/*)[1]//*[&#64;class='journey_price']&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.FLIGHT_BUTTON_RETURN" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.LOADER_B">
+<span class="sig-name descname"><span class="pre">LOADER_B</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,</span> <span class="pre">'page-loader')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loading')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loader')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.LOADER_B" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.RELATIVE_DAY_MAPPING">
+<span class="sig-name descname"><span class="pre">RELATIVE_DAY_MAPPING</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'1</span> <span class="pre">day</span> <span class="pre">after':</span> <span class="pre">4,</span> <span class="pre">'1</span> <span class="pre">day</span> <span class="pre">before':</span> <span class="pre">3,</span> <span class="pre">'2</span> <span class="pre">days</span> <span class="pre">after':</span> <span class="pre">5,</span> <span class="pre">'2</span> <span class="pre">days</span> <span class="pre">before':</span> <span class="pre">2,</span> <span class="pre">'3</span> <span class="pre">days</span> <span class="pre">after':</span> <span class="pre">6,</span> <span class="pre">'3</span> <span class="pre">days</span> <span class="pre">before':</span> <span class="pre">1}</span></em><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.RELATIVE_DAY_MAPPING" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.SELECT_ANOTHER_DATE_BUTTON">
+<span class="sig-name descname"><span class="pre">SELECT_ANOTHER_DATE_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[&#64;class='day-selector_item</span> <span class="pre">ng-star-inserted'][{}]//*[contains(&#64;class,'day-control')</span> <span class="pre">and</span> <span class="pre">contains(&#64;aria-label,'Schedule.A11y.CalendarDay.AriaLabel')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.SELECT_ANOTHER_DATE_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.button_continue_to_move_to_passenger_form">
+<span class="sig-name descname"><span class="pre">button_continue_to_move_to_passenger_form</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.button_continue_to_move_to_passenger_form" title="Link to this definition"></a></dt>
+<dd><p>Clicks the “Continue” button to move to the passenger form.</p>
+<p>This method waits until the button is visible, scrolls down to the element
+using ActionChains, clicks on it, and logs the action performed. If the button
+is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.click_drop_down_flight">
+<span class="sig-name descname"><span class="pre">click_drop_down_flight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_drop_down_flight" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the dropdown button of the flight to select a tariff.</p>
+<p>This method waits until the button is clickable, moves to the element using
+ActionChains, clicks on it, and logs the action performed. If the button is not
+found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.click_drop_down_return_flight">
+<span class="sig-name descname"><span class="pre">click_drop_down_return_flight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_drop_down_return_flight" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the dropdown button of the flight to select a tariff.</p>
+<p>This method waits until the button is clickable, moves to the element using
+ActionChains, clicks on it, and logs the action performed. If the button is not
+found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.click_on_fare_flight">
+<span class="sig-name descname"><span class="pre">click_on_fare_flight</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_on_fare_flight" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the ‘Basic’ fare button.</p>
+<p>This method waits until the button is clickable, moves to the element using
+ActionChains, clicks on it, and logs the action performed. If the button is not
+found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.click_relative_date">
+<span class="sig-name descname"><span class="pre">click_relative_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.click_relative_date" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the departure date option based on a human-readable label.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – One of the keys in RELATIVE_DAY_MAPPING, like “2 días después”</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.get_sesion_params">
+<span class="sig-name descname"><span class="pre">get_sesion_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.get_sesion_params" title="Link to this definition"></a></dt>
+<dd><p>Searches for a response with “session” in the URL and returns a JSON object with the response body.</p>
+<p>Iterates over the requests history and searches for a response that contains “session” in its URL.
+If found, decodes the response body according to the encoding, converts it to a JSON object and
+logs the JSON object. If any error occurs during this process, logs the error and returns None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A JSON object with the response body if found, None otherwise.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.booking_select_page.BookingSelectPage.loader_b">
+<span class="sig-name descname"><span class="pre">loader_b</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.booking_select_page.BookingSelectPage.loader_b" title="Link to this definition"></a></dt>
+<dd><p>Waits for the page loader to disappear.</p>
+<p>This method waits until the page loader disappears. If the loader does not
+disappear within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="home_page.html" class="btn btn-neutral float-left" title="Class HomePage(Common)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="form_passengers_page.html" class="btn btn-neutral float-right" title="Class FormPassengersPage(Common)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rafael Farfan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

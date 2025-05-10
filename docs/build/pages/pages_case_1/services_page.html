@@ -1,0 +1,399 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class ServicesPage(Common) &mdash; Automation test 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Class SeatMapPage(Common)" href="seat_map_page.html" />
+    <link rel="prev" title="Class FormPassengersPage(Common)" href="form_passengers_page.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automation test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../conftest.html">conftest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common.html">Class Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="home_page.html">Class HomePage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_select_page.html">Class BookingSelectPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="form_passengers_page.html">Class FormPassengersPage(Common)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Class ServicesPage(Common)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage"><code class="docutils literal notranslate"><span class="pre">ServicesPage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.ADD_SPECIAL_ASISTANCE_ALL"><code class="docutils literal notranslate"><span class="pre">ServicesPage.ADD_SPECIAL_ASISTANCE_ALL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.BUSSINESS_LOUNGE_ADD_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.BUSSINESS_LOUNGE_ADD_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.CARRY_ON_BAGGAGE_PLUS_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.CARRY_ON_BAGGAGE_PLUS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL"><code class="docutils literal notranslate"><span class="pre">ServicesPage.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_LOUNGES_MODAL"><code class="docutils literal notranslate"><span class="pre">ServicesPage.CONFIRM_LOUNGES_MODAL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_SERVICES_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.CONFIRM_SERVICES_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_SPECIAL_ASISTANCE_MODAL"><code class="docutils literal notranslate"><span class="pre">ServicesPage.CONFIRM_SPECIAL_ASISTANCE_MODAL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_SPORT_BAGGAGE_MODAL"><code class="docutils literal notranslate"><span class="pre">ServicesPage.CONFIRM_SPORT_BAGGAGE_MODAL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.LOADER_C"><code class="docutils literal notranslate"><span class="pre">ServicesPage.LOADER_C</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.LOUNGES_PLUS_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.LOUNGES_PLUS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.SPECIAL_ASISTANCE_ADD_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.SPECIAL_ASISTANCE_ADD_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.SPORT_BAGGAGE_ADD_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.SPORT_BAGGAGE_ADD_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.SPORT_EQUIPMENT_PLUS_BUTTON"><code class="docutils literal notranslate"><span class="pre">ServicesPage.SPORT_EQUIPMENT_PLUS_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.add_bussines_lounge"><code class="docutils literal notranslate"><span class="pre">ServicesPage.add_bussines_lounge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.add_carry_on_and_checked_baggage"><code class="docutils literal notranslate"><span class="pre">ServicesPage.add_carry_on_and_checked_baggage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.add_special_asistance_services"><code class="docutils literal notranslate"><span class="pre">ServicesPage.add_special_asistance_services()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.add_sport_baggage"><code class="docutils literal notranslate"><span class="pre">ServicesPage.add_sport_baggage()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.click_on_add_special_asistance_plus_button"><code class="docutils literal notranslate"><span class="pre">ServicesPage.click_on_add_special_asistance_plus_button()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.click_on_bagage_plus_button"><code class="docutils literal notranslate"><span class="pre">ServicesPage.click_on_bagage_plus_button()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.click_on_some_lounge_plus_button"><code class="docutils literal notranslate"><span class="pre">ServicesPage.click_on_some_lounge_plus_button()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.click_on_sport_bagage_plus_button"><code class="docutils literal notranslate"><span class="pre">ServicesPage.click_on_sport_bagage_plus_button()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.confirm_carry_on_modal_and_checked_baggage_modal"><code class="docutils literal notranslate"><span class="pre">ServicesPage.confirm_carry_on_modal_and_checked_baggage_modal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.confirm_lounge_bussiness_modal"><code class="docutils literal notranslate"><span class="pre">ServicesPage.confirm_lounge_bussiness_modal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.confirm_special_asistance_modal"><code class="docutils literal notranslate"><span class="pre">ServicesPage.confirm_special_asistance_modal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.confirm_sport_baggage_modal"><code class="docutils literal notranslate"><span class="pre">ServicesPage.confirm_sport_baggage_modal()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.continue_to_the_next_step"><code class="docutils literal notranslate"><span class="pre">ServicesPage.continue_to_the_next_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.services_page.ServicesPage.load"><code class="docutils literal notranslate"><span class="pre">ServicesPage.load()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="seat_map_page.html">Class SeatMapPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="payment_page.html">Class PaymentPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/db_utils.html">db_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/exception.html">Exception</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automation test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Class ServicesPage(Common)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/pages_case_1/services_page.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-servicespage-common">
+<h1>Class ServicesPage(Common)<a class="headerlink" href="#class-servicespage-common" title="Link to this heading"></a></h1>
+<dl class="py class" id="module-pages.pages_case_1.services_page">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pages.pages_case_1.services_page.</span></span><span class="sig-name descname"><span class="pre">ServicesPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../common.html#pages.common.Common" title="pages.common.Common"><code class="xref py py-class docutils literal notranslate"><span class="pre">Common</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.ADD_SPECIAL_ASISTANCE_ALL">
+<span class="sig-name descname"><span class="pre">ADD_SPECIAL_ASISTANCE_ALL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//div[contains(&#64;class,'service_item_action</span> <span class="pre">ng-star-inserted')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.ADD_SPECIAL_ASISTANCE_ALL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.BUSSINESS_LOUNGE_ADD_BUTTON">
+<span class="sig-name descname"><span class="pre">BUSSINESS_LOUNGE_ADD_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;id,'serviceButtonTypeBusinessLounge')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.BUSSINESS_LOUNGE_ADD_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON">
+<span class="sig-name descname"><span class="pre">CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;id,'serviceButtonTypeBaggage')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.CARRY_ON_BAGGAGE_PLUS_BUTTON">
+<span class="sig-name descname"><span class="pre">CARRY_ON_BAGGAGE_PLUS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;class,'ui-num-ud_button</span> <span class="pre">plus')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.CARRY_ON_BAGGAGE_PLUS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL">
+<span class="sig-name descname"><span class="pre">CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'button</span> <span class="pre">amount-summary_button</span> <span class="pre">amount-summary_button-action</span> <span class="pre">is-action</span> <span class="pre">ng-star-inserted')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.CONFIRM_LOUNGES_MODAL">
+<span class="sig-name descname"><span class="pre">CONFIRM_LOUNGES_MODAL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'button</span> <span class="pre">amount-summary_button</span> <span class="pre">amount-summary_button-action</span> <span class="pre">is-action</span> <span class="pre">ng-star-inserted')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_LOUNGES_MODAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.CONFIRM_SERVICES_BUTTON">
+<span class="sig-name descname"><span class="pre">CONFIRM_SERVICES_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'button</span> <span class="pre">page_button</span> <span class="pre">btn-action</span> <span class="pre">page_button-primary-flow</span> <span class="pre">ng-star-inserted')]//span[contains(&#64;class,'button_label')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_SERVICES_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.CONFIRM_SPECIAL_ASISTANCE_MODAL">
+<span class="sig-name descname"><span class="pre">CONFIRM_SPECIAL_ASISTANCE_MODAL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;class,'button</span> <span class="pre">amount-summary_button</span> <span class="pre">amount-summary_button-action</span> <span class="pre">is-action</span> <span class="pre">ng-star-inserted')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_SPECIAL_ASISTANCE_MODAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.CONFIRM_SPORT_BAGGAGE_MODAL">
+<span class="sig-name descname"><span class="pre">CONFIRM_SPORT_BAGGAGE_MODAL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,'button</span> <span class="pre">amount-summary_button</span> <span class="pre">amount-summary_button-action</span> <span class="pre">is-action</span> <span class="pre">ng-star-inserted')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.CONFIRM_SPORT_BAGGAGE_MODAL" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.LOADER_C">
+<span class="sig-name descname"><span class="pre">LOADER_C</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,</span> <span class="pre">'page-loader')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loading')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loader')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.LOADER_C" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.LOUNGES_PLUS_BUTTON">
+<span class="sig-name descname"><span class="pre">LOUNGES_PLUS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//label[contains(&#64;class,'service_item_button</span> <span class="pre">button')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.LOUNGES_PLUS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.SPECIAL_ASISTANCE_ADD_BUTTON">
+<span class="sig-name descname"><span class="pre">SPECIAL_ASISTANCE_ADD_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;id,'serviceButtonTypeSpecialAssistance')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.SPECIAL_ASISTANCE_ADD_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.SPORT_BAGGAGE_ADD_BUTTON">
+<span class="sig-name descname"><span class="pre">SPORT_BAGGAGE_ADD_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('id',</span> <span class="pre">'serviceButtonTypeOversize')</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.SPORT_BAGGAGE_ADD_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.SPORT_EQUIPMENT_PLUS_BUTTON">
+<span class="sig-name descname"><span class="pre">SPORT_EQUIPMENT_PLUS_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;class,'ui-num-ud_button</span> <span class="pre">plus')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.SPORT_EQUIPMENT_PLUS_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.add_bussines_lounge">
+<span class="sig-name descname"><span class="pre">add_bussines_lounge</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.add_bussines_lounge" title="Link to this definition"></a></dt>
+<dd><p>Adds a bussines lounge service.</p>
+<p>This method waits until the “Add bussines lounge” button is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the “Add bussines lounge” button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.add_carry_on_and_checked_baggage">
+<span class="sig-name descname"><span class="pre">add_carry_on_and_checked_baggage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.add_carry_on_and_checked_baggage" title="Link to this definition"></a></dt>
+<dd><p>Adds a carry-on and checked baggage service.</p>
+<p>This method waits for the visibility of the carry-on and checked baggage add button
+and clicks on it to add the service. Logs the action performed. Raises an exception
+if the button is not found within the timeout period.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the carry-on and checked baggage add button is not visible
+    within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.add_special_asistance_services">
+<span class="sig-name descname"><span class="pre">add_special_asistance_services</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.add_special_asistance_services" title="Link to this definition"></a></dt>
+<dd><p>Adds a special asistance service.</p>
+<p>This method waits until the “Add special asistance” button is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the “Add special asistance” button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.add_sport_baggage">
+<span class="sig-name descname"><span class="pre">add_sport_baggage</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.add_sport_baggage" title="Link to this definition"></a></dt>
+<dd><p>Adds a sport baggage service.</p>
+<p>This method waits until the “Add sport baggage” button is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the “Add sport baggage” button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.click_on_add_special_asistance_plus_button">
+<span class="sig-name descname"><span class="pre">click_on_add_special_asistance_plus_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.click_on_add_special_asistance_plus_button" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the “Add special assistance” plus button.</p>
+<p>This method waits until the “Add special assistance” plus button is visible and clickable,
+then clicks on the first one found. If no buttons are found, a warning is logged.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the “Add special assistance” plus button is not found or clickable
+    within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.click_on_bagage_plus_button">
+<span class="sig-name descname"><span class="pre">click_on_bagage_plus_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.click_on_bagage_plus_button" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the “Add bagage” plus button.</p>
+<p>This method waits until the “Add bagage” plus button is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the “Add bagage” plus button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.click_on_some_lounge_plus_button">
+<span class="sig-name descname"><span class="pre">click_on_some_lounge_plus_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.click_on_some_lounge_plus_button" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the “Add lounge” plus button.</p>
+<p>This method waits until the “Add lounge” plus button is visible and clickable,
+then clicks on it. Logs the action performed. If the button is not found
+or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the “Add lounge” plus button is not found or clickable
+    within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.click_on_sport_bagage_plus_button">
+<span class="sig-name descname"><span class="pre">click_on_sport_bagage_plus_button</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.click_on_sport_bagage_plus_button" title="Link to this definition"></a></dt>
+<dd><p>Clicks on the “Add sport baggage” plus button.</p>
+<p>This method waits until the “Add sport baggage” plus button is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the “Add sport baggage” plus button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.confirm_carry_on_modal_and_checked_baggage_modal">
+<span class="sig-name descname"><span class="pre">confirm_carry_on_modal_and_checked_baggage_modal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.confirm_carry_on_modal_and_checked_baggage_modal" title="Link to this definition"></a></dt>
+<dd><p>Confirms the carry-on and checked baggage modal.</p>
+<p>This method waits until the confirmation button of the carry-on and checked baggage modal
+is visible and clickable, then clicks on it. Logs the action performed. If the button is
+not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the confirmation button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.confirm_lounge_bussiness_modal">
+<span class="sig-name descname"><span class="pre">confirm_lounge_bussiness_modal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.confirm_lounge_bussiness_modal" title="Link to this definition"></a></dt>
+<dd><p>Confirms the Lounge business services modal.</p>
+<p>This method waits until the confirmation button of the Lounge business services modal is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.confirm_special_asistance_modal">
+<span class="sig-name descname"><span class="pre">confirm_special_asistance_modal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.confirm_special_asistance_modal" title="Link to this definition"></a></dt>
+<dd><p>Confirms the special asistance modal.</p>
+<p>This method waits until the confirmation button of the special asistance modal is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.confirm_sport_baggage_modal">
+<span class="sig-name descname"><span class="pre">confirm_sport_baggage_modal</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.confirm_sport_baggage_modal" title="Link to this definition"></a></dt>
+<dd><p>Confirms the sport baggage modal.</p>
+<p>This method waits until the confirmation button of the sport baggage modal
+is visible and clickable, then clicks on it. Logs the action performed. If the button is
+not found or clickable within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Exception</strong> – If the confirmation button is not found or clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.continue_to_the_next_step">
+<span class="sig-name descname"><span class="pre">continue_to_the_next_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.continue_to_the_next_step" title="Link to this definition"></a></dt>
+<dd><p>Continues to the next step by clicking the “Continuar” button.</p>
+<p>This method waits until the “Continuar” button is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.services_page.ServicesPage.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.services_page.ServicesPage.load" title="Link to this definition"></a></dt>
+<dd><p>Load the page and wait for the page loader to disappear.</p>
+<p>This method is used to load the page and wait until the page loader
+disappears. If the page loader does not disappear within the timeout
+period, a TimeoutException is raised.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="form_passengers_page.html" class="btn btn-neutral float-left" title="Class FormPassengersPage(Common)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="seat_map_page.html" class="btn btn-neutral float-right" title="Class SeatMapPage(Common)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rafael Farfan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class SeatMapPage(Common) &mdash; Automation test 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Class PaymentPage(Common)" href="payment_page.html" />
+    <link rel="prev" title="Class ServicesPage(Common)" href="services_page.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Automation test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../conftest.html">conftest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../common.html">Class Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="home_page.html">Class HomePage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="booking_select_page.html">Class BookingSelectPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="form_passengers_page.html">Class FormPassengersPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services_page.html">Class ServicesPage(Common)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Class SeatMapPage(Common)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage"><code class="docutils literal notranslate"><span class="pre">SeatMapPage</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.AVAILABLE_SEATS"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.AVAILABLE_SEATS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.CONFIRM_BUTTON"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.CONFIRM_BUTTON</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.LOADER_C"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.LOADER_C</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.PAX_TYPE"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.PAX_TYPE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.continue_to_the_next_step"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.continue_to_the_next_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.load"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.select_seats_based_on_quantity_of_passengers"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.select_seats_based_on_quantity_of_passengers()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.pages_case_1.seat_map_page.SeatMapPage.select_seats_for_odd_passengers"><code class="docutils literal notranslate"><span class="pre">SeatMapPage.select_seats_for_odd_passengers()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="payment_page.html">Class PaymentPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/db_utils.html">db_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils/exception.html">Exception</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Automation test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Class SeatMapPage(Common)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/pages/pages_case_1/seat_map_page.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-seatmappage-common">
+<h1>Class SeatMapPage(Common)<a class="headerlink" href="#class-seatmappage-common" title="Link to this heading"></a></h1>
+<dl class="py class" id="module-pages.pages_case_1.seat_map_page">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pages.pages_case_1.seat_map_page.</span></span><span class="sig-name descname"><span class="pre">SeatMapPage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="../common.html#pages.common.Common" title="pages.common.Common"><code class="xref py py-class docutils literal notranslate"><span class="pre">Common</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.AVAILABLE_SEATS">
+<span class="sig-name descname"><span class="pre">AVAILABLE_SEATS</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('css</span> <span class="pre">selector',</span> <span class="pre">'button.seat.ng-star-inserted')</span></em><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.AVAILABLE_SEATS" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.CONFIRM_BUTTON">
+<span class="sig-name descname"><span class="pre">CONFIRM_BUTTON</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//button[contains(&#64;class,</span> <span class="pre">'amount-summary_button')</span> <span class="pre">and</span> <span class="pre">.//span[contains(normalize-space(.),</span> <span class="pre">'Cont')]]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.CONFIRM_BUTTON" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.LOADER_C">
+<span class="sig-name descname"><span class="pre">LOADER_C</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('xpath',</span> <span class="pre">&quot;//*[contains(&#64;class,</span> <span class="pre">'page-loader')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loading')</span> <span class="pre">or</span> <span class="pre">contains(&#64;class,</span> <span class="pre">'loader')]&quot;)</span></em><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.LOADER_C" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.PAX_TYPE">
+<span class="sig-name descname"><span class="pre">PAX_TYPE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('class</span> <span class="pre">name',</span> <span class="pre">'paxtype_total_value')</span></em><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.PAX_TYPE" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.continue_to_the_next_step">
+<span class="sig-name descname"><span class="pre">continue_to_the_next_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.continue_to_the_next_step" title="Link to this definition"></a></dt>
+<dd><p>Continues to the next step by clicking the “Continue” button.</p>
+<p>This method waits until the “Continue” button is visible and clickable, then clicks on it.
+If the button is not found or clickable within the timeout period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.load" title="Link to this definition"></a></dt>
+<dd><p>Load the page and wait for the page loader to disappear.</p>
+<p>This method is used to load the page and wait until the page loader
+disappears. If the page loader does not disappear within the timeout
+period, a TimeoutException is raised.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.select_seats_based_on_quantity_of_passengers">
+<span class="sig-name descname"><span class="pre">select_seats_based_on_quantity_of_passengers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.select_seats_based_on_quantity_of_passengers" title="Link to this definition"></a></dt>
+<dd><p>Select seats based on passengers count.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.pages_case_1.seat_map_page.SeatMapPage.select_seats_for_odd_passengers">
+<span class="sig-name descname"><span class="pre">select_seats_for_odd_passengers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pages.pages_case_1.seat_map_page.SeatMapPage.select_seats_for_odd_passengers" title="Link to this definition"></a></dt>
+<dd><p>Select seats only for passengers in odd positions (1st, 3rd, 5th, etc.).</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="services_page.html" class="btn btn-neutral float-left" title="Class ServicesPage(Common)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="payment_page.html" class="btn btn-neutral float-right" title="Class PaymentPage(Common)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rafael Farfan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

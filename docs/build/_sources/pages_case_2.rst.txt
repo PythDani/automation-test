@@ -1,0 +1,10 @@
+pages\_case\_2 package
+======================
+
+Module contents
+---------------
+
+.. automodule:: pages_case_2
+   :members:
+   :show-inheritance:
+   :undoc-members:

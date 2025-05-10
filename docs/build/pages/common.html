@@ -1,0 +1,415 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class Common &mdash; Automation test 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Class HomePage(Common)" href="pages_case_1/home_page.html" />
+    <link rel="prev" title="logger" href="../logger.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Automation test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../conftest.html">conftest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../logger.html">logger</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Class Common</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#pages.common.Common"><code class="docutils literal notranslate"><span class="pre">Common</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.context_click"><code class="docutils literal notranslate"><span class="pre">Common.context_click()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.find"><code class="docutils literal notranslate"><span class="pre">Common.find()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.find_all"><code class="docutils literal notranslate"><span class="pre">Common.find_all()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.scroll_down_by_pixels"><code class="docutils literal notranslate"><span class="pre">Common.scroll_down_by_pixels()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.scroll_down_move_to_element"><code class="docutils literal notranslate"><span class="pre">Common.scroll_down_move_to_element()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.scroll_down_to_element"><code class="docutils literal notranslate"><span class="pre">Common.scroll_down_to_element()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for"><code class="docutils literal notranslate"><span class="pre">Common.wait_for()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for_invisibility"><code class="docutils literal notranslate"><span class="pre">Common.wait_for_invisibility()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for_loader_to_disappear"><code class="docutils literal notranslate"><span class="pre">Common.wait_for_loader_to_disappear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for_new_window"><code class="docutils literal notranslate"><span class="pre">Common.wait_for_new_window()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for_unitll_not"><code class="docutils literal notranslate"><span class="pre">Common.wait_for_unitll_not()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for_visibility"><code class="docutils literal notranslate"><span class="pre">Common.wait_for_visibility()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for_visibility_of_element_located"><code class="docutils literal notranslate"><span class="pre">Common.wait_for_visibility_of_element_located()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_for_window_close"><code class="docutils literal notranslate"><span class="pre">Common.wait_for_window_close()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_to_be_clickable"><code class="docutils literal notranslate"><span class="pre">Common.wait_to_be_clickable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pages.common.Common.wait_until_focus_be_usable"><code class="docutils literal notranslate"><span class="pre">Common.wait_until_focus_be_usable()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pages_case_1/home_page.html">Class HomePage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages_case_1/booking_select_page.html">Class BookingSelectPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages_case_1/form_passengers_page.html">Class FormPassengersPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages_case_1/services_page.html">Class ServicesPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages_case_1/seat_map_page.html">Class SeatMapPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages_case_1/payment_page.html">Class PaymentPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/db_utils.html">db_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../utils/exception.html">Exception</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Automation test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Class Common</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/pages/common.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="class-common">
+<h1>Class Common<a class="headerlink" href="#class-common" title="Link to this heading"></a></h1>
+<dl class="py class" id="module-pages.common">
+<dt class="sig sig-object py" id="pages.common.Common">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pages.common.</span></span><span class="sig-name descname"><span class="pre">Common</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">driver</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.context_click">
+<span class="sig-name descname"><span class="pre">context_click</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.context_click" title="Link to this definition"></a></dt>
+<dd><p>Performs a context-click (right-click) on an element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – The element to context-click.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The action chain object used to perform the context-click.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>selenium.webdriver.common.action_chains.ActionChains</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.find">
+<span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.find" title="Link to this definition"></a></dt>
+<dd><p>Finds an element given a locator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locator</strong> (<em>tuple</em>) – A tuple containing the By class and the value of the element to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The element identified by the given locator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webelement.WebElement</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selenium.common.exceptions.NoSuchElementException</strong> – If the element is not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.find_all">
+<span class="sig-name descname"><span class="pre">find_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.find_all" title="Link to this definition"></a></dt>
+<dd><p>Finds all elements matching the given locator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locator</strong> (<em>tuple</em>) – A tuple containing the By class and the value of the elements to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of elements identified by the given locator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[selenium.webdriver.remote.webelement.WebElement]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selenium.common.exceptions.NoSuchElementException</strong> – If no elements are found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.scroll_down_by_pixels">
+<span class="sig-name descname"><span class="pre">scroll_down_by_pixels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.scroll_down_by_pixels" title="Link to this definition"></a></dt>
+<dd><p>Scrolls the page down by the given number of pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pixels</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of pixels to scroll down. Defaults to 200.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.scroll_down_move_to_element">
+<span class="sig-name descname"><span class="pre">scroll_down_move_to_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.scroll_down_move_to_element" title="Link to this definition"></a></dt>
+<dd><p>Scrolls the page down to the given element, and moves the element to the center of the screen.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – The element to scroll down to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.scroll_down_to_element">
+<span class="sig-name descname"><span class="pre">scroll_down_to_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.scroll_down_to_element" title="Link to this definition"></a></dt>
+<dd><p>Scrolls the page down to the given element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – The element to scroll down to.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The action chain object used to scroll down to the element.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>selenium.webdriver.common.action_chains.ActionChains</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for">
+<span class="sig-name descname"><span class="pre">wait_for</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for" title="Link to this definition"></a></dt>
+<dd><p>Waits until the element identified by the given locator is present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locator</strong> (<em>tuple</em>) – A tuple containing the By class and the value of the element to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The element identified by the given locator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webelement.WebElement</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selenium.common.exceptions.TimeoutException</strong> – If the element is not found within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for_invisibility">
+<span class="sig-name descname"><span class="pre">wait_for_invisibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for_invisibility" title="Link to this definition"></a></dt>
+<dd><p>Waits until the element identified by the given locator is not visible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locator</strong> (<em>tuple</em>) – A tuple containing the By class and the value of the element to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>selenium.common.exceptions.TimeoutException</strong> – If the element is still visible within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for_loader_to_disappear">
+<span class="sig-name descname"><span class="pre">wait_for_loader_to_disappear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for_loader_to_disappear" title="Link to this definition"></a></dt>
+<dd><p>Waits for the loader to disappear.</p>
+<p>This method waits until the loader appears, and then waits until the loader disappears.</p>
+<p>If the loader does not appear or does not disappear within the timeout period, a TimeoutException is raised.</p>
+<p>This method is used to wait for the loader to disappear after performing an action that triggers it to appear.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for_new_window">
+<span class="sig-name descname"><span class="pre">wait_for_new_window</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for_new_window" title="Link to this definition"></a></dt>
+<dd><p>Waits for a new window to appear.</p>
+<p>This method waits until a new window appears. If the window does not appear within the timeout period, a TimeoutException is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of seconds to wait for the window to appear. Defaults to 20.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for_unitll_not">
+<span class="sig-name descname"><span class="pre">wait_for_unitll_not</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for_unitll_not" title="Link to this definition"></a></dt>
+<dd><p>Waits until the element identified by the given locator is not present.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locator</strong> (<em>tuple</em>) – A tuple containing the By class and the value of the element to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>selenium.common.exceptions.TimeoutException</strong> – If the element is still present within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for_visibility">
+<span class="sig-name descname"><span class="pre">wait_for_visibility</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">element</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for_visibility" title="Link to this definition"></a></dt>
+<dd><p>Waits until the specified web element is visible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>element</strong> (<em>selenium.webdriver.remote.webelement.WebElement</em>) – The web element to wait for visibility.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The web element once it becomes visible.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webelement.WebElement</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selenium.common.exceptions.TimeoutException</strong> – If the element does not become visible within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for_visibility_of_element_located">
+<span class="sig-name descname"><span class="pre">wait_for_visibility_of_element_located</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for_visibility_of_element_located" title="Link to this definition"></a></dt>
+<dd><p>Waits until the element identified by the given locator is visible.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locator</strong> (<em>tuple</em>) – A tuple containing the By class and the value of the element to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The element identified by the given locator once it becomes visible.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webelement.WebElement</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selenium.common.exceptions.TimeoutException</strong> – If the element does not become visible within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_for_window_close">
+<span class="sig-name descname"><span class="pre">wait_for_window_close</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window_handle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_for_window_close" title="Link to this definition"></a></dt>
+<dd><p>Waits for a window to close.</p>
+<p>This method waits until the specified window is closed and is no longer
+part of the available window handles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>window_handle</strong> (<em>str</em>) – The handle of the window to wait for closure.</p></li>
+<li><p><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum time to wait for the window to close
+in seconds. Defaults to 15 seconds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selenium.common.exceptions.TimeoutException</strong> – If the window is not closed
+    within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_to_be_clickable">
+<span class="sig-name descname"><span class="pre">wait_to_be_clickable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">locator</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_to_be_clickable" title="Link to this definition"></a></dt>
+<dd><p>Waits until the element identified by the given locator is clickable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>locator</strong> (<em>tuple</em>) – A tuple containing the By class and the value of the element to search for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The element identified by the given locator.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>selenium.webdriver.remote.webelement.WebElement</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>selenium.common.exceptions.TimeoutException</strong> – If the element is not clickable within the timeout period.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pages.common.Common.wait_until_focus_be_usable">
+<span class="sig-name descname"><span class="pre">wait_until_focus_be_usable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_window</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pages.common.Common.wait_until_focus_be_usable" title="Link to this definition"></a></dt>
+<dd><p>Waits until the focus of the driver is usable.</p>
+<p>This method waits until the focus of the driver is not in the specified window.
+This is useful when waiting for a window to close, but the focus is not switched to
+another window yet.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_window</strong> (<em>str</em>) – The handle of the window to wait for the focus to be out of.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../logger.html" class="btn btn-neutral float-left" title="logger" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pages_case_1/home_page.html" class="btn btn-neutral float-right" title="Class HomePage(Common)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rafael Farfan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

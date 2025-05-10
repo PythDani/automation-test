@@ -1,0 +1,323 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>conftest &mdash; Automation test 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="logger" href="logger.html" />
+    <link rel="prev" title="Welcome to automation-test’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Automation test
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contenido:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">conftest</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.base_url"><code class="docutils literal notranslate"><span class="pre">base_url()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.booking_context"><code class="docutils literal notranslate"><span class="pre">booking_context()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.booking_context_case_2"><code class="docutils literal notranslate"><span class="pre">booking_context_case_2()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.booking_context_case_3"><code class="docutils literal notranslate"><span class="pre">booking_context_case_3()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.browser"><code class="docutils literal notranslate"><span class="pre">browser()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.get_test_file_name"><code class="docutils literal notranslate"><span class="pre">get_test_file_name()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.pytest_addoption"><code class="docutils literal notranslate"><span class="pre">pytest_addoption()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.pytest_runtest_logreport"><code class="docutils literal notranslate"><span class="pre">pytest_runtest_logreport()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.pytest_runtest_makereport"><code class="docutils literal notranslate"><span class="pre">pytest_runtest_makereport()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.pytest_sessionstart"><code class="docutils literal notranslate"><span class="pre">pytest_sessionstart()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conftest.record_screen"><code class="docutils literal notranslate"><span class="pre">record_screen()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="logger.html">logger</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/common.html">Class Common</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/pages_case_1/home_page.html">Class HomePage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/pages_case_1/booking_select_page.html">Class BookingSelectPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/pages_case_1/form_passengers_page.html">Class FormPassengersPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/pages_case_1/services_page.html">Class ServicesPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/pages_case_1/seat_map_page.html">Class SeatMapPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pages/pages_case_1/payment_page.html">Class PaymentPage(Common)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/db_utils.html">db_utils</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/exception.html">Exception</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Automation test</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">conftest</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/conftest.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-conftest">
+<span id="conftest"></span><h1>conftest<a class="headerlink" href="#module-conftest" title="Link to this heading"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.base_url">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">base_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.base_url" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.booking_context">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">booking_context</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">browser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.booking_context" title="Link to this definition"></a></dt>
+<dd><p>A pytest fixture that sets up the context for booking-related tests.</p>
+<p>This fixture initializes page objects for different pages involved in the booking process,
+including HomePage, FormPassengersPage, ServicesPage, SeatMapPage, PaymentPage,
+BookingSelectPage, and ItineraryPage, using the provided browser instance. It also
+includes a set of parameters for the booking process, such as language, currency,
+origin and destination cities, departure date, and the number of passengers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>browser</strong> (<em>WebDriver</em>) – A selenium webdriver instance used to interact with web pages.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing initialized page objects and booking parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.booking_context_case_2">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">booking_context_case_2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">browser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.booking_context_case_2" title="Link to this definition"></a></dt>
+<dd><p>This fixture initializes page objects for different pages involved in the booking process,
+including HomePage, FormPassengersPage, ServicesPage, SeatMapPage, PaymentPage,
+BookingSelectPage, and ItineraryPage, using the provided browser instance. It also
+includes a set of parameters for the booking process, such as language, currency,
+origin and destination cities, departure date, and the number of passengers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>browser</strong> (<em>WebDriver</em>) – A selenium webdriver instance used to interact with web pages.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing initialized page objects and booking parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.booking_context_case_3">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">booking_context_case_3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">browser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.booking_context_case_3" title="Link to this definition"></a></dt>
+<dd><p>This fixture initializes page objects for different pages involved in the booking process,
+including HomePage, FormPassengersPage, ServicesPage, SeatMapPage, PaymentPage,
+BookingSelectPage, and ItineraryPage, using the provided browser instance. It also
+includes a set of parameters for the booking process, such as language, currency,
+origin and destination cities, departure date, and the number of passengers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>browser</strong> (<em>WebDriver</em>) – A selenium webdriver instance used to interact with web pages.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing initialized page objects and booking parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.browser">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.browser" title="Link to this definition"></a></dt>
+<dd><p>A pytest fixture to initialize a web driver for the specified browser.</p>
+<p>This fixture retrieves the browser name from the pytest command-line options,
+initializes the corresponding web driver using the <cite>get_driver</cite> function, and
+yields the driver for use in test functions. After the test function completes,
+the driver is quit to clean up resources.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Yields<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>WebDriver</em> – An instance of the web driver for the specified browser.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.get_test_file_name">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">get_test_file_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nodeid</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#conftest.get_test_file_name" title="Link to this definition"></a></dt>
+<dd><p>Returns the name of the test file without extension from a given nodeid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>nodeid</strong> (<em>str</em>) – A pytest nodeid string.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The name of the test file without extension.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.pytest_addoption">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">pytest_addoption</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.pytest_addoption" title="Link to this definition"></a></dt>
+<dd><p>Registers a pytest command-line option to specify the browser to use.</p>
+<p>This function registers a pytest command-line option to specify the browser
+to use when running tests. The option is named <cite>–browser</cite>, and it accepts
+either “chrome” or “firefox” as its value. The default value is “chrome”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> – The pytest command-line parser object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.pytest_runtest_logreport">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">pytest_runtest_logreport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">report</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.pytest_runtest_logreport" title="Link to this definition"></a></dt>
+<dd><p>A pytest hook to store test results in a database after each test.</p>
+<p>This hook stores the name of the test and its result in a SQLite database
+after each test is executed. The database is stored in a file named
+‘test_results.db’ in the current working directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>report</strong> (<em>pytest.RunTestProtocol</em>) – The pytest report object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.pytest_runtest_makereport">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">pytest_runtest_makereport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">call</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.pytest_runtest_makereport" title="Link to this definition"></a></dt>
+<dd><p>A pytest hook to generate and attach test execution reports.</p>
+<p>This hook wraps the test execution process to yield control back to pytest,
+allowing the test report to be generated. The report is then attached to the
+test item object with a dynamic attribute based on the test execution phase.</p>
+<p>If the test execution phase is ‘call’ and the test has failed, a screenshot
+is captured from the selenium driver instance. The screenshot is saved with
+a timestamped filename to a designated directory. The screenshot is then
+attached to the Allure report for the test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>item</strong> – The pytest test item object, which represents the test function.</p></li>
+<li><p><strong>call</strong> – The pytest call object, which contains information about the
+test execution phase and result.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.pytest_sessionstart">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">pytest_sessionstart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.pytest_sessionstart" title="Link to this definition"></a></dt>
+<dd><p>A pytest setup function to create the ‘test_results.db’ database file.</p>
+<p>This function creates the ‘test_results.db’ database file if it does not
+already exist. This database is used to store test results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="conftest.record_screen">
+<span class="sig-prename descclassname"><span class="pre">conftest.</span></span><span class="sig-name descname"><span class="pre">record_screen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#conftest.record_screen" title="Link to this definition"></a></dt>
+<dd><p>A pytest fixture to record the screen during test execution.</p>
+<p>This fixture automatically records the screen for the duration of each test function.
+It starts recording before the test begins and stops recording after the test ends,
+saving the video to a specified directory. The video file is then attached to the
+Allure report for the test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>request</strong> – The pytest request object, which provides information about the
+executing test function.</p>
+</dd>
+<dt class="field-even">Yields<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p>After the test function completes, the recording is stopped and attached to the
+Allure report as an MP4 file.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to automation-test’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="logger.html" class="btn btn-neutral float-right" title="logger" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Rafael Farfan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

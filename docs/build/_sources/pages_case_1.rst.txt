@@ -1,0 +1,69 @@
+pages\_case\_1 package
+======================
+
+Submodules
+----------
+
+pages\_case\_1.booking\_select\_page 
+-------------------------------------------
+
+.. automodule:: pages_case_1.booking_select_page
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pages\_case\_1.form\_passengers\_page 
+--------------------------------------------
+
+.. automodule:: pages_case_1.form_passengers_page
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pages\_case\_1.home\_page 
+--------------------------------
+
+.. automodule:: pages_case_1.home_page
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pages\_case\_1.itinerary\_page 
+-------------------------------------
+
+.. automodule:: pages_case_1.itinerary_page
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pages\_case\_1.payment\_page 
+-----------------------------------
+
+.. automodule:: pages_case_1.payment_page
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pages\_case\_1.seat\_map\_page 
+-------------------------------------
+
+.. automodule:: pages_case_1.seat_map_page
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+pages\_case\_1.services\_page 
+------------------------------------
+
+.. automodule:: pages_case_1.services_page
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: pages_case_1
+   :members:
+   :show-inheritance:
+   :undoc-members:

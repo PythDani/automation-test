@@ -369,7 +369,7 @@ pytest tests/
 
 To run specific tests using flag --broswer
 
-By default, Tests run in chrome, also you can switch to edge, firefox or safari
+By default, Tests run in chrome, also you can switch to edge.
 
 Case 1
 ```bash
@@ -381,7 +381,7 @@ pytest --browser=chrome  tests/test_av_test_case_2.py
 ```
 Case 3
 ```bash
-pytest --browser=chrome  tests/test_av_test_case_2.py
+pytest --browser=chrome  tests/test_av_test_case_3.py
 ```
 
 To run tests in parallel (e.g. 3 workers):
