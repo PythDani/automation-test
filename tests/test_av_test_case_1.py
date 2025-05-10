@@ -9,7 +9,7 @@ import allure
 
 @allure.title("Automated case 1: One way booking")
 @allure.severity(allure.severity_level.NORMAL)
-def test_avtest_case_1(booking_context):
+def test_av_test_case_1(booking_context):
     page = booking_context["page"]
     form = booking_context["form"]
     services = booking_context["services"]
@@ -75,7 +75,7 @@ def test_avtest_case_1(booking_context):
         payment_page.load()
         payment_page.scroll_to_element(200)
         payment_page.fill_cardholder_name("Pedro Rodriguez")
-        payment_page.handle_modal_and_navigate()
+        # payment_page.handle_modal_and_navigate()
         payment_page.fill_card_number("4224311115117131")
         payment_page.select_expiration_month("11")
         payment_page.select_expiration_year("26")

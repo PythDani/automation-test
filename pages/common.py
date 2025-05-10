@@ -216,7 +216,7 @@ class Common:
         """        
         try:
             
-            loader_locator = (locator)  # ejemplo
+            loader_locator = (locator)
             
             # Wait for the loader to appear
             self.wait_for(loader_locator)

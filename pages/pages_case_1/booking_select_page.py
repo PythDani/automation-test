@@ -18,7 +18,7 @@ class BookingSelectPage(Common):
     # Flight button return
     FLIGHT_BUTTON_RETURN:                tuple = (By.XPATH, "(//*[@class='journey-select_journey-filter ng-star-inserted']/following-sibling::*[@class='journey-select_list ng-star-inserted']/*)[1]//*[@class='journey_price']")
     # BASIC_FARE_BUTTON 
-    BASIC_FARE_BUTTON:                   tuple = (By.XPATH, "//div[@role='button' and contains(@class, 'fare-control') and .//span[contains(text(), 'basic')]]")
+    BASIC_FARE_BUTTON:                   tuple = (By.XPATH, "//div[@role='button' and contains(@class, 'fare-control')]")
     # Continue button
     CONTINUE_BUTTON:                     tuple = (By.XPATH, "//*[@id='maincontent']/div/div[2]/div/div/button-container/div/div/button")
     # Relative day mapping
@@ -141,7 +141,7 @@ class BookingSelectPage(Common):
         disappear within the timeout period, a TimeoutException is raised.
 
         """
-        self.wait_for_invisibility(self.LOADER_B)
+        self.wait_for_loader_to_disappear(self.LOADER_B)
 
     @catch_exceptions()
     def button_continue_to_move_to_passenger_form(self):

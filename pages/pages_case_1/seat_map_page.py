@@ -16,7 +16,7 @@ class SeatMapPage(Common):
     LOADER_C:             tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading') or contains(@class, 'loader')]")
     PAX_TYPE:             tuple = (By.CLASS_NAME, "paxtype_total_value")
     AVAILABLE_SEATS:      tuple = (By.CSS_SELECTOR, "button.seat.ng-star-inserted")
-    CONFIRM_BUTTON:       tuple = (By.XPATH, "(//button[contains(@class, 'amount-summary_button-action')])[1]")
+    CONFIRM_BUTTON:       tuple = (By.XPATH, "//button[contains(@class, 'amount-summary_button') and .//span[contains(normalize-space(.), 'Cont')]]")
     
 
     @catch_exceptions()
@@ -167,9 +167,9 @@ class SeatMapPage(Common):
     @catch_exceptions()
     def continue_to_the_next_step(self):     
         """
-        Continues to the next step by clicking the "Continuar" button.
+        Continues to the next step by clicking the "Continue" button.
 
-        This method waits until the "Continuar" button is visible and clickable, then clicks on it.
+        This method waits until the "Continue" button is visible and clickable, then clicks on it.
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
 
         """
