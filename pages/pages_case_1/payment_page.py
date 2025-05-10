@@ -447,7 +447,7 @@ class PaymentPage(Common):
                 lambda d: d.execute_script("return document.readyState") == "complete"
             )
             # Navigate to the itinerary page
-            self.driver.get(f"{self.URL}/itinerary")
+            self.driver.get(f"{self.URL}booking/itinerary")
 
         except TimeoutException:
             print("Modal NO detectado → continuando con el flujo normal...")

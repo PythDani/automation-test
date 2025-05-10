@@ -39,7 +39,9 @@ This automation is intended to showcase your understanding and application of mo
 
 - Python 3.8 or higher
 - Git
-- Google Chrome, Edge.
+
+- Google Chrome, Edge
+
 
 Clone the repository:
 
@@ -195,7 +197,7 @@ This structure allows changes in UI elements to be localized to page classes, re
 | pytest-xdist          | Enables running tests in parallel using pytest                              |
 | webdriver-manager     | Automatically downloads and manages browser drivers                         |
 | python-dotenv         | Loads environment variables from a .env file                                |
-| faker==24.8.0         | Generates fake data (e.g. names, addresses) for testing                     |
+| faker==24.8.0         | Generates fake data (for example, names, addresses) for testing                     |
 | pyscreenrec           | Library to record screen during test execution                              |
 | selenium-wire         | Extension of Selenium to capture and modify HTTP requests and responses     |
 | blinker==1.4          | Provides support for signal/event dispatching                               |
@@ -220,7 +222,7 @@ Initializes page objects like `HomePage`, `FormPassengersPage`, `ServicesPage`, 
 
 ```python
 
-# e.g: conftest.py
+# for example, conftest.py
 
 @pytest.fixture(scope="function")
 def booking_context(browser):   
@@ -253,7 +255,7 @@ def booking_context(browser):
 Sets up **Case 2**, involving a more complex booking scenario with additional parameters such as `relative_day`, and a dummy `a_credits_number` and `a_credits_pin`.
 
 ```python
-# e.g: conftest.py
+# for example, conftest.py
 
 @pytest.fixture(scope="function")
 def booking_context_case_2(browser): 
@@ -291,7 +293,7 @@ def booking_context_case_2(browser):
 Initializes the booking flow for **Case 3**, extending the test input further with child, baby, and young passenger counts, and additional fields like `user_name` and `user_password`.
 
 ```python
-# e.g: conftest.py
+# for example: conftest.py
 
 @pytest.fixture(scope="function")
 def booking_context_case_3(browser): 
@@ -385,7 +387,8 @@ pytest tests/
 
 To run specific tests using flag --broswer
 
-By default, Tests run in chrome, also you can switch to edge explorer.
+
+By default, Tests run in chrome, also you can switch to edge.
 
 Case 1
 ```bash
@@ -400,10 +403,10 @@ Case 3
 pytest --browser=chrome  tests/test_av_test_case_2.py
 ```
 
-To run tests in parallel (e.g. 3 workers):
+To run tests in parallel (for example, 2 workers):
 
 ```bash
-pytest -n 3 tests/
+pytest -n 2 tests/
 ```
 
 To record the screen during test execution, ensure `pyscreenrec` is installed and properly configured in your test logic.

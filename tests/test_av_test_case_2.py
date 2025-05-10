@@ -72,6 +72,9 @@ def test_av_test_case_2(booking_context_case_2):
     # --- Form ---
     with allure.step("Test Form passengers page"):
         form.fill_passenger_form_method()
+        form.click_on_check_box_form_passenger()
+        form.click_on_continue_button_to_navigate_to_services()
+
         
 
     # --- Services ---
