@@ -163,17 +163,29 @@ class BookingSelectPage(Common):
             self.logger.error(f"Error clicking continue button: {str(e)}")
             raise
     
-    def get_sesion_params(self):
+    def get_sesion_params(self):       
        
         """
-        Searches for a response with "session" in the URL and returns a JSON object with the response body.
+        Get the session parameters from the last request.
 
-        Iterates over the requests history and searches for a response that contains "session" in its URL.
-        If found, decodes the response body according to the encoding, converts it to a JSON object and
-        logs the JSON object. If any error occurs during this process, logs the error and returns None.
+        This method searches the last request with url
+        "https://nuxqa.avtest.ink/booking/api/v1/booking/session" and decodes the body
+        using the encoding specified in the response headers. The body is then
+        converted to a JSON object and searched for the "Data required from network -
+        session" parameters.
 
-        Returns:
-            dict: A JSON object with the response body if found, None otherwise.
+        The method returns a list of dictionaries, where each dictionary contains the
+        parameters for a journey:
+
+        - origin: string
+        - destination: string
+        - std: string
+        - productClass: list of strings
+
+        If no session url response is found or if an error occurs during decoding or
+        parsing, the method returns None.
+
+        :return: list of dictionaries or None
         """
         for request in self.driver.requests:
             if request.response:
@@ -214,7 +226,7 @@ class BookingSelectPage(Common):
                         self.logger.error(f"Error decoding session response: {e}")
                         return None
 
-        # Si no se encontró ninguna sesión
+        # If no session url response is found
         self.logger.warning("No session url response found")
         return None
           

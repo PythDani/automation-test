@@ -108,8 +108,8 @@ def booking_context_case_2(browser):
             "child_count": 0,
             "baby_count": 0,
             "relative_day": "2 days before",
-            "a_credits_number": "1500014129935977",
-            "a_credits_pin": "145880",
+            "a_credits_number": os.getenv("CARD_CREDIT_NUMBER"),
+            "a_credits_pin": os.getenv("CARD_CREDIT_PIN"),
 
         }
     }
@@ -151,10 +151,10 @@ def booking_context_case_3(browser):
             "child_count": 0,
             "baby_count": 0,
             "relative_day": "2 days before",
-            "user_name": "21734198706",
-            "user_password": "Lifemiles1",
-            "a_credits_number": "1500014124792137",
-            "a_credits_pin": "151233",
+            "user_name": os.getenv("USER_NAME"),
+            "user_password": os.getenv("USER_PASSWORD"),
+            "a_credits_number": os.getenv("CARD_CREDIT_NUMBER"),
+            "a_credits_pin": os.getenv("CREDIT_PIN"),
 
         }
     }
