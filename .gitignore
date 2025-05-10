@@ -62,3 +62,5 @@ test_results.db
 
 *.mp4
 /videos/
+
+/docs/
