@@ -90,7 +90,7 @@ USER_PASSWORD=your_password
 CARD_CREDIT_NUMBER=1234567812345678
 CREDIT_PIN=1234
 
-
+```
 ---
 
 ## Project Structure
@@ -280,7 +280,7 @@ def booking_context_case_2(browser):
             "baby_count": 0,
             "relative_day": "2 days before",
             "a_credits_number": os.getenv("CARD_CREDIT_NUMBER"),
-            "a_credits_pin": os.getenv("CREDIT_PIN"),
+            "a_credits_pin": os.getenv("CARD_CREDIT_PIN"),
 
         }
     }
