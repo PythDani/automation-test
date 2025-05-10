@@ -47,6 +47,9 @@ def test_av_test_case_1(booking_context):
     # --- Form ---
     with allure.step("Test Form passengers page"):
         form.fill_passenger_form_method()
+        form.click_on_check_box_form_passenger()
+        form.click_on_continue_button_to_navigate_to_services()
+
         
 
     # --- Services ---
@@ -74,8 +77,7 @@ def test_av_test_case_1(booking_context):
     with allure.step("Test fill payment form page"):
         payment_page.load()
         payment_page.scroll_to_element(200)
-        payment_page.fill_cardholder_name("Pedro Rodriguez")
-        # payment_page.handle_modal_and_navigate()
+        payment_page.fill_cardholder_name("Pedro Rodriguez")       
         payment_page.fill_card_number("4224311115117131")
         payment_page.select_expiration_month("11")
         payment_page.select_expiration_year("26")
