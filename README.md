@@ -39,7 +39,7 @@ This automation is intended to showcase your understanding and application of mo
 
 - Python 3.8 or higher
 - Git
-- Google Chrome, Edge or Firefox
+- Google Chrome, Edge
 
 Clone the repository:
 
@@ -385,7 +385,7 @@ pytest tests/
 
 To run specific tests using flag --broswer
 
-By default, Tests run in chrome, also you can switch to edge, firefox or safari
+By default, Tests run in chrome, also you can switch to edge.
 
 Case 1
 ```bash
