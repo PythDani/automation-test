@@ -94,7 +94,7 @@ class HomePage(Common):
     def login(self, username: str, password: str):
        
         # 1. Click initial login button
-        self.wait_to_be_clickable(self.BUTTON_LOGIN).click()
+        self.wait_for_visibility_of_element_located(self.BUTTON_LOGIN).click()
         
         # 2. Wait for new window to appear and switch to it
         self.wait_for_new_window()

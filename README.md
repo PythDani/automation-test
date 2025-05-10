@@ -47,7 +47,9 @@ Clone the repository:
 git clone https://github.com/PythDani/automation-test.git
 
 ```
+```bash
 cd automation-test
+```
 
 Create and activate a virtual environment:
 
@@ -55,7 +57,8 @@ Create and activate a virtual environment:
 
 ```bash
 python -m venv venv
-venv\Scripts\activate
+source venv/Scripts/activate
+
 ```
 
 #### Linux / macOS
@@ -98,9 +101,9 @@ automation-test/
 │   │   └── itinerary_page.py
 │   └── common.py
 ├── tests/
-│   ├── test_avtest_case_1.py
-│   ├── test_avtest_case_2.py
-│   └── test_avtest_case_3.py
+│   ├── test_av_test_case_1.py
+│   ├── test_av_test_case_2.py
+│   └── test_av_test_case_3.py
 ├── utils/
 │   ├── db_utils.py
 │   └── exception.py
@@ -323,7 +326,7 @@ Each test uses one of the above fixtures as a parameter, automatically injecting
 ```python
 @allure.title("Automated case 1: One way booking")
 @allure.severity(allure.severity_level.NORMAL)
-def test_avtest_case_1(booking_context):
+def test_av_test_case_1(booking_context):
     page = booking_context["page"]
     form = booking_context["form"]
     services = booking_context["services"]
@@ -368,8 +371,17 @@ To run specific tests using flag --broswer
 
 By default, Tests run in chrome, also you can switch to edge, firefox or safari
 
+Case 1
 ```bash
-pytest --browser=chrome  tests/test_avtest_case_3.py
+pytest --browser=chrome  tests/test_av_test_case_1.py
+```
+Case 2
+```bash
+pytest --browser=chrome  tests/test_av_test_case_2.py
+```
+Case 3
+```bash
+pytest --browser=chrome  tests/test_av_test_case_2.py
 ```
 
 To run tests in parallel (e.g. 3 workers):

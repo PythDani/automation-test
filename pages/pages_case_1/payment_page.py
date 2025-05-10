@@ -87,8 +87,9 @@ class PaymentPage(Common):
         """
         try:
             self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
             # Click on the checkbox
-            check_avianca_credits = self.find(self.CHECK_AVIANCA_CREDITS)
+            check_avianca_credits = self.wait_for_visibility_of_element_located(self.CHECK_AVIANCA_CREDITS)
             check_avianca_credits.click()          
 
             # Fill number

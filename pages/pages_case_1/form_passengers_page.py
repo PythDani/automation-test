@@ -179,6 +179,7 @@ class FormPassengersPage(Common):
             self._fill_contact_information(faker)
         else:
             self.logger.info("User logged in, skipping contact information...")
+
     @catch_exceptions()
     def _fill_contact_information(self, faker):         
         """
@@ -243,14 +244,21 @@ class FormPassengersPage(Common):
         else:
             self.logger.info("Field confirm email not found.")
 
+
+    @catch_exceptions()
+    def click_on_check_box_form_passenger(self):
         check_box = self.find(self.CHECK_BOX)
         self.scroll_down_to_element(check_box).perform()
         check_box.click()
 
+
+    @catch_exceptions()
+    def click_on_continue_button_to_navigate_to_services(self):
         continue_button = self.find(self.BUTTON_CONTINUE)
         self.driver.execute_script("arguments[0].click();", continue_button)
         self.logger.info("form filled.")
-    
+
+
     @catch_exceptions()
     def loader_b(self):
 

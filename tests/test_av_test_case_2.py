@@ -9,7 +9,7 @@ import allure
 
 @allure.title("Automated case 2: Round trip booking")
 @allure.severity(allure.severity_level.NORMAL)
-def test_avtest_case_1(booking_context_case_2):
+def test_av_test_case_2(booking_context_case_2):
 
     """
         Test case for booking a round trip flight.
