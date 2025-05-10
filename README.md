@@ -74,7 +74,23 @@ Install the dependencies:
 pip install -r requirements.txt
 ```
 
-Make sure create `.env` file in the root of the project with `HOME_URL` variable. Then you can change the urls according to the test case.
+> **Note:**  
+> Make sure to create a `.env` file in the root of the project with the `HOME_URL` variable.  
+> You can then change the URLs according to the test case.  
+>  
+> You’ll also need to define the following variables in the `.env` file:  
+> `USER_NAME`, `USER_PASSWORD`, `CARD_CREDIT_NUMBER`, and `CREDIT_PIN`.  
+>  
+> The `.env` file should look like this:
+
+```env
+HOME_URL=https://example.com
+USER_NAME=your_username
+USER_PASSWORD=your_password
+CARD_CREDIT_NUMBER=1234567812345678
+CREDIT_PIN=1234
+
+
 ---
 
 ## Project Structure
@@ -263,8 +279,8 @@ def booking_context_case_2(browser):
             "child_count": 0,
             "baby_count": 0,
             "relative_day": "2 days before",
-            "a_credits_number": "41414141414141414",
-            "a_credits_pin": "111111",
+            "a_credits_number": os.getenv("CARD_CREDIT_NUMBER"),
+            "a_credits_pin": os.getenv("CREDIT_PIN"),
 
         }
     }
@@ -302,10 +318,10 @@ def booking_context_case_3(browser):
             "child_count": 3,
             "baby_count": 3,
             "relative_day": "2 days before",
-            "user_name": "1111111111",
-            "user_password": "111111",
-            "a_credits_number": "1111111111",
-            "a_credits_pin": "1111111111",
+            "user_name": os.getenv("USER_NAME"),
+            "user_password": os.getenv("USER_PASSWORD"),
+            "a_credits_number": os.getenv("CARD_CREDIT_NUMBER"),
+            "a_credits_pin": os.getenv("CREDIT_PIN"),
 
         }
     }
