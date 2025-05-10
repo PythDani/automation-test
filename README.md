@@ -70,6 +70,22 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
+Download Allure for that:
+
+- Go to: https://github.com/allure-framework/allure2/releases
+
+- Download the latest version (allure-X.Y.Z.zip)
+
+- Extract the .zip into a folder, for example: C:\Allure
+
+- Add the path C:\Allure\bin to your environment variable PATH:
+
+- Go to System Settings → Environment Variables → PATH
+
+- Click Edit → New → and paste: C:\Allure\bin
+
+- Restart your terminal or IDE to apply the changes.
+
 Install the dependencies:
 
 ```bash
