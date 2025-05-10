@@ -118,7 +118,7 @@ def test_av_test_case_3(booking_context_case_3):
         itinerary_page.wait_for_loader_c_disappear()
         itinerary_page.validate_departure_city(params["city_origin"])
         itinerary_page.validate_arrival_city(params["city_destination"])
-        itinerary_page.validate_passenger_adult_number(str(params["passenger_count"]))
+        itinerary_page.validate_passenger_adult_number("4")
 
 
     

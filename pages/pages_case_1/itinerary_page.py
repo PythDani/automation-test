@@ -8,7 +8,7 @@ from utils.exception import catch_exceptions
 
 class ItineraryPage(Common):
     # Page loader
-    LOADER_C:                  tuple = (By.XPATH, "//*[contains(@class,'loading')]")
+    LOADER_C:                  tuple = (By.XPATH, "//*[contains(@class, 'loader') or contains(@class, 'loading') or contains(@class, 'page-loader')]")
     # Departure city
     DEPARTURE_CITY:     tuple = (By.XPATH, "//*[contains(@class,'summary_travel_departure')]")
     # Arrival city
@@ -17,6 +17,7 @@ class ItineraryPage(Common):
     DETAILS_BUTTON:     tuple = (By.XPATH, "//*[contains(@class,'price-breakdown-header')]")
     # Passengers number
     PASSENGERS_NUMBER:  tuple = (By.XPATH, "//*[@class='price-breakdown-item']//*[@class='price-breakdown-item_label_quantity-value']")
+    
 
     
     @catch_exceptions()
@@ -81,8 +82,8 @@ class ItineraryPage(Common):
         Raises:
             AssertionError: If the actual departure city does not match the expected city.
         """
-
-        actual_city = self.find(self.DEPARTURE_CITY).text.strip()
+        self.wait_for_loader_c_disappear()
+        actual_city = self.wait_for_visibility_of_element_located(self.DEPARTURE_CITY).text.strip()
         self.logger.info(f"Validating departure city. Expected: '{expected_city}', Found: '{actual_city}'")
         assert actual_city == expected_city, f"Expected '{expected_city}', but got '{actual_city}'"
     
