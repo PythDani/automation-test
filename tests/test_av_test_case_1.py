@@ -96,7 +96,6 @@ def test_av_test_case_1(booking_context):
 
     # --- Itinerary ---
     with allure.step("Test itinerary page"):
-        itinerary_page.get_reservation_code()
         itinerary_page.validate_departure_city(params["city_origin"])
         itinerary_page.validate_arrival_city(params["city_destination"])
         itinerary_page.validate_passenger_adult_number(str(params["passenger_count"]))

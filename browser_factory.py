@@ -37,7 +37,8 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-extensions")
         options.add_argument("--remote-debugging-port=9222")
-        options.add_argument("--start-maximized")        
+        options.add_argument("--start-maximized")
+        options.add_argument("--disable-application-cache")        
         if headless:
             options.add_argument("--headless")
         return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
@@ -54,6 +55,7 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--disable-extensions")
         options.add_argument("--remote-debugging-port=9222")
         options.add_argument("--start-maximized")
+        options.add_argument("--disable-application-cache")
         if headless:
 
             options.add_argument("--headless=new") 
