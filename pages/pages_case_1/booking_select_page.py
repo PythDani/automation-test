@@ -40,8 +40,8 @@ class BookingSelectPage(Common):
         """
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
-    
-    @catch_exceptions()
+
+    @catch_exceptions()    
     def click_relative_date(self, label):
         """
         Clicks on the departure date option based on a human-readable label.
@@ -60,12 +60,17 @@ class BookingSelectPage(Common):
         locator = (self.SELECT_ANOTHER_DATE_BUTTON[0], xpath)
 
         self.logger.info(f"Clicking on element with label '{label}' and xpath: {xpath}")
-        button = self.wait_to_be_clickable(locator)
+        try:
+            button = self.wait_to_be_clickable(locator)
+            self.driver.implicitly_wait(2)
+            button.click()
+        except Exception as e:
+            self.logger.error(f"Failed to click relative date button: {e}")
+            self.logger.info("Printing DOM for debugging...")
+            self._print_page_html_for_debugging()
+            raise
 
-        self.driver.implicitly_wait(2)
-        button.click()
-    
-    @catch_exceptions()
+    @catch_exceptions() 
     def click_drop_down_flight(self):
         """
         Clicks on the dropdown button of the flight to select a tariff.
@@ -110,7 +115,7 @@ class BookingSelectPage(Common):
             self.logger.error(f"No flights found: {str(e)}")
             raise
 
-    @catch_exceptions()
+    @catch_exceptions() 
     def click_on_fare_flight(self):
         """
         Clicks on the 'Basic' fare button.
@@ -221,7 +226,7 @@ class BookingSelectPage(Common):
                             })
 
                         return result
-
+            
                     except Exception as e:
                         self.logger.error(f"Error decoding session response: {e}")
                         return None
@@ -229,6 +234,82 @@ class BookingSelectPage(Common):
         # If no session url response is found
         self.logger.warning("No session url response found")
         return None
+    
+    def _print_page_html_for_debugging(self):
+        """
+        Print the current page HTML for debugging purposes.
+        This method is specifically designed to help debug DOM elements
+        when locators fail to find elements.
+        """
+        try:
+            # Get current URL to identify the page
+            current_url = self.driver.current_url
+            self.logger.info(f"=== DEBUGGING HTML FOR URL: {current_url} ===")
+            
+            # Get page title
+            page_title = self.driver.title
+            self.logger.info(f"Page Title: {page_title}")
+            
+            # Get the full HTML source
+            html_source = self.driver.page_source
+            
+            # Save HTML to a file for detailed analysis
+            import os
+            debug_dir = "debug_html"
+            if not os.path.exists(debug_dir):
+                os.makedirs(debug_dir)
+            
+            # Create filename with timestamp
+            import datetime
+            timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{debug_dir}/booking_select_page_debug_{timestamp}.html"
+            
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(html_source)
+            
+            self.logger.info(f"Full HTML saved to: {filename}")
+            
+            # Print key elements for quick analysis
+            self.logger.info("=== QUICK DOM ANALYSIS ===")
+            
+            # Count different types of elements
+            buttons = self.driver.find_elements("tag name", "button")
+            day_controls = self.driver.find_elements("xpath", "//*[contains(@class, 'day-control')]")
+            day_selector_items = self.driver.find_elements("xpath", "//*[contains(@class, 'day-selector_item')]")
+            
+            self.logger.info(f"Total buttons found: {len(buttons)}")
+            self.logger.info(f"Total day-control elements found: {len(day_controls)}")
+            self.logger.info(f"Total day-selector_item elements found: {len(day_selector_items)}")
+            
+            # Look for elements with aria-label containing 'Schedule.A11y.CalendarDay.AriaLabel'
+            calendar_elements = self.driver.find_elements("xpath", "//*[contains(@aria-label, 'Schedule.A11y.CalendarDay.AriaLabel')]")
+            self.logger.info(f"Elements with calendar aria-label: {len(calendar_elements)}")
+            
+            # Print details of calendar elements
+            for i, element in enumerate(calendar_elements[:5]):  # First 5 elements
+                try:
+                    tag_name = element.tag_name
+                    aria_label = element.get_attribute("aria-label") or ""
+                    classes = element.get_attribute("class") or ""
+                    element_id = element.get_attribute("id") or ""
+                    self.logger.info(f"Calendar element {i+1}: <{tag_name}> aria-label='{aria_label}' class='{classes}' id='{element_id}'")
+                except Exception as e:
+                    self.logger.warning(f"Could not analyze calendar element {i+1}: {e}")
+            
+            # Look for day-selector_item elements
+            for i, item in enumerate(day_selector_items[:5]):  # First 5 items
+                try:
+                    classes = item.get_attribute("class") or ""
+                    element_id = item.get_attribute("id") or ""
+                    inner_html = item.get_attribute("innerHTML")[:200]  # First 200 chars
+                    self.logger.info(f"Day selector item {i+1}: class='{classes}' id='{element_id}' innerHTML='{inner_html}...'")
+                except Exception as e:
+                    self.logger.warning(f"Could not analyze day selector item {i+1}: {e}")
+            
+            self.logger.info("=== END DOM ANALYSIS ===")
+            
+        except Exception as e:
+            self.logger.error(f"Error during HTML debugging: {e}")
           
                     
         

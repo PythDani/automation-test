@@ -78,7 +78,7 @@ def test_av_test_case_1(booking_context):
         payment_page.load()
         payment_page.scroll_to_element(200)
         payment_page.fill_cardholder_name("Pedro Rodriguez")       
-        payment_page.fill_card_number("4224311115117131")
+        payment_page.fill_card_number("4111111111111111")
         payment_page.select_expiration_month("11")
         payment_page.select_expiration_year("26")
         payment_page.fill_cvv("153")

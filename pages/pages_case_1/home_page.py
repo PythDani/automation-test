@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, ElementClickInterceptedException
 import time
 from logger import get_logger
 from utils.exception import catch_exceptions
@@ -63,7 +63,7 @@ class HomePage(Common):
 
     # Validate is logged
     LOGGED:                                         tuple = (By.XPATH, "//*[contains(@class,'auth_trigger_button auth-trigger_logged')]//*[contains(@class,'button_name ng-star-inserted')]")  
-   
+
     def __init__(self, driver):
         """
         Initialize an HomePage instance.
@@ -121,7 +121,7 @@ class HomePage(Common):
         self.wait_for_window_close(new_window)
         self.driver.switch_to.window(self.driver.window_handles[0])
         self.logger.info(f"User logged...")
-    
+
     @catch_exceptions() 
     def select_language(self, language):
         """
@@ -143,7 +143,7 @@ class HomePage(Common):
         button_language = self.wait_to_be_clickable(tuple_language)
         button_language.click()
         self.logger.info(f"Language {language} selected.")
-    
+
     @catch_exceptions() 
     def select_currency(self, currency):
         """
@@ -174,7 +174,7 @@ class HomePage(Common):
 
             confirm_currency.click()
             self.logger.info(f"Currency {currency} selected.")
-    
+
     @catch_exceptions() 
     def select_one_way_radio_button(self):
         """
@@ -232,7 +232,7 @@ class HomePage(Common):
         destination_input = self.find(self.FIELD_DESTINATION)      
   
         self._select_city_destination(city_destination, destination_input)
-        
+
     @catch_exceptions() 
     def select_deaperture_date(self, day: str, month: str, year: str):
 
@@ -325,7 +325,7 @@ class HomePage(Common):
         button = self.wait_to_be_clickable(self.DEPLOY_PASSENGERS_BUTTON)
         button.click()    
 
-        self.logger.info(f"Adding {times} adults...")                    
+        self.logger.info(f"Adding {times} adults...")
         adultt_button = self.wait_to_be_clickable(self.ADULT_PLUS_BUTTON)          
         for _ in range(times - 1):
             adultt_button.click()            
@@ -362,7 +362,7 @@ class HomePage(Common):
             child_button.click()
             self.logger.info("Selecting children.") 
             time.sleep(wait_between_clicks)
-
+                    
     @catch_exceptions() 
     def click_plus_infant(self, times, wait_between_clicks=0.5):                
         """
@@ -389,10 +389,15 @@ class HomePage(Common):
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
 
         """
-
+        self.logger.info("Confirming passengers quantity...")
         confirm_button = self.wait_to_be_clickable(self.CONFIRM_BUTTON)
         confirm_button.click()
-        self.logger.info("Confirm button  passenger clicked.") 
+        self.logger.info("Confirm button passenger clicked.")
+        
+        # Wait for modal to close and page to stabilize
+        time.sleep(1)
+        self.wait_for_invisibility(self.LOADER)
+        self.logger.info("Passengers modal closed, ready to search flights.") 
 
     @catch_exceptions() 
     def click_search_flight_button(self):
@@ -402,9 +407,106 @@ class HomePage(Common):
         This method waits for the search button to become clickable, 
         clicks it, and logs the action for tracking purposes.
         """
+        self.logger.info("Looking for search flight button...")
+        
+        # Wait for any loaders to disappear first
+        self.wait_for_invisibility(self.LOADER)
+        time.sleep(1)
+        
+        # Scroll to make sure button is visible
+        self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(0.5)
+        
+        # Validate form before submission
+        self.logger.info("Validating form before submission...")
+        
+        # Check if all required fields are filled
+        try:
+            # Check if origin is selected
+            origin_field = self.driver.find_element(By.XPATH, "//*[contains(@class, 'control_field') and contains(@class, 'origin')]")
+            if "Medellín" not in origin_field.text:
+                self.logger.warning("Origin field may not be properly selected")
+            
+            # Check if destination is selected
+            destination_field = self.driver.find_element(By.XPATH, "//*[contains(@class, 'control_field') and contains(@class, 'inbound')]")
+            if "Bogotá" not in destination_field.text:
+                self.logger.warning("Destination field may not be properly selected")
+            
+            # Check if date is selected
+            date_field = self.driver.find_element(By.ID, "departureInputDatePickerId")
+            if not date_field.get_attribute("value"):
+                self.logger.warning("Date field may not be properly filled")
+            
+            # Check if passengers are selected
+            passenger_field = self.driver.find_element(By.XPATH, "//*[contains(@class, 'control_field') and contains(@class, 'pax')]")
+            if "2" not in passenger_field.text:
+                self.logger.warning("Passenger field may not be properly selected")
+            
+        except Exception as e:
+            self.logger.warning(f"Form validation failed: {e}")
+        
+        # Find and click search button
         search_button = self.wait_to_be_clickable(self.SEARCH_BUTTON)
-        search_button.click()
-        self.logger.info("Search button clicked.") 
+        
+        # Try different strategies to ensure form submission
+        try:
+            # Strategy 1: Force form submission with JavaScript
+            self.logger.info("Attempting to submit form with JavaScript...")
+            self.driver.execute_script("""
+                // Find the form and submit it
+                var form = document.querySelector('form');
+                if (form) {
+                    form.submit();
+                } else {
+                    // If no form found, try to trigger the search button click
+                    var searchBtn = document.getElementById('searchButton');
+                    if (searchBtn) {
+                        searchBtn.click();
+                    }
+                }
+            """)
+            self.logger.info("Form submitted with JavaScript.")
+        except Exception as e:
+            self.logger.warning(f"JavaScript form submission failed: {e}")
+            try:
+                # Strategy 2: Direct click
+                search_button.click()
+                self.logger.info("Search button clicked successfully with direct click.")
+            except Exception as e2:
+                self.logger.warning(f"Direct click failed: {e2}")
+                # Strategy 3: JavaScript click on button
+                self.driver.execute_script("arguments[0].click();", search_button)
+                self.logger.info("Search button clicked successfully with JavaScript.")
+        
+        # Wait for navigation to booking page
+        time.sleep(3)
+        self.logger.info("Waiting for navigation to booking select page...")
+        
+        # Verify we're on the booking page by checking URL
+        current_url = self.driver.current_url
+        self.logger.info(f"Current URL after search: {current_url}")
+        
+        # Check if there are any error messages on the page
+        try:
+            error_elements = self.driver.find_elements(By.XPATH, "//*[contains(@class, 'error') or contains(@class, 'alert') or contains(text(), 'error') or contains(text(), 'Error')]")
+            if error_elements:
+                for error in error_elements:
+                    self.logger.warning(f"Error message found: {error.text}")
+        except:
+            pass
+        
+        # Check if we're still on the search form
+        try:
+            search_form = self.driver.find_elements(By.XPATH, "//*[contains(@class, 'search') or contains(@id, 'search')]")
+            if search_form:
+                self.logger.warning("Search form is still visible - form submission may have failed")
+        except:
+            pass
+        
+        if "booking" in current_url.lower() or "select" in current_url.lower():
+            self.logger.info("Successfully navigated to booking select page.")
+        else:
+            self.logger.warning("Still on homepage, search may not have worked.") 
 
     @catch_exceptions() 
     def is_one_way_selected(self):
@@ -431,9 +533,23 @@ class HomePage(Common):
         city= (self.OPTION_CITY_DESTINATION [0], self.OPTION_CITY_DESTINATION [1].format(option_city_destination))
         city_option = self.wait_to_be_clickable(city)
 
-        # Click on the option        
-        city_option.click()
-        self.logger.info("Destination city selected.") 
+        # Try different click strategies to handle interception
+        try:
+            # Strategy 1: Direct click
+            city_option.click()
+            self.logger.info("Destination city selected with direct click.")
+        except ElementClickInterceptedException:
+            try:
+                # Strategy 2: JavaScript click
+                self.driver.execute_script("arguments[0].click();", city_option)
+                self.logger.info("Destination city selected with JavaScript click.")
+            except Exception as e:
+                self.logger.warning(f"JavaScript click failed: {e}")
+                # Strategy 3: Scroll and click
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", city_option)
+                time.sleep(0.5)
+                city_option.click()
+                self.logger.info("Destination city selected with scroll and click.") 
 
     @catch_exceptions() 
     def _select_city_origin(self, field_city, city_name):
@@ -451,7 +567,7 @@ class HomePage(Common):
         # input_origin_city.click()
         # Write the city name
         input_origin_city.send_keys(city_name)
-    
+
     @catch_exceptions() 
     def loader_a(self):
         self.wait_for_invisibility(self.LOADER)
@@ -476,7 +592,7 @@ class HomePage(Common):
                 return True
             except Exception:
                 return False
-    
+
     
 
 

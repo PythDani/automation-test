@@ -62,8 +62,8 @@ def booking_context(browser):
             "currency": "Colombia",
             "city_origin": "Medellín",
             "city_destination": "Bogotá",
-            "departure_date": {"day": "14", "month": "5", "year": "2025"},
-            "arrival_date": {"day": "30", "month": "5", "year": "2025"},
+            "departure_date": {"day": "20", "month": "12", "year": "2025"},
+            "arrival_date": {"day": "30", "month": "1", "year": "2025"},
             "passenger_count": 2,
             "young_count": 0,
             "child_count": 0,
@@ -100,8 +100,8 @@ def booking_context_case_2(browser):
             "currency": "Colombia",
             "city_origin": "Managua",
             "city_destination": "Medellín",
-            "departure_date": {"day": "14", "month": "5", "year": "2025"},
-            "arrival_date": {"day": "30", "month": "5", "year": "2025"},
+            "departure_date": {"day": "17", "month": "10", "year": "2025"},
+            "arrival_date": {"day": "11", "month": "11", "year": "2025"},
 
             "passenger_count": 4,
             "young_count": 0,
@@ -307,6 +307,12 @@ def record_screen(request):
     After the test function completes, the recording is stopped and attached to the
     Allure report as an MP4 file.
     """
+    from config import ENABLE_VIDEO_RECORDING
+    
+    # Si la grabación de video está deshabilitada, no hacer nada
+    if not ENABLE_VIDEO_RECORDING:
+        yield
+        return
 
     test_name = get_test_file_name(request.node.nodeid)
     video_path = os.path.join(VIDEO_DIR, f"{test_name}.mp4")

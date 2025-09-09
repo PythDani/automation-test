@@ -16,7 +16,7 @@ class SeatMapPage(Common):
     LOADER_C:             tuple = (By.XPATH, "//*[contains(@class, 'page-loader') or contains(@class, 'loading') or contains(@class, 'loader')]")
     PAX_TYPE:             tuple = (By.CLASS_NAME, "paxtype_total_value")
     AVAILABLE_SEATS:      tuple = (By.CSS_SELECTOR, "button.seat.ng-star-inserted")
-    CONFIRM_BUTTON:       tuple = (By.XPATH, "//button[contains(@class, 'amount-summary_button') and .//span[contains(normalize-space(.), 'Cont')]]")
+    CONFIRM_BUTTON:       tuple = (By.XPATH, "//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Ir a pagar')]")
     
 
     @catch_exceptions()
@@ -174,20 +174,94 @@ class SeatMapPage(Common):
 
         """
         try:
-            # Wait for the button to appear
             self.logger.info("Waiting for the button to appear...")
-            add_bussines_on_button = self.wait_for(self.CONFIRM_BUTTON)
+            
+            # Wait for any loaders to disappear first
+            self.logger.info("Waiting for loaders to disappear...")
+            try:
+                self.wait_for_invisibility(self.LOADER_C)
+                self.logger.info("Loaders disappeared.")
+            except:
+                self.logger.warning("Loader wait timed out, continuing...")
+            
+            # Additional wait to ensure page is stable
+            time.sleep(2)
+            
+            # Try to find the button using find_elements (not wait_to_be_clickable)
+            continue_button = None
+            
+            # Try different locators to find the button
+            locators_to_try = [
+                self.CONFIRM_BUTTON,
+                (By.XPATH, "//button[contains(@class,'btn-action btn-Medium')]//span[text()='Ir a pagar']"),
+                (By.XPATH, "//button//span[text()='Ir a pagar']"),
+                (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[text()='Ir a pagar']"),
+                (By.XPATH, "//button[contains(@class,'button') and contains(@class,'btn-action')]")
+            ]
+            
+            for i, locator in enumerate(locators_to_try):
+                try:
+                    buttons = self.driver.find_elements(*locator)
+                    if buttons:
+                        # Find the button that contains "Ir a pagar" text
+                        for button in buttons:
+                            try:
+                                if "Ir a pagar" in button.text or "Ir a pagar" in button.get_attribute("innerHTML"):
+                                    continue_button = button
+                                    self.logger.info(f"Continue button found with locator strategy {i+1}")
+                                    break
+                            except:
+                                continue
+                        if continue_button:
+                            break
+                except Exception as e:
+                    self.logger.warning(f"Locator strategy {i+1} failed: {e}")
+                    continue
+            
+            if not continue_button:
+                self.logger.error("Could not find continue button with any strategy")
+                raise Exception("Could not find continue button with any strategy")
+            
+            # Make the button clickable if it's not
+            try:
+                # Scroll to the button
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+                time.sleep(0.5)
+                
+                # Try to make it clickable by removing any overlays
+                self.driver.execute_script("""
+                    var button = arguments[0];
+                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading');
+                    overlays.forEach(function(overlay) {
+                        overlay.style.display = 'none';
+                    });
+                    button.style.pointerEvents = 'auto';
+                    button.style.zIndex = '9999';
+                """, continue_button)
+                
+                self.logger.info("Button prepared for clicking")
+                
+            except Exception as e:
+                self.logger.warning(f"Button preparation failed: {e}")
+
+            self.logger.info("Continue button is clickable, attempting to click...")
 
             # Scroll to the button
-            self.scroll_down_move_to_element(add_bussines_on_button)
+            self.scroll_down_move_to_element(continue_button)
             self.logger.info("Scroll to the button Continue...'")
+            time.sleep(0.5)  # Wait after scrolling
 
-            # SLEEP(1) added
-            time.sleep(1)
-
-            # Click the button            
-            self.driver.execute_script("arguments[0].click();", add_bussines_on_button)
-            self.logger.info("Seats added... Going to the payment page...")
+            # Try different click strategies
+            try:
+                continue_button.click()
+                self.logger.info("Seats added... Going to the payment page... with direct click.")
+            except Exception as e:
+                self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", continue_button)
+                self.logger.info("Seats added... Going to the payment page... with JavaScript click.")
+                
+        except TimeoutException as e:
+            raise Exception(f"Timeout Exception trying to continue to payment page") from e
         except Exception as e:
             self.logger.error(f"Error clicking on continue button: {str(e)}")
             raise

@@ -14,13 +14,13 @@ class ServicesPage(Common):
     
     CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON:     tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeBaggage')]")
     CARRY_ON_BAGGAGE_PLUS_BUTTON:                tuple = (By.XPATH, "//button[contains(@class,'ui-num-ud_button plus')]")
-    CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL:  tuple = (By.XPATH, "//*[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
+    CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL:  tuple = (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Confirmar')]")
     SPORT_BAGGAGE_ADD_BUTTON:                    tuple = (By.ID, "serviceButtonTypeOversize")
     SPORT_EQUIPMENT_PLUS_BUTTON:                  tuple = (By.XPATH, "//button[contains(@class,'ui-num-ud_button plus')]")
-    CONFIRM_SPORT_BAGGAGE_MODAL:                 tuple = (By.XPATH, "//*[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
+    CONFIRM_SPORT_BAGGAGE_MODAL:                 tuple = (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Confirmar')]")
     BUSSINESS_LOUNGE_ADD_BUTTON:                 tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeBusinessLounge')]")
     LOUNGES_PLUS_BUTTON:                         tuple = (By.XPATH, "//label[contains(@class,'service_item_button button')]")
-    CONFIRM_LOUNGES_MODAL:                       tuple = (By.XPATH, "//*[contains(@class,'button amount-summary_button amount-summary_button-action is-action ng-star-inserted')]")
+    CONFIRM_LOUNGES_MODAL:                       tuple = (By.XPATH, "//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Confirmar')]")
     CONFIRM_SERVICES_BUTTON:                     tuple = (By.XPATH, "//*[contains(@class,'button page_button btn-action page_button-primary-flow ng-star-inserted')]//span[contains(@class,'button_label')]")
     
     SPECIAL_ASISTANCE_ADD_BUTTON:                tuple = (By.XPATH, "//button[contains(@id,'serviceButtonTypeSpecialAssistance')]")
@@ -127,16 +127,37 @@ class ServicesPage(Common):
         """
 
         try:
-            self.logger.info("Click on confirm button...")          
-            self.wait_for(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
-            continue_button = self.wait_for(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
+            self.logger.info("Click on confirm button...")
+            
+            # Wait for any loaders to disappear first
+            self.logger.info("Waiting for loaders to disappear...")
+            try:
+                self.wait_for_invisibility(self.LOADER_C)
+                self.logger.info("Loaders disappeared.")
+            except:
+                self.logger.warning("Loader wait timed out, continuing...")
+            
+            # Additional wait to ensure page is stable
+            time.sleep(1)
+            
+            # Wait for the confirm button to be clickable
+            continue_button = self.wait_to_be_clickable(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
+            self.logger.info("Confirm button is clickable, attempting to click...")
+
+            # Scroll to the button
             self._action.scroll_to_element(continue_button).perform()
-
             self.scroll_down_move_to_element(continue_button)
-            self.driver.implicitly_wait(1)
+            time.sleep(0.5)  # Wait after scrolling
 
-            continue_button.click()
-            self.logger.info("Baggage confirmed...")
+            # Try different click strategies
+            try:
+                continue_button.click()
+                self.logger.info("Baggage confirmed with direct click.")
+            except Exception as e:
+                self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", continue_button)
+                self.logger.info("Baggage confirmed with JavaScript click.")
+                
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to confirm baggage") from e
     
@@ -202,15 +223,120 @@ class ServicesPage(Common):
             Exception: If the confirmation button is not found or clickable within the timeout period.
         """
         try:
-            self.logger.info("Click on confirm button...")            
-            continue_button = self.find(self.CONFIRM_SPORT_BAGGAGE_MODAL)
+            self.logger.info("Click on confirm button...")
+            
+            # Wait for any loaders to disappear first
+            self.logger.info("Waiting for loaders to disappear...")
+            try:
+                self.wait_for_invisibility(self.LOADER_C)
+                self.logger.info("Loaders disappeared.")
+            except:
+                self.logger.warning("Loader wait timed out, continuing...")
+            
+            # Additional wait to ensure page is stable
+            time.sleep(2)
+            
+            # Try multiple locator strategies
+            self.logger.info("Trying to find sport baggage confirm button...")
+            
+            # First, let's diagnose what's in the DOM
+            self.logger.info("Diagnosing DOM for sport baggage modal...")
+            try:
+                # Check if any buttons with "Confirmar" text exist
+                confirmar_buttons = self.driver.find_elements(By.XPATH, "//button//span[contains(text(),'Confirmar')]")
+                self.logger.info(f"Found {len(confirmar_buttons)} buttons with 'Confirmar' text")
+                
+                # Check if any buttons with btn-action class exist
+                action_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@class,'btn-action')]")
+                self.logger.info(f"Found {len(action_buttons)} buttons with 'btn-action' class")
+                
+                # Check if any buttons with dsButtonId exist
+                ds_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@id,'dsButtonId_')]")
+                self.logger.info(f"Found {len(ds_buttons)} buttons with 'dsButtonId_' pattern")
+                
+                # Log current page source snippet for debugging
+                page_source = self.driver.page_source
+                if "Confirmar" in page_source:
+                    self.logger.info("'Confirmar' text found in page source")
+                else:
+                    self.logger.warning("'Confirmar' text NOT found in page source")
+                    
+            except Exception as e:
+                self.logger.warning(f"DOM diagnosis failed: {e}")
+            
+            # Strategy 1: Try to find the button using find_elements (not wait_to_be_clickable)
+            continue_button = None
+            
+            # Try different locators to find the button
+            locators_to_try = [
+                self.CONFIRM_SPORT_BAGGAGE_MODAL,
+                (By.XPATH, "//button[contains(@class,'btn-action btn-Medium')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@class,'button') and contains(@class,'btn-action')]")
+            ]
+            
+            for i, locator in enumerate(locators_to_try):
+                try:
+                    buttons = self.driver.find_elements(*locator)
+                    if buttons:
+                        # Find the button that contains "Confirmar" text
+                        for button in buttons:
+                            try:
+                                if "Confirmar" in button.text or "Confirmar" in button.get_attribute("innerHTML"):
+                                    continue_button = button
+                                    self.logger.info(f"Sport baggage confirm button found with locator strategy {i+1}")
+                                    break
+                            except:
+                                continue
+                        if continue_button:
+                            break
+                except Exception as e:
+                    self.logger.warning(f"Locator strategy {i+1} failed: {e}")
+                    continue
+            
+            if not continue_button:
+                self.logger.error("Could not find sport baggage confirm button with any strategy")
+                raise Exception("Could not find sport baggage confirm button with any strategy")
+            
+            # Make the button clickable if it's not
+            try:
+                # Scroll to the button
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+                time.sleep(0.5)
+                
+                # Try to make it clickable by removing any overlays
+                self.driver.execute_script("""
+                    var button = arguments[0];
+                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading');
+                    overlays.forEach(function(overlay) {
+                        overlay.style.display = 'none';
+                    });
+                    button.style.pointerEvents = 'auto';
+                    button.style.zIndex = '9999';
+                """, continue_button)
+                
+                self.logger.info("Button prepared for clicking")
+                
+            except Exception as e:
+                self.logger.warning(f"Button preparation failed: {e}")
+
+            self.logger.info("Sport baggage confirm button is clickable, attempting to click...")
+
+            # Scroll to the button
             self._action.scroll_to_element(continue_button).perform()
-
             self.scroll_down_move_to_element(continue_button)
-            self.driver.implicitly_wait(1)           
+            time.sleep(0.5)  # Wait after scrolling
 
-            continue_button.click()
-            self.logger.info("Sport baggage confirmed...")
+            # Try different click strategies
+            try:
+                continue_button.click()
+                self.logger.info("Sport baggage confirmed with direct click.")
+            except Exception as e:
+                self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", continue_button)
+                self.logger.info("Sport baggage confirmed with JavaScript click.")
+                
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to confirm sport baggage") from e
 
@@ -275,15 +401,95 @@ class ServicesPage(Common):
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
 
         """
-        self.logger.info("Click on confirm button...")              
-        continue_button = self.find(self.CONFIRM_LOUNGES_MODAL)
+        try:
+            self.logger.info("Click on confirm button...")
+            
+            # Wait for any loaders to disappear first
+            self.logger.info("Waiting for loaders to disappear...")
+            try:
+                self.wait_for_invisibility(self.LOADER_C)
+                self.logger.info("Loaders disappeared.")
+            except:
+                self.logger.warning("Loader wait timed out, continuing...")
+            
+            # Additional wait to ensure page is stable
+            time.sleep(2)
+            
+            # Try to find the button using find_elements (not wait_to_be_clickable)
+            continue_button = None
+            
+            # Try different locators to find the button
+            locators_to_try = [
+                self.CONFIRM_LOUNGES_MODAL,
+                (By.XPATH, "//button[contains(@class,'btn-action btn-Medium')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@class,'button') and contains(@class,'btn-action')]")
+            ]
+            
+            for i, locator in enumerate(locators_to_try):
+                try:
+                    buttons = self.driver.find_elements(*locator)
+                    if buttons:
+                        # Find the button that contains "Confirmar" text
+                        for button in buttons:
+                            try:
+                                if "Confirmar" in button.text or "Confirmar" in button.get_attribute("innerHTML"):
+                                    continue_button = button
+                                    self.logger.info(f"Lounge confirm button found with locator strategy {i+1}")
+                                    break
+                            except:
+                                continue
+                        if continue_button:
+                            break
+                except Exception as e:
+                    self.logger.warning(f"Locator strategy {i+1} failed: {e}")
+                    continue
+            
+            if not continue_button:
+                self.logger.error("Could not find lounge confirm button with any strategy")
+                raise Exception("Could not find lounge confirm button with any strategy")
+            
+            # Make the button clickable if it's not
+            try:
+                # Scroll to the button
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+                time.sleep(0.5)
+                
+                # Try to make it clickable by removing any overlays
+                self.driver.execute_script("""
+                    var button = arguments[0];
+                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading');
+                    overlays.forEach(function(overlay) {
+                        overlay.style.display = 'none';
+                    });
+                    button.style.pointerEvents = 'auto';
+                    button.style.zIndex = '9999';
+                """, continue_button)
+                
+                self.logger.info("Button prepared for clicking")
+                
+            except Exception as e:
+                self.logger.warning(f"Button preparation failed: {e}")
 
-        self._action.scroll_to_element(continue_button).perform() 
-        self.scroll_down_move_to_element(continue_button)
-        self.driver.implicitly_wait(1)    
+            self.logger.info("Lounge confirm button is clickable, attempting to click...")
 
-        continue_button.click()
-        self.logger.info("Lounge business services confirmed")
+            # Scroll to the button
+            self._action.scroll_to_element(continue_button).perform()
+            self.scroll_down_move_to_element(continue_button)
+            time.sleep(0.5)  # Wait after scrolling
+
+            # Try different click strategies
+            try:
+                continue_button.click()
+                self.logger.info("Lounge business services confirmed with direct click.")
+            except Exception as e:
+                self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", continue_button)
+                self.logger.info("Lounge business services confirmed with JavaScript click.")
+                
+        except TimeoutException as e:
+            raise Exception(f"Timeout Exception trying to confirm lounge business services") from e
     
     @catch_exceptions()
     def add_special_asistance_services(self):      

@@ -1,6 +1,7 @@
 
 
 
+import time
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException
 from logger import get_logger
@@ -35,7 +36,7 @@ class PaymentPage(Common):
     EMAIL_INPUT:                 tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='email']")
     ADDRESS_INPUT:               tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='address']")
     CITY_INPUT:                  tuple = (By.XPATH, "//div[contains(@class, 'ds-input-container')]//input[@id='city']")
-    CONTINUE_BUTTON:             tuple = (By.XPATH, "//button[contains(@class,'ds-button ds-btn-primary ds-btn-medium')]")
+    CONTINUE_BUTTON:             tuple = (By.XPATH, "//button[contains(@class,'ds-button ds-btn-action ds-btn-medium')]//span[contains(text(),'Confirmar y pagar')]")
     #Modal content
     MODAL_CONTENT:               tuple = (By.XPATH, "//*[contains(@class, 'modal-content')]")
     #Close modal rejected payment
@@ -391,10 +392,128 @@ class PaymentPage(Common):
             """
         try:
             self.logger.info("Clicking continue button...")
-            button = self.wait_to_be_clickable(self.CONTINUE_BUTTON)
-            self.scroll_down_to_element(button)
-            button.click()
-            self.logger.info("Continue button clicked...")
+            
+            # Wait for any loaders to disappear first
+            self.logger.info("Waiting for loaders to disappear...")
+            try:
+                self.wait_for_invisibility(self.LOADER_C)
+                self.logger.info("Loaders disappeared.")
+            except:
+                self.logger.warning("Loader wait timed out, continuing...")
+            
+            # Additional wait to ensure page is stable
+            time.sleep(2)
+            
+            # Try to find the button using find_elements (not wait_to_be_clickable)
+            continue_button = None
+            
+            # Diagnose the DOM first
+            self.logger.info("Diagnosing DOM for payment continue button...")
+            try:
+                all_buttons = self.driver.find_elements(By.TAG_NAME, "button")
+                self.logger.info(f"Found {len(all_buttons)} buttons on the page")
+                
+                ds_buttons = self.driver.find_elements(By.TAG_NAME, "ds-button")
+                self.logger.info(f"Found {len(ds_buttons)} ds-button elements")
+                
+                # Look for any button with "Confirmar" or "pagar" text
+                confirmar_buttons = self.driver.find_elements(By.XPATH, "//button[contains(text(),'Confirmar') or contains(text(),'pagar')]")
+                self.logger.info(f"Found {len(confirmar_buttons)} buttons with 'Confirmar' or 'pagar' text")
+                
+                # Look for any span with "Confirmar y pagar" text
+                confirmar_spans = self.driver.find_elements(By.XPATH, "//span[contains(text(),'Confirmar y pagar')]")
+                self.logger.info(f"Found {len(confirmar_spans)} spans with 'Confirmar y pagar' text")
+                
+                # Look for any element with ds-btn-action class
+                action_buttons = self.driver.find_elements(By.XPATH, "//*[contains(@class,'ds-btn-action')]")
+                self.logger.info(f"Found {len(action_buttons)} elements with 'ds-btn-action' class")
+                
+                # Print some button texts for debugging
+                for i, button in enumerate(all_buttons[:10]):  # First 10 buttons
+                    try:
+                        text = button.text.strip()
+                        if text:
+                            self.logger.info(f"Button {i+1} text: '{text}'")
+                    except:
+                        pass
+                        
+            except Exception as e:
+                self.logger.warning(f"DOM diagnosis failed: {e}")
+
+            # Try different locators to find the button
+            locators_to_try = [
+                self.CONTINUE_BUTTON,
+                (By.XPATH, "//button[contains(@class,'ds-btn-action ds-btn-medium')]//span[text()='Confirmar y pagar']"),
+                (By.XPATH, "//button//span[text()='Confirmar y pagar']"),
+                (By.XPATH, "//ds-button//button[contains(@class,'ds-btn-action')]//span[text()='Confirmar y pagar']"),
+                (By.XPATH, "//button[contains(@class,'ds-button') and contains(@class,'ds-btn-action')]"),
+                (By.XPATH, "//button[contains(text(),'Confirmar y pagar')]"),
+                (By.XPATH, "//span[contains(text(),'Confirmar y pagar')]/parent::button"),
+                (By.XPATH, "//ds-button[contains(@class,'ds-button-container')]//button"),
+                (By.XPATH, "//button[contains(@class,'ds-button')]//span[contains(text(),'Confirmar')]"),
+                (By.XPATH, "//*[contains(@class,'ds-btn-action')]//span[contains(text(),'Confirmar')]")
+            ]
+            
+            for i, locator in enumerate(locators_to_try):
+                try:
+                    buttons = self.driver.find_elements(*locator)
+                    if buttons:
+                        # Find the button that contains "Confirmar y pagar" text
+                        for button in buttons:
+                            try:
+                                if "Confirmar y pagar" in button.text or "Confirmar y pagar" in button.get_attribute("innerHTML"):
+                                    continue_button = button
+                                    self.logger.info(f"Continue button found with locator strategy {i+1}")
+                                    break
+                            except:
+                                continue
+                        if continue_button:
+                            break
+                except Exception as e:
+                    self.logger.warning(f"Locator strategy {i+1} failed: {e}")
+                    continue
+            
+            if not continue_button:
+                self.logger.error("Could not find continue button with any strategy")
+                raise Exception("Could not find continue button with any strategy")
+            
+            # Make the button clickable if it's not
+            try:
+                # Scroll to the button
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+                time.sleep(0.5)
+                
+                # Try to make it clickable by removing any overlays
+                self.driver.execute_script("""
+                    var button = arguments[0];
+                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading');
+                    overlays.forEach(function(overlay) {
+                        overlay.style.display = 'none';
+                    });
+                    button.style.pointerEvents = 'auto';
+                    button.style.zIndex = '9999';
+                """, continue_button)
+                
+                self.logger.info("Button prepared for clicking")
+                
+            except Exception as e:
+                self.logger.warning(f"Button preparation failed: {e}")
+
+            self.logger.info("Continue button is clickable, attempting to click...")
+
+            # Scroll to the button
+            self.scroll_down_to_element(continue_button)
+            time.sleep(0.5)  # Wait after scrolling
+
+            # Try different click strategies
+            try:
+                continue_button.click()
+                self.logger.info("Continue button clicked with direct click...")
+            except Exception as e:
+                self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", continue_button)
+                self.logger.info("Continue button clicked with JavaScript click...")
+                
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to click continue button") from e
 
