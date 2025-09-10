@@ -172,8 +172,8 @@ def booking_context_case_3(browser):
             "currency": "France",
             "city_origin": "Managua",
             "city_destination": "Medellín",
-            "departure_date": {"day": "14", "month": "5", "year": "2025"},
-            "arrival_date": {"day": "30", "month": "5", "year": "2025"},
+            "departure_date": {"day": "14", "month": "11", "year": "2025"},
+            "arrival_date": {"day": "30", "month": "11", "year": "2025"},
 
             "passenger_count": 3,
             "young_count": 1,
