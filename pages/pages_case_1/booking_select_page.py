@@ -136,8 +136,8 @@ class BookingSelectPage(Common):
         except Exception as e:
             self.logger.error(f"Error selecting fee: {str(e)}")
             raise
-    
-    @catch_exceptions()
+
+    @catch_exceptions() 
     def loader_b(self):
         """
         Waits for the page loader to disappear.
@@ -148,7 +148,7 @@ class BookingSelectPage(Common):
         """
         self.wait_for_loader_to_disappear(self.LOADER_B)
 
-    @catch_exceptions()
+    @catch_exceptions() 
     def button_continue_to_move_to_passenger_form(self):
         """
         Clicks the "Continue" button to move to the passenger form.

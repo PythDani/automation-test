@@ -23,6 +23,8 @@ class HomePage(Common):
     CONFIRM_CURRENCY_BUTTON:                        tuple = (By.XPATH, "//*[@class='button points-of-sale_footer_action_button']//*[@class='button_label']")
     #Radio button that indicate one way flight 
     RADIO_ONE_WAY:                                  tuple = (By.ID, "journeytypeId_1")
+    #Radio button that indicate round trip flight 
+    RADIO_ROUND_TRIP:                               tuple = (By.ID, "journeytypeId_0")
     #Button in the origin city field 
     BUTTON_ORIGIN:                                  tuple = (By.ID, "originBtn")
     #Input field of the origin city 
@@ -190,7 +192,24 @@ class HomePage(Common):
         select_radio = self.wait_for(self.RADIO_ONE_WAY)
         if not select_radio.is_selected():            
             select_radio.click()
-            self.logger.info("One way radio button selected.") 
+            self.logger.info("One way radio button selected.")
+
+    @catch_exceptions() 
+    def select_round_trip_radio_button(self):
+        """
+        Select the round trip radio button in the page.
+
+        If the radio button is not selected, it will be clicked.
+        """
+        self.logger.info("Waiting visibility of round trip radio button...")
+        self.wait_for(self.RADIO_ROUND_TRIP)
+        self.logger.info("Waiting clickability of round trip radio button...")
+        self.wait_for(self.RADIO_ROUND_TRIP)
+        self.logger.info("Selecting round trip radio button...")
+        select_radio = self.wait_for(self.RADIO_ROUND_TRIP)
+        if not select_radio.is_selected():            
+            select_radio.click()
+            self.logger.info("Round trip radio button selected.") 
 
     @catch_exceptions() 
     def select_origin(self, city_origin):         
@@ -203,18 +222,32 @@ class HomePage(Common):
                 field_origin (tuple): A tuple of (By, str) to locate the origin field.
                 option_city_origin (tuple): A tuple of (By, str) to locate the city option.
         """
-         self.logger.info("Waiting for origin button...") 
-         origin_button = self.wait_to_be_clickable(self.BUTTON_ORIGIN)
-         origin_button.click()
-         self.logger.info("Origin button clicked") 
-         self._select_city_origin(self.FIELD_ORIGIN, city_origin)
-         # Wait till the city option appears
-         self.logger.info("Waiting for city option...")
-         city= (self.OPTION_CITY_ORIGIN [0], self.OPTION_CITY_ORIGIN [1].format(city_origin))
-         city_option = self.wait_to_be_clickable(city)
-         # Click on the option selected
-         city_option.click()
-         self.logger.info("Origin city selected.") 
+         self.logger.info(f"Waiting for origin button to select city: {city_origin}...") 
+         
+         try:
+             origin_button = self.wait_to_be_clickable(self.BUTTON_ORIGIN)
+             origin_button.click()
+             self.logger.info("Origin button clicked") 
+             self._select_city_origin(self.FIELD_ORIGIN, city_origin)
+             
+             # Wait till the city option appears
+             self.logger.info(f"Waiting for city option: {city_origin}...")
+             city= (self.OPTION_CITY_ORIGIN [0], self.OPTION_CITY_ORIGIN [1].format(city_origin))
+             
+             try:
+                 city_option = self.wait_to_be_clickable(city)
+                 # Click on the option selected
+                 city_option.click()
+                 self.logger.info(f"Origin city '{city_origin}' selected successfully.")
+             except TimeoutException:
+                 self.logger.error(f"City '{city_origin}' is not available in the system. This might be a server-side issue.")
+                 self.logger.info("Available cities might be limited due to server configuration.")
+                 raise Exception(f"City '{city_origin}' is not available for selection. Please check server availability or try a different city.")
+                 
+         except TimeoutException as e:
+             self.logger.error(f"Origin button not found or not clickable. This might indicate a page loading issue.")
+             self.logger.info("This could be due to server problems or network connectivity issues.")
+             raise Exception(f"Unable to access origin city selection. Server might be experiencing issues.") from e 
 
     @catch_exceptions() 
     def select_destination(self, city_destination):
@@ -227,11 +260,16 @@ class HomePage(Common):
             option_city_destination (tuple): A tuple of (By, str) to locate the city option.
         """
 
-        self.logger.info("Waiting for destination field...")
+        self.logger.info(f"Waiting for destination field to select city: {city_destination}...")
         time.sleep(0.5)   
-        destination_input = self.find(self.FIELD_DESTINATION)      
-  
-        self._select_city_destination(city_destination, destination_input)
+        
+        try:
+            destination_input = self.find(self.FIELD_DESTINATION)      
+            self._select_city_destination(city_destination, destination_input)
+        except TimeoutException as e:
+            self.logger.error(f"Destination field not found. This might indicate a page loading issue.")
+            self.logger.info("This could be due to server problems or network connectivity issues.")
+            raise Exception(f"Unable to access destination city selection. Server might be experiencing issues.") from e
 
     @catch_exceptions() 
     def select_deaperture_date(self, day: str, month: str, year: str):
@@ -525,31 +563,37 @@ class HomePage(Common):
             option_city_destination (tuple): A tuple of (By, str) to locate the city option.
             destination_input (selenium.webdriver.remote.webelement.WebElement): The destination input field.
         """
-        self.logger.info("Writing destination...") 
+        self.logger.info(f"Writing destination: {option_city_destination}...") 
         destination_input.send_keys(option_city_destination)
 
         # Wait till the city option appears
-        self.logger.info("Waiting for destination city option...")
+        self.logger.info(f"Waiting for destination city option: {option_city_destination}...")
         city= (self.OPTION_CITY_DESTINATION [0], self.OPTION_CITY_DESTINATION [1].format(option_city_destination))
-        city_option = self.wait_to_be_clickable(city)
-
-        # Try different click strategies to handle interception
+        
         try:
-            # Strategy 1: Direct click
-            city_option.click()
-            self.logger.info("Destination city selected with direct click.")
-        except ElementClickInterceptedException:
+            city_option = self.wait_to_be_clickable(city)
+
+            # Try different click strategies to handle interception
             try:
-                # Strategy 2: JavaScript click
-                self.driver.execute_script("arguments[0].click();", city_option)
-                self.logger.info("Destination city selected with JavaScript click.")
-            except Exception as e:
-                self.logger.warning(f"JavaScript click failed: {e}")
-                # Strategy 3: Scroll and click
-                self.driver.execute_script("arguments[0].scrollIntoView(true);", city_option)
-                time.sleep(0.5)
+                # Strategy 1: Direct click
                 city_option.click()
-                self.logger.info("Destination city selected with scroll and click.") 
+                self.logger.info(f"Destination city '{option_city_destination}' selected with direct click.")
+            except ElementClickInterceptedException:
+                try:
+                    # Strategy 2: JavaScript click
+                    self.driver.execute_script("arguments[0].click();", city_option)
+                    self.logger.info(f"Destination city '{option_city_destination}' selected with JavaScript click.")
+                except Exception as e:
+                    self.logger.warning(f"JavaScript click failed: {e}")
+                    # Strategy 3: Scroll and click
+                    self.driver.execute_script("arguments[0].scrollIntoView(true);", city_option)
+                    time.sleep(0.5)
+                    city_option.click()
+                    self.logger.info(f"Destination city '{option_city_destination}' selected with scroll and click.")
+        except TimeoutException:
+            self.logger.error(f"Destination city '{option_city_destination}' is not available in the system. This might be a server-side issue.")
+            self.logger.info("Available cities might be limited due to server configuration.")
+            raise Exception(f"Destination city '{option_city_destination}' is not available for selection. Please check server availability or try a different city.") 
 
     @catch_exceptions() 
     def _select_city_origin(self, field_city, city_name):

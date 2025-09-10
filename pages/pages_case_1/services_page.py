@@ -1,5 +1,3 @@
-
-
 from selenium.webdriver.common.by import By
 from utils.exception import catch_exceptions
 from logger import get_logger
@@ -36,8 +34,6 @@ class ServicesPage(Common):
         Args:
             driver (selenium.webdriver): A selenium webdriver instance.
         """
-
-
         super().__init__(driver)
         self.logger = get_logger(self.__class__.__name__)
     
@@ -49,9 +45,7 @@ class ServicesPage(Common):
         This method is used to load the page and wait until the page loader
         disappears. If the page loader does not disappear within the timeout
         period, a TimeoutException is raised.
-
         """
-    
         # We wait unitll the page loader disapear.
         try:
             self.logger.info("Waiting for page to load disappear...")
@@ -75,12 +69,10 @@ class ServicesPage(Common):
             Exception: If the carry-on and checked baggage add button is not visible 
                     within the timeout period.
         """
-
         name = "baggage service"
         try:
-
             self.wait_for_loader_to_disappear(self.LOADER_C)
-            add_carry_on_button =self.wait_for_visibility_of_element_located(self.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON)
+            add_carry_on_button = self.wait_for_visibility_of_element_located(self.CARRY_ON_AND_CHECKED_BAGGAGE_ADD_BUTTON)
             self.driver.implicitly_wait(1)   
 
             add_carry_on_button.click()
@@ -102,14 +94,11 @@ class ServicesPage(Common):
         try:
             plus_buttons = self.find_all(self.CARRY_ON_BAGGAGE_PLUS_BUTTON)
 
-
             if plus_buttons:
                 button = plus_buttons[0]
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
                 button.click()
                 self.driver.implicitly_wait(1)
-
-           
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to add carry-on baggage") from e
     
@@ -125,9 +114,8 @@ class ServicesPage(Common):
         Raises:
             Exception: If the confirmation button is not found or clickable within the timeout period.
         """
-
         try:
-            self.logger.info("Click on confirm button...")
+            self.logger.info("Click on confirm button...")          
             
             # Wait for any loaders to disappear first
             self.logger.info("Waiting for loaders to disappear...")
@@ -140,21 +128,118 @@ class ServicesPage(Common):
             # Additional wait to ensure page is stable
             time.sleep(1)
             
-            # Wait for the confirm button to be clickable
-            continue_button = self.wait_to_be_clickable(self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL)
-            self.logger.info("Confirm button is clickable, attempting to click...")
+            # Multiple strategies to find the confirm button
+            continue_button = None
+            strategies = [
+                self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL,
+                (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Confirmar')]"),
+                (By.XPATH, "//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Confirmar')]"),
+                (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[contains(text(),'Confirmar')]"),
+                (By.XPATH, "//span[contains(text(),'Confirmar')]/parent::button"),
+                (By.XPATH, "//span[contains(text(),'Confirmar')]/ancestor::button"),
+                (By.XPATH, "//button[.//span[contains(text(),'Confirmar')]]"),
+                (By.XPATH, "//button[@aria-labelledby='Confirmar']"),
+                (By.XPATH, "//span[@class='button_label' and contains(text(),'Confirmar')]/parent::button"),
+                # New strategies based on DOM analysis
+                (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button[contains(@class,'button btn-action btn-Medium')]"),
+                (By.XPATH, "//button[contains(@class,'button btn-action btn-Medium')]"),
+                (By.XPATH, "//span[@class='button_label']/parent::button"),
+                (By.XPATH, "//span[@class='button_label']/ancestor::button"),
+                (By.XPATH, "//button[.//span[@class='button_label']]"),
+                (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button"),
+                (By.XPATH, "//ngb-modal-window//button[contains(@class,'btn-action')]"),
+                (By.XPATH, "//ngb-modal-window//button[contains(@class,'button')]")
+            ]
+            
+            for i, strategy in enumerate(strategies):
+                try:
+                    self.logger.info(f"Trying strategy {i+1} to find confirm button...")
+                    continue_button = self.wait_to_be_clickable(strategy)
+                    self.logger.info(f"Confirm button found with strategy {i+1}")
+                    break
+                except TimeoutException:
+                    self.logger.warning(f"Strategy {i+1} failed to find button")
+                    continue
+            
+            if not continue_button:
+                # Let's diagnose what's actually in the DOM
+                self.logger.error("Could not find confirm button with any strategy. Diagnosing DOM...")
+                
+                # Print current page source to file for debugging
+                try:
+                    with open("debug_services_page_dom.html", "w", encoding="utf-8") as f:
+                        f.write(self.driver.page_source)
+                    self.logger.info("Page source saved to debug_services_page_dom.html for analysis")
+                except Exception as e:
+                    self.logger.warning(f"Could not save page source: {e}")
+                
+                # Check what buttons are actually present
+                try:
+                    all_buttons = self.driver.find_elements(By.TAG_NAME, "button")
+                    self.logger.info(f"Found {len(all_buttons)} buttons on the page")
+                    
+                    for i, button in enumerate(all_buttons[:10]):  # Check first 10 buttons
+                        try:
+                            button_text = button.text.strip()
+                            button_id = button.get_attribute("id")
+                            button_class = button.get_attribute("class")
+                            self.logger.info(f"Button {i+1}: text='{button_text}', id='{button_id}', class='{button_class}'")
+                        except:
+                            continue
+                    
+                    # Check for any elements containing "Confirmar"
+                    confirmar_elements = self.driver.find_elements(By.XPATH, "//*[contains(text(),'Confirmar')]")
+                    self.logger.info(f"Found {len(confirmar_elements)} elements containing 'Confirmar' text")
+                    
+                    for i, elem in enumerate(confirmar_elements):
+                        try:
+                            tag_name = elem.tag_name
+                            elem_text = elem.text.strip()
+                            elem_id = elem.get_attribute("id")
+                            elem_class = elem.get_attribute("class")
+                            self.logger.info(f"Confirmar element {i+1}: tag='{tag_name}', text='{elem_text}', id='{elem_id}', class='{elem_class}'")
+                        except:
+                            continue
+                            
+                except Exception as e:
+                    self.logger.warning(f"DOM diagnosis failed: {e}")
+                
+                raise Exception("Could not find confirm button with any strategy")
+            
+            self.logger.info("Confirm button found, preparing for click...")
 
-            # Scroll to the button
-            self._action.scroll_to_element(continue_button).perform()
-            self.scroll_down_move_to_element(continue_button)
-            time.sleep(0.5)  # Wait after scrolling
+            # Force scroll to make the button visible and clickable
+            self.driver.execute_script("""
+                var button = arguments[0];
+                // Scroll down first to ensure modal content is visible
+                window.scrollTo(0, document.body.scrollHeight);
+                // Wait a moment for scroll to complete
+                setTimeout(function() {
+                    // Scroll the button into view
+                    button.scrollIntoView({behavior: 'smooth', block: 'center'});
+                    // Remove any overlays that might be blocking
+                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
+                    overlays.forEach(function(overlay) {
+                        overlay.style.display = 'none';
+                        overlay.style.visibility = 'hidden';
+                    });
+                    // Make sure button is clickable
+                    button.style.pointerEvents = 'auto';
+                    button.style.zIndex = '9999';
+                    button.style.position = 'relative';
+                }, 500);
+            """, continue_button)
+            
+            time.sleep(1)  # Wait for scroll to complete
 
             # Try different click strategies
             try:
+                # First try direct click
                 continue_button.click()
                 self.logger.info("Baggage confirmed with direct click.")
             except Exception as e:
                 self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                # Force click with JavaScript
                 self.driver.execute_script("arguments[0].click();", continue_button)
                 self.logger.info("Baggage confirmed with JavaScript click.")
                 
@@ -174,10 +259,9 @@ class ServicesPage(Common):
         """
         name = "Sport baggage service"
         try:
-
             self.wait_for_loader_to_disappear(self.LOADER_C)
             self.wait_for_loader_to_disappear(self.LOADER_C)
-            add_sport_on_button =self.wait_for_visibility_of_element_located(self.SPORT_BAGGAGE_ADD_BUTTON)
+            add_sport_on_button = self.wait_for_visibility_of_element_located(self.SPORT_BAGGAGE_ADD_BUTTON)
             self.scroll_down_move_to_element(add_sport_on_button)
             self.driver.implicitly_wait(1)
 
@@ -205,8 +289,6 @@ class ServicesPage(Common):
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", button)
                 button.click()
                 self.driver.implicitly_wait(1)
-
-
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to add sport baggage") from e
     
@@ -223,7 +305,7 @@ class ServicesPage(Common):
             Exception: If the confirmation button is not found or clickable within the timeout period.
         """
         try:
-            self.logger.info("Click on confirm button...")
+            self.logger.info("Click on confirm button...")            
             
             # Wait for any loaders to disappear first
             self.logger.info("Waiting for loaders to disappear...")
@@ -301,6 +383,10 @@ class ServicesPage(Common):
             
             # Make the button clickable if it's not
             try:
+                # Scroll down first to ensure modal content is visible
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(0.5)
+                
                 # Scroll to the button
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
                 time.sleep(0.5)
@@ -363,7 +449,6 @@ class ServicesPage(Common):
                 self.scroll_down_move_to_element(button)
                 self.driver.implicitly_wait(1)
                 button.click()        
-
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to load {name}") from e
     
@@ -399,10 +484,9 @@ class ServicesPage(Common):
 
         This method waits until the confirmation button of the Lounge business services modal is visible and clickable, then clicks on it.
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
-
         """
         try:
-            self.logger.info("Click on confirm button...")
+            self.logger.info("Click on confirm button...")              
             
             # Wait for any loaders to disappear first
             self.logger.info("Waiting for loaders to disappear...")
@@ -452,6 +536,10 @@ class ServicesPage(Common):
             
             # Make the button clickable if it's not
             try:
+                # Scroll down first to ensure modal content is visible
+                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(0.5)
+                
                 # Scroll to the button
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
                 time.sleep(0.5)
@@ -475,7 +563,7 @@ class ServicesPage(Common):
             self.logger.info("Lounge confirm button is clickable, attempting to click...")
 
             # Scroll to the button
-            self._action.scroll_to_element(continue_button).perform()
+            self._action.scroll_to_element(continue_button).perform() 
             self.scroll_down_move_to_element(continue_button)
             time.sleep(0.5)  # Wait after scrolling
 
@@ -505,7 +593,7 @@ class ServicesPage(Common):
         name = "Special asistance service"
         try:
             self.wait_for_loader_to_disappear(self.LOADER_C)
-            add_asistance_on_button =self.wait_for_visibility_of_element_located(self.SPECIAL_ASISTANCE_ADD_BUTTON)
+            add_asistance_on_button = self.wait_for_visibility_of_element_located(self.SPECIAL_ASISTANCE_ADD_BUTTON)
             add_asistance_on_button.click()
             self.logger.info(f"{name} opened...")
         except TimeoutException as e:
@@ -532,7 +620,6 @@ class ServicesPage(Common):
                 button.click()
             else:
                 self.logger.warning("No special assistance buttons found.")
-           
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to add special asistance service") from e
     
@@ -543,13 +630,45 @@ class ServicesPage(Common):
 
         This method waits until the confirmation button of the special asistance modal is visible and clickable, then clicks on it.
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
-
         """
-        self.logger.info("Click on confirm button...")              
-        continue_button = self.find(self.CONFIRM_SPECIAL_ASISTANCE_MODAL)
-        self._action.scroll_to_element(continue_button).perform()       
-        continue_button.click()
-        self.logger.info("special asistance services confirmed")
+        try:
+            self.logger.info("Click on confirm button...")              
+            
+            # Wait for any loaders to disappear first
+            self.logger.info("Waiting for loaders to disappear...")
+            try:
+                self.wait_for_invisibility(self.LOADER_C)
+                self.logger.info("Loaders disappeared.")
+            except:
+                self.logger.warning("Loader wait timed out, continuing...")
+            
+            # Additional wait to ensure page is stable
+            time.sleep(1)
+            
+            # Wait for the confirm button to be clickable
+            continue_button = self.wait_to_be_clickable(self.CONFIRM_SPECIAL_ASISTANCE_MODAL)
+            self.logger.info("Confirm button is clickable, attempting to click...")
+
+            # Scroll down first to ensure modal content is visible
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(0.5)
+            
+            # Scroll to the button
+            self._action.scroll_to_element(continue_button).perform()       
+            self.scroll_down_move_to_element(continue_button)
+            time.sleep(0.5)  # Wait after scrolling
+
+            # Try different click strategies
+            try:
+                continue_button.click()
+                self.logger.info("Special assistance services confirmed with direct click.")
+            except Exception as e:
+                self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", continue_button)
+                self.logger.info("Special assistance services confirmed with JavaScript click.")
+                
+        except TimeoutException as e:
+            raise Exception(f"Timeout Exception trying to confirm special assistance services") from e
 
     @catch_exceptions()    
     def continue_to_the_next_step(self):     
@@ -558,30 +677,37 @@ class ServicesPage(Common):
 
         This method waits until the "Continuar" button is visible and clickable, then clicks on it.
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
-
         """
-        self.wait_for_loader_to_disappear(self.LOADER_C)
-        # Wait for the button to appear
-        self.logger.info("Waiting for the button to appear...")
-        add_bussines_on_button = self.wait_for(self.CONFIRM_SERVICES_BUTTON)
+        try:
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            
+            # Wait for the button to appear and be clickable
+            self.logger.info("Waiting for the continue button to appear...")
+            continue_button = self.wait_to_be_clickable(self.CONFIRM_SERVICES_BUTTON)
+            self.logger.info("Continue button is clickable, attempting to click...")
 
-        # Scroll to the button
-        self.scroll_down_move_to_element(add_bussines_on_button)
-        self.logger.info("Scroll to the button Continue...'")
+            # Scroll down first to ensure button is visible
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(0.5)
+            
+            # Scroll to the button
+            self._action.scroll_to_element(continue_button).perform()
+            self.scroll_down_move_to_element(continue_button)
+            self.logger.info("Scrolled to the continue button...")
 
-        # SLEEP(1) added
-        time.sleep(1)
+            # Additional wait after scrolling
+            time.sleep(1)
 
-        # Click the button            
-        self.driver.execute_script("arguments[0].click();", add_bussines_on_button)
-        self.logger.info("Services added... Going to the seatmap page...")
-    
-    
-        
-
-        
-
-    
-
-
-
+            # Try different click strategies
+            try:
+                continue_button.click()
+                self.logger.info("Continue button clicked with direct click.")
+            except Exception as e:
+                self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", continue_button)
+                self.logger.info("Continue button clicked with JavaScript click.")
+            
+            self.logger.info("Services added... Going to the seatmap page...")
+            
+        except TimeoutException as e:
+            raise Exception(f"Timeout Exception trying to continue to next step") from e
