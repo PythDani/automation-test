@@ -621,21 +621,21 @@ class HomePage(Common):
         self.wait_for_invisibility(self.LOADER_B)
 
     def is_logged_in(self) -> bool:
-            """
-            Checks if the user is logged in.
+        """
+        Checks if the user is logged in.
 
-            This method tries to find the element with the BUTTON_LOGGED_IN
-            locator. If the element is found, the method returns True, otherwise
-            it returns False.
+        This method tries to find the element with the BUTTON_LOGGED_IN
+        locator. If the element is found, the method returns True, otherwise
+        it returns False.
 
-            Returns:
-                bool: Whether the user is logged in or not.
-            """
-            try:
-                self.find(self.LOGGED)
-                return True
-            except Exception:
-                return False
+        Returns:
+            bool: Whether the user is logged in or not.
+        """
+        try:
+            self.find(self.LOGGED)
+            return True
+        except Exception:
+            return False
 
     
 

@@ -14,6 +14,7 @@ python-dotenv~=1.1.0
 # Data and recording
 faker==24.8.0                 # Generates fake data (e.g. names, addresses) for testing
 pyscreenrec~=0.6
+psutil~=6.1.0                 # Process and system utilities for cleanup
 
 # Network inspection and support
 selenium-wire~=5.1.0

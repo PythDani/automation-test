@@ -226,7 +226,7 @@ class BookingSelectPage(Common):
                             })
 
                         return result
-            
+                    
                     except Exception as e:
                         self.logger.error(f"Error decoding session response: {e}")
                         return None

@@ -1,4 +1,7 @@
 import platform
+import tempfile
+import os
+import random
 from seleniumwire import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.edge.options import Options as EdgeOptions
@@ -36,11 +39,22 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-extensions")
-        options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--disable-features=VizDisplayCompositor")
         options.add_argument("--start-maximized")
-        options.add_argument("--disable-application-cache")        
+        options.add_argument("--disable-application-cache")
+        
+        # Create unique user data directory and port for each session
+        user_data_dir = tempfile.mkdtemp(prefix="chrome_user_data_")
+        debug_port = random.randint(9223, 9999)
+        
+        options.add_argument(f"--user-data-dir={user_data_dir}")
+        options.add_argument(f"--remote-debugging-port={debug_port}")
+        
         if headless:
-            options.add_argument("--headless")
+            options.add_argument("--headless=new")
+        
         return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
     elif browser_name == "firefox":
         options = webdriver.FirefoxOptions()     
@@ -53,13 +67,21 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-extensions")
-        options.add_argument("--remote-debugging-port=9222")
+        options.add_argument("--disable-gpu")
+        options.add_argument("--disable-web-security")
+        options.add_argument("--disable-features=VizDisplayCompositor")
         options.add_argument("--start-maximized")
         options.add_argument("--disable-application-cache")
+        
+        # Create unique user data directory and port for each session
+        user_data_dir = tempfile.mkdtemp(prefix="edge_user_data_")
+        debug_port = random.randint(9223, 9999)
+        
+        options.add_argument(f"--user-data-dir={user_data_dir}")
+        options.add_argument(f"--remote-debugging-port={debug_port}")
+        
         if headless:
-
-            options.add_argument("--headless=new") 
-            options.add_argument("--disable-gpu")       
+            options.add_argument("--headless=new")
 
         return webdriver.Edge(
             service=EdgeService(EdgeChromiumDriverManager().install()),

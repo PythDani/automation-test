@@ -3,6 +3,9 @@ import os
 import allure
 import pyscreenrec
 import pytest
+import psutil
+import signal
+import time
 
 from pages.pages_case_1.booking_select_page import BookingSelectPage
 from pages.pages_case_1.form_passengers_page import FormPassengersPage
@@ -30,6 +33,32 @@ os.makedirs(SCREENSHOT_DIR, exist_ok=True)
 get_logger()
 logger = logging.getLogger(__name__)
 logger.info("Start pytest script")
+
+def cleanup_browser_processes():
+    """
+    Clean up any remaining browser processes that might be hanging around.
+    This helps prevent the "user data directory already in use" error.
+    """
+    try:
+        # Kill Chrome processes
+        for proc in psutil.process_iter(['pid', 'name']):
+            try:
+                if proc.info['name'] and 'chrome' in proc.info['name'].lower():
+                    proc.kill()
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+        
+        # Kill Edge processes
+        for proc in psutil.process_iter(['pid', 'name']):
+            try:
+                if proc.info['name'] and 'msedge' in proc.info['name'].lower():
+                    proc.kill()
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                pass
+                
+        time.sleep(1)  # Give processes time to terminate
+    except Exception as e:
+        logger.warning(f"Error during browser cleanup: {e}")
 
 @pytest.fixture(scope="function")
 def booking_context(browser):
@@ -208,12 +237,24 @@ def browser(request):
     Yields:
         WebDriver: An instance of the web driver for the specified browser.
     """
-
+    # Clean up any existing browser processes before starting
+    cleanup_browser_processes()
+    
     browser_name = request.config.getoption("--browser")
     headless_option = request.config.getoption("--headless").lower() == "true"
-    driver = get_driver(browser_name, headless_option)
-    yield driver
-    driver.quit()
+    
+    try:
+        driver = get_driver(browser_name, headless_option)
+        yield driver
+    finally:
+        # Ensure driver is properly closed
+        try:
+            driver.quit()
+        except Exception as e:
+            logger.warning(f"Error closing driver: {e}")
+        
+        # Clean up any remaining processes
+        cleanup_browser_processes()
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_logreport(report):  

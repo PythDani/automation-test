@@ -575,7 +575,7 @@ class ServicesPage(Common):
                 self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
                 self.driver.execute_script("arguments[0].click();", continue_button)
                 self.logger.info("Lounge business services confirmed with JavaScript click.")
-                
+            
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to confirm lounge business services") from e
     
@@ -666,7 +666,7 @@ class ServicesPage(Common):
                 self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
                 self.driver.execute_script("arguments[0].click();", continue_button)
                 self.logger.info("Special assistance services confirmed with JavaScript click.")
-                
+            
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to confirm special assistance services") from e
 
@@ -689,7 +689,7 @@ class ServicesPage(Common):
             # Scroll down first to ensure button is visible
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(0.5)
-            
+
             # Scroll to the button
             self._action.scroll_to_element(continue_button).perform()
             self.scroll_down_move_to_element(continue_button)
@@ -706,8 +706,8 @@ class ServicesPage(Common):
                 self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
                 self.driver.execute_script("arguments[0].click();", continue_button)
                 self.logger.info("Continue button clicked with JavaScript click.")
-            
+        
             self.logger.info("Services added... Going to the seatmap page...")
-            
+    
         except TimeoutException as e:
             raise Exception(f"Timeout Exception trying to continue to next step") from e
