@@ -6,6 +6,9 @@ import pytest
 import psutil
 import signal
 import time
+import psutil
+import signal
+import time
 
 from pages.pages_case_1.booking_select_page import BookingSelectPage
 from pages.pages_case_1.form_passengers_page import FormPassengersPage
@@ -34,31 +37,170 @@ get_logger()
 logger = logging.getLogger(__name__)
 logger.info("Start pytest script")
 
-def cleanup_browser_processes():
+def cleanup_browser_processes(aggressive=False):
     """
     Clean up any remaining browser processes that might be hanging around.
     This helps prevent the "user data directory already in use" error.
+    
+    Args:
+        aggressive (bool): If True, kills all automation-related processes more aggressively
     """
     try:
-        # Kill Chrome processes
-        for proc in psutil.process_iter(['pid', 'name']):
+        # List of applications to NEVER kill (even if they use Chrome/Edge)
+        protected_apps = [
+            'teams.exe', 'ms-teams.exe', 'teams', 'ms-teams',
+            'slack.exe', 'slack', 'discord.exe', 'discord',
+            'whatsapp.exe', 'whatsapp', 'telegram.exe', 'telegram',
+            'spotify.exe', 'spotify', 'vscode.exe', 'code.exe',
+            'pycharm.exe', 'pycharm64.exe', 'idea.exe', 'idea64.exe'
+        ]
+        
+        killed_processes = []
+        
+        # Only kill Chrome processes that are likely from our automation
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
             try:
                 if proc.info['name'] and 'chrome' in proc.info['name'].lower():
-                    proc.kill()
-            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                    # Skip if it's a protected application
+                    if any(protected in proc.info['name'].lower() for protected in protected_apps):
+                        continue
+                        
+                    # Check if this is a Chrome process from our automation
+                    cmdline = proc.info.get('cmdline', [])
+                    cmdline_str = ' '.join(cmdline) if cmdline else ''
+                    
+                    should_kill = False
+                    
+                    if aggressive:
+                        # In aggressive mode, kill any Chrome process with automation args
+                        should_kill = any(arg in cmdline_str for arg in [
+                            '--user-data-dir=chrome_user_data_',
+                            '--remote-debugging-port=',
+                            '--no-sandbox',
+                            '--disable-dev-shm-usage',
+                            '--disable-extensions',
+                            '--disable-gpu',
+                            '--disable-web-security',
+                            '--disable-features=VizDisplayCompositor'
+                        ])
+                    else:
+                        # In normal mode, only kill sub-processes
+                        should_kill = (any(arg in cmdline_str for arg in [
+                            '--user-data-dir=chrome_user_data_',
+                            '--remote-debugging-port=',
+                            '--no-sandbox',
+                            '--disable-dev-shm-usage',
+                            '--disable-extensions',
+                            '--disable-gpu',
+                            '--disable-web-security',
+                            '--disable-features=VizDisplayCompositor'
+                        ]) and '--type=' in cmdline_str)
+                    
+                    if should_kill:
+                        logger.info(f"Killing automation Chrome process: {proc.info['pid']} - {proc.info['name']}")
+                        proc.kill()
+                        killed_processes.append(f"Chrome-{proc.info['pid']}")
+                        
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
         
-        # Kill Edge processes
-        for proc in psutil.process_iter(['pid', 'name']):
+        # Only kill Edge processes that are likely from our automation
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
             try:
                 if proc.info['name'] and 'msedge' in proc.info['name'].lower():
+                    # Skip if it's a protected application
+                    if any(protected in proc.info['name'].lower() for protected in protected_apps):
+                        continue
+                        
+                    # Check if this is an Edge process from our automation
+                    cmdline = proc.info.get('cmdline', [])
+                    cmdline_str = ' '.join(cmdline) if cmdline else ''
+                    
+                    should_kill = False
+                    
+                    if aggressive:
+                        # In aggressive mode, kill any Edge process with automation args
+                        should_kill = any(arg in cmdline_str for arg in [
+                            '--user-data-dir=edge_user_data_',
+                            '--remote-debugging-port=',
+                            '--no-sandbox',
+                            '--disable-dev-shm-usage',
+                            '--disable-extensions',
+                            '--disable-gpu',
+                            '--disable-web-security',
+                            '--disable-features=VizDisplayCompositor'
+                        ])
+                    else:
+                        # In normal mode, only kill sub-processes
+                        should_kill = (any(arg in cmdline_str for arg in [
+                            '--user-data-dir=edge_user_data_',
+                            '--remote-debugging-port=',
+                            '--no-sandbox',
+                            '--disable-dev-shm-usage',
+                            '--disable-extensions',
+                            '--disable-gpu',
+                            '--disable-web-security',
+                            '--disable-features=VizDisplayCompositor'
+                        ]) and '--type=' in cmdline_str)
+                    
+                    if should_kill:
+                        logger.info(f"Killing automation Edge process: {proc.info['pid']} - {proc.info['name']}")
+                        proc.kill()
+                        killed_processes.append(f"Edge-{proc.info['pid']}")
+                        
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
+        
+        # Also kill any remaining WebDriver processes
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+            try:
+                if proc.info['name'] and any(driver in proc.info['name'].lower() for driver in [
+                    'chromedriver', 'geckodriver', 'msedgedriver'
+                ]):
+                    logger.info(f"Killing WebDriver process: {proc.info['pid']} - {proc.info['name']}")
                     proc.kill()
-            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                    killed_processes.append(f"WebDriver-{proc.info['pid']}")
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
                 pass
                 
-        time.sleep(1)  # Give processes time to terminate
+        if killed_processes:
+            logger.info(f"Killed {len(killed_processes)} automation processes: {', '.join(killed_processes)}")
+        
+        time.sleep(1 if aggressive else 0.5)  # Give processes time to terminate
+        
     except Exception as e:
         logger.warning(f"Error during browser cleanup: {e}")
+
+def force_cleanup_all_automation_processes():
+    """
+    Force cleanup all automation-related processes at the end of test session.
+    This is more aggressive and should only be called at the end of all tests.
+    """
+    logger.info("Starting aggressive cleanup of all automation processes...")
+    cleanup_browser_processes(aggressive=True)
+    
+    # Additional cleanup for any remaining automation processes
+    try:
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+            try:
+                if proc.info['name'] and any(keyword in proc.info['name'].lower() for keyword in [
+                    'selenium', 'webdriver', 'pytest', 'python'
+                ]):
+                    cmdline = proc.info.get('cmdline', [])
+                    cmdline_str = ' '.join(cmdline) if cmdline else ''
+                    
+                    # Only kill if it's related to our automation
+                    if any(arg in cmdline_str for arg in [
+                        'test_av_test_case', 'automation-test', 'pytest'
+                    ]):
+                        logger.info(f"Force killing automation process: {proc.info['pid']} - {proc.info['name']}")
+                        proc.kill()
+            except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                pass
+    except Exception as e:
+        logger.warning(f"Error during force cleanup: {e}")
+    
+    logger.info("Aggressive cleanup completed.")
 
 @pytest.fixture(scope="function")
 def booking_context(browser):
@@ -219,6 +361,16 @@ def pytest_addoption(parser):
         action="store", 
         default=os.getenv("HOME_URL"), 
         help="Base URL for the tests")
+    parser.addoption(
+        "--disable-cleanup",
+        action="store_true",
+        default=False,
+        help="Disable browser process cleanup to avoid closing other applications")
+    parser.addoption(
+        "--aggressive-cleanup",
+        action="store_true",
+        default=False,
+        help="Enable aggressive cleanup mode for better memory management")
 
 @pytest.fixture(scope="session")
 def base_url(request):
@@ -237,8 +389,12 @@ def browser(request):
     Yields:
         WebDriver: An instance of the web driver for the specified browser.
     """
-    # Clean up any existing browser processes before starting
-    cleanup_browser_processes()
+    # Clean up any existing browser processes before starting (only if not disabled)
+    disable_cleanup = request.config.getoption("--disable-cleanup")
+    aggressive_cleanup = request.config.getoption("--aggressive-cleanup")
+    
+    if not disable_cleanup:
+        cleanup_browser_processes(aggressive=aggressive_cleanup)
     
     browser_name = request.config.getoption("--browser")
     headless_option = request.config.getoption("--headless").lower() == "true"
@@ -253,8 +409,9 @@ def browser(request):
         except Exception as e:
             logger.warning(f"Error closing driver: {e}")
         
-        # Clean up any remaining processes
-        cleanup_browser_processes()
+        # Clean up any remaining processes (only if not disabled)
+        if not disable_cleanup:
+            cleanup_browser_processes(aggressive=aggressive_cleanup)
 
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_logreport(report):  
@@ -286,6 +443,32 @@ def pytest_sessionstart(session):
         None
     """
     create_db()
+
+def pytest_sessionfinish(session, exitstatus):
+    """
+    A pytest teardown function that runs after all tests are completed.
+    
+    This function performs aggressive cleanup of all automation processes
+    to prevent memory issues and ensure no processes are left hanging.
+    
+    Args:
+        session: The pytest session object
+        exitstatus: The exit status of the test session
+    """
+    logger.info("Test session finished. Starting aggressive cleanup...")
+    
+    # Force cleanup all automation processes
+    force_cleanup_all_automation_processes()
+    
+    # Additional memory cleanup
+    try:
+        import gc
+        gc.collect()
+        logger.info("Garbage collection completed.")
+    except Exception as e:
+        logger.warning(f"Error during garbage collection: {e}")
+    
+    logger.info("Session cleanup completed.")
 
 @pytest.hookimpl(tryfirst=True, hookwrapper=True)
 def pytest_runtest_makereport(item, call):
