@@ -44,15 +44,52 @@ def get_driver(browser_name, headless=False):
         options.add_argument("--disable-gpu")
         options.add_argument("--start-maximized")
         
+        # GPU and hardware acceleration options
+        options.add_argument("--disable-gpu-sandbox")
+        options.add_argument("--disable-software-rasterizer")
+        options.add_argument("--disable-gpu-process-crash-limit")
+        options.add_argument("--disable-gpu-watchdog")
+        options.add_argument("--disable-gpu-rasterization")
+        options.add_argument("--disable-accelerated-2d-canvas")
+        options.add_argument("--disable-accelerated-jpeg-decoding")
+        options.add_argument("--disable-accelerated-mjpeg-decode")
+        options.add_argument("--disable-accelerated-video-decode")
+        options.add_argument("--disable-accelerated-video-encode")
+        
         # Memory and performance options
         options.add_argument("--disable-background-timer-throttling")
         options.add_argument("--disable-backgrounding-occluded-windows")
         options.add_argument("--disable-renderer-backgrounding")
         options.add_argument("--disable-background-networking")
+        options.add_argument("--disable-background-sync")
+        options.add_argument("--disable-background-media-suspend")
+        options.add_argument("--disable-background-media-playback")
+        
+        # Network and process stability
+        options.add_argument("--disable-background-mode")
+        options.add_argument("--disable-component-extensions-with-background-pages")
+        options.add_argument("--disable-default-apps")
+        options.add_argument("--disable-sync")
+        options.add_argument("--disable-translate")
+        options.add_argument("--disable-ipc-flooding-protection")
         
         # Security options (simplified)
         options.add_argument("--disable-web-security")
         options.add_argument("--disable-features=VizDisplayCompositor")
+        options.add_argument("--disable-features=TranslateUI")
+        options.add_argument("--disable-features=BlinkGenPropertyTrees")
+        options.add_argument("--disable-features=EnableDrDc")
+        
+        # Additional stability options
+        options.add_argument("--disable-hang-monitor")
+        options.add_argument("--disable-prompt-on-repost")
+        options.add_argument("--disable-client-side-phishing-detection")
+        options.add_argument("--disable-component-update")
+        options.add_argument("--disable-domain-reliability")
+        options.add_argument("--disable-features=AudioServiceOutOfProcess")
+        options.add_argument("--disable-features=MediaRouter")
+        options.add_argument("--disable-features=UserAgentClientHint")
+        options.add_argument("--disable-features=VizServiceDisplayCompositor")
         
         # Create unique user data directory and port for each session
         user_data_dir = tempfile.mkdtemp(prefix="chrome_user_data_")

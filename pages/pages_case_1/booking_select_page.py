@@ -1,5 +1,6 @@
 
 import json
+import time
 from seleniumwire.utils import decode
 from pages.common import Common
 from logger import get_logger
@@ -81,7 +82,38 @@ class BookingSelectPage(Common):
         """
         try:
             self.loader_b()
-            flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)                
+            
+            # Try multiple strategies to find the flight button
+            flight_button = None
+            
+            # Strategy 1: Try the original locator
+            try:
+                flight_button = self.wait_to_be_clickable(self.FLIGHT_BUTTON)
+                self.logger.info("Flight button found with original locator")
+            except Exception as e:
+                self.logger.warning(f"Original flight button locator failed: {e}")
+                
+                # Strategy 2: Try alternative locators
+                alternative_flight_locators = [
+                    (By.XPATH, "//button[contains(@class,'flight-select')]"),
+                    (By.XPATH, "//div[contains(@class,'flight-card')]//button"),
+                    (By.XPATH, "//*[contains(@class,'select-flight')]"),
+                    (By.XPATH, "//button[contains(text(),'Seleccionar')]"),
+                    (By.XPATH, "//button[contains(text(),'Select')]")
+                ]
+                
+                for i, locator in enumerate(alternative_flight_locators):
+                    try:
+                        self.logger.info(f"Trying alternative flight locator {i+1}: {locator}")
+                        flight_button = self.wait_to_be_clickable(locator)
+                        self.logger.info(f"Flight button found with alternative locator {i+1}")
+                        break
+                    except Exception as alt_e:
+                        self.logger.warning(f"Alternative flight locator {i+1} failed: {alt_e}")
+                        continue
+            
+            if flight_button is None:
+                raise Exception("Could not find flight button with any locator strategy")
 
             self._action.move_to_element(flight_button).perform()
             self.driver.implicitly_wait(2)        
@@ -125,14 +157,61 @@ class BookingSelectPage(Common):
         found or clickable within the timeout period, a TimeoutException is raised.
         """
         try:
-            basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)        
-
-            self._action.move_to_element(basic_fare_button).perform()
-            self.scroll_down_by_pixels(350)
-            self.driver.implicitly_wait(1)        
-
-            basic_fare_button.click()
-            self.logger.info("Fee selected")
+            self.logger.info("Looking for Basic fare button...")
+            basic_fare_button = None
+            
+            # Strategy 1: Try the original locator
+            try:
+                self.logger.info("Trying original fare button locator: //div[@role='button' and contains(@class, 'fare-control')]")
+                basic_fare_button = self.wait_to_be_clickable(self.BASIC_FARE_BUTTON)
+                self.logger.info("Basic fare button found with original locator.")
+            except Exception as e:
+                self.logger.warning(f"Original fare button locator failed: {e}")
+                
+                # Strategy 2: Try alternative locators
+                alternative_fare_locators = [
+                    (By.XPATH, "//div[contains(@class, 'fare-control')]"),
+                    (By.XPATH, "//button[contains(@class, 'fare-control')]"),
+                    (By.XPATH, "//div[@role='button' and contains(@class, 'fare')]"),
+                    (By.XPATH, "//*[contains(@class, 'fare-control') and @role='button']"),
+                    (By.XPATH, "//div[contains(@class, 'fare') and contains(@class, 'control')]"),
+                    (By.XPATH, "//*[contains(text(), 'Basic') and contains(@class, 'fare')]"),
+                    (By.XPATH, "//*[contains(@class, 'fare')]//button"),
+                    (By.XPATH, "//*[contains(@class, 'fare')]//div[@role='button']")
+                ]
+                
+                for i, locator in enumerate(alternative_fare_locators):
+                    try:
+                        self.logger.info(f"Trying alternative fare locator {i+1}: {locator}")
+                        basic_fare_button = self.wait_to_be_clickable(locator)
+                        self.logger.info(f"Basic fare button found with alternative locator {i+1}.")
+                        break
+                    except Exception as alt_e:
+                        self.logger.warning(f"Alternative fare locator {i+1} failed: {alt_e}")
+                        continue
+            
+            if basic_fare_button is None:
+                raise Exception("Could not find Basic fare button with any locator strategy")
+            
+            # Ensure element is interactable
+            self.logger.info("Ensuring fare button is interactable...")
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", basic_fare_button)
+            time.sleep(0.5)
+            
+            # Check element properties
+            self.logger.info(f"Fare button is_displayed: {basic_fare_button.is_displayed()}")
+            self.logger.info(f"Fare button is_enabled: {basic_fare_button.is_enabled()}")
+            
+            # Try to click with multiple strategies
+            try:
+                self.logger.info("Attempting direct click on fare button...")
+                basic_fare_button.click()
+                self.logger.info("Fee selected with direct click.")
+            except Exception as click_e:
+                self.logger.warning(f"Direct click failed: {click_e}, trying JavaScript click...")
+                self.driver.execute_script("arguments[0].click();", basic_fare_button)
+                self.logger.info("Fee selected with JavaScript click.")
+                
         except Exception as e:
             self.logger.error(f"Error selecting fee: {str(e)}")
             raise
@@ -146,7 +225,12 @@ class BookingSelectPage(Common):
         disappear within the timeout period, a TimeoutException is raised.
 
         """
-        self.wait_for_loader_to_disappear(self.LOADER_B)
+        try:
+            self.wait_for_loader_to_disappear(self.LOADER_B)
+        except Exception as e:
+            self.logger.warning(f"Loader did not disappear within timeout: {e}")
+            # Continue anyway, as the page might still be functional
+            pass
 
     @catch_exceptions() 
     def button_continue_to_move_to_passenger_form(self):

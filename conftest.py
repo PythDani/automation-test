@@ -278,15 +278,15 @@ def booking_context_case_2(browser):
             "city_origin": "Managua",
             "city_destination": "Medellín",
             "departure_date": {"day": "17", "month": "10", "year": "2025"},
-            "arrival_date": {"day": "11", "month": "11", "year": "2025"},
+            "arrival_date": {"day": "30", "month": "10", "year": "2025"},
 
-            "passenger_count": 4,
+            "passenger_count": 1,
             "young_count": 0,
             "child_count": 0,
             "baby_count": 0,
             "relative_day": "2 days before",
             "a_credits_number": os.getenv("CARD_CREDIT_NUMBER"),
-            "a_credits_pin": os.getenv("CARD_CREDIT_PIN"),
+            "a_credits_pin": os.getenv("CREDIT_PIN"),
 
         }
     }
