@@ -437,13 +437,6 @@ class PaymentPage(Common):
             # Always clear the executing flag
             self._avianca_credits_executing = False
             self.logger.info(f"=== EXECUTION {execution_id} === Cleared executing flag")
-            
-            # Check for error modal immediately after Avianca credits processing
-            self.logger.info("Checking for error modal after Avianca credits processing...")
-            modal_handled = self.handle_error_modal_after_payment()
-            if modal_handled:
-                self.logger.info("Error modal detected and handled - returning early")
-                return
 
     @catch_exceptions()
     def fill_cardholder_name(self, name: str):
@@ -944,6 +937,13 @@ class PaymentPage(Common):
         :return: None
         """
         try:
+            # First check if we're already on the home page
+            current_url = self.driver.current_url
+            if "nuxqa4.avtest.ink/es/" in current_url and "booking" not in current_url:
+                self.logger.info(f"Already on home page: {current_url}")
+                self.logger.info("Skipping modal check and navigation - already on home page")
+                return
+            
             self.wait_for_visibility_of_element_located(self.BUTTON_MODAL_PAYMENT_REJECTED)
             
             print("Modal detected → going back...")
