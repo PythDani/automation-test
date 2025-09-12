@@ -87,36 +87,258 @@ class PaymentPage(Common):
         :param pin: Avianca credits PIN
         """
         try:
+            self.logger.info("Starting Avianca credits selection...")
+            self.logger.info(f"Received parameters - number: '{number}' (type: {type(number)}), pin: '{pin}' (type: {type(pin)})")
+            self.logger.info(f"PIN value details - length: {len(pin)}, isdigit: {pin.isdigit()}, repr: {repr(pin)}")
+            
+            # Ensure PIN is properly formatted as string and contains only digits
+            pin = str(pin).strip()
+            if not pin.isdigit():
+                raise ValueError(f"PIN must contain only digits, got: '{pin}'")
+            if len(pin) != 6:
+                raise ValueError(f"PIN must be exactly 6 digits, got: '{pin}' (length: {len(pin)})")
+            
+            self.logger.info(f"Processed PIN: '{pin}' (length: {len(pin)})")
             self.wait_for_loader_to_disappear(self.LOADER_C)
+            
             # Click on the checkbox
+            self.logger.info("Looking for Avianca credits checkbox...")
             check_avianca_credits = self.find(self.CHECK_AVIANCA_CREDITS)
-            check_avianca_credits.click()          
+            if check_avianca_credits is None:
+                raise Exception("Checkbox not found")
+            check_avianca_credits.click()
+            self.logger.info("Avianca credits checkbox clicked.")
 
             # Fill number
+            self.logger.info("Looking for Avianca credits number input...")
             input_number = self.find(self.INPUT_NUMBER_AVIANCA_CREDITS)
+            if input_number is None:
+                raise Exception("Number input not found")
             input_number.clear()
             input_number.send_keys(number)
+            self.logger.info("Avianca credits number filled.")
 
-            # Fill PIN
-            input_pin = self.wait_for_visibility_of_element_located(self.INPUT_PIN_AVIANCA_CREDITS) #nONE  TYPE?
-            input_pin.clear()
-            input_pin.send_keys(pin)
+            # Fill PIN - Multiple strategies
+            self.logger.info("Looking for Avianca credits PIN input...")
+            input_pin = None
+            
+            # Strategy 1: Try the current locator
+            try:
+                self.logger.info("Trying PIN locator: //input[contains(@id,'pin')]")
+                input_pin = self.wait_for_visibility_of_element_located(self.INPUT_PIN_AVIANCA_CREDITS)
+                self.logger.info("PIN input found with current locator.")
+            except Exception as e:
+                self.logger.warning(f"Current PIN locator failed: {e}")
+                
+                # Strategy 2: Try alternative locators
+                alternative_pin_locators = [
+                    (By.ID, "pin"),
+                    (By.XPATH, "//input[@id='pin']"),
+                    (By.XPATH, "//input[@name='pin']"),
+                    (By.XPATH, "//input[contains(@name,'pin')]"),
+                    (By.XPATH, "//input[contains(@placeholder,'PIN')]"),
+                    (By.XPATH, "//input[contains(@placeholder,'pin')]"),
+                    (By.XPATH, "//input[@type='text' and contains(@class,'ds-input')]"),
+                    (By.XPATH, "//input[@type='password']"),
+                    (By.XPATH, "//input[@type='text' and @maxlength='6']")
+                ]
+                
+                for i, locator in enumerate(alternative_pin_locators):
+                    try:
+                        self.logger.info(f"Trying alternative PIN locator {i+1}: {locator}")
+                        input_pin = self.wait_for_visibility_of_element_located(locator)
+                        self.logger.info(f"PIN input found with alternative locator {i+1}.")
+                        break
+                    except Exception as alt_e:
+                        self.logger.warning(f"Alternative PIN locator {i+1} failed: {alt_e}")
+                        continue
+            
+            if input_pin is None:
+                raise Exception("Could not find PIN input field with any locator strategy")
+            
+            # Ensure element is interactable before filling
+            self.logger.info("Ensuring PIN input is interactable...")
+            self.driver.execute_script("arguments[0].scrollIntoView(true);", input_pin)
+            time.sleep(0.5)
+            
+            # Check element properties before interacting
+            self.logger.info(f"PIN element is_displayed: {input_pin.is_displayed()}")
+            self.logger.info(f"PIN element is_enabled: {input_pin.is_enabled()}")
+            self.logger.info(f"PIN element tag_name: {input_pin.tag_name}")
+            self.logger.info(f"PIN element type: {input_pin.get_attribute('type')}")
+            self.logger.info(f"PIN element id: {input_pin.get_attribute('id')}")
+            self.logger.info(f"PIN element name: {input_pin.get_attribute('name')}")
+            
+            # Clear and fill PIN field with special handling for security fields
+            try:
+                self.logger.info("Attempting to clear PIN field...")
+                input_pin.clear()
+                self.logger.info("PIN field cleared successfully.")
+            except Exception as clear_e:
+                self.logger.warning(f"Clear failed: {clear_e}, trying JavaScript clear...")
+                self.driver.execute_script("arguments[0].value = '';", input_pin)
+                self.logger.info("PIN field cleared with JavaScript.")
+            
+            # PIN field requires manual typing (no paste allowed) - send keys one by one
+            self.logger.info(f"Filling PIN field manually (character by character): {pin}")
+            try:
+                # Focus the element first
+                input_pin.click()
+                time.sleep(0.2)
+                
+                # Send each character individually with small delays
+                for char in pin:
+                    input_pin.send_keys(char)
+                    time.sleep(0.1)  # Small delay between characters
+                
+                self.logger.info(f"PIN filled successfully with manual typing: {pin}")
+                
+                # Verify the value was entered correctly
+                entered_value = input_pin.get_attribute('value')
+                self.logger.info(f"PIN field value after typing: '{entered_value}'")
+                
+                if entered_value != pin:
+                    self.logger.warning(f"PIN value mismatch! Expected: '{pin}', Got: '{entered_value}'")
+                    # Try to clear and retry
+                    input_pin.clear()
+                    time.sleep(0.2)
+                    for char in pin:
+                        input_pin.send_keys(char)
+                        time.sleep(0.1)
+                    self.logger.info("PIN retry completed.")
+                
+            except Exception as send_e:
+                self.logger.warning(f"Manual typing failed: {send_e}, trying JavaScript with events...")
+                try:
+                    # JavaScript approach with proper events for security fields
+                    self.driver.execute_script("""
+                        var input = arguments[0];
+                        var value = arguments[1];
+                        input.focus();
+                        input.value = '';
+                        input.value = value;
+                        input.dispatchEvent(new Event('input', { bubbles: true }));
+                        input.dispatchEvent(new Event('change', { bubbles: true }));
+                        input.dispatchEvent(new Event('blur', { bubbles: true }));
+                    """, input_pin, pin)
+                    self.logger.info(f"PIN filled with JavaScript and events: {pin}")
+                except Exception as js_e:
+                    self.logger.error(f"JavaScript approach also failed: {js_e}")
+                    raise Exception(f"All PIN filling methods failed: {send_e}, {js_e}")
 
             self.logger.info("Avianca credits form filled successfully.")
 
-            submit_button = self.find(self.BUTTON_ENTER_AVIANCA_CREDITS)
-            submit_button.click()
-            self.wait_for_loader_to_disappear(self.LOADER_C)
-            self.wait_for_loader_to_disappear(self.LOADER_C)
-
-            # Apply Avianca credits
-            apply_avianca_credits = self.wait_for_visibility_of_element_located(self.APPLY_AVIANCA_CREDITS)
-            apply_avianca_credits.click()
-            self.wait_for_loader_to_disappear(self.LOADER_C)
-            self.wait_for_loader_to_disappear(self.LOADER_C)      
-
-
+            # Submit button - Multiple strategies
+            self.logger.info("Looking for submit button...")
+            submit_button = None
             
+            # Strategy 1: Try the original locator
+            try:
+                self.logger.info("Trying submit button locator: //*[contains(@id,'buttonAviancaCredits')]")
+                submit_button = self.find(self.BUTTON_ENTER_AVIANCA_CREDITS)
+                if submit_button is None:
+                    raise Exception("Submit button not found with original locator")
+                self.logger.info("Submit button found with original locator.")
+            except Exception as e:
+                self.logger.warning(f"Original submit button locator failed: {e}")
+                
+                # Strategy 2: Try alternative locators
+                alternative_submit_locators = [
+                    (By.XPATH, "//button[contains(@id,'buttonAviancaCredits')]"),
+                    (By.XPATH, "//*[contains(@class,'button') and contains(@id,'buttonAviancaCredits')]"),
+                    (By.XPATH, "//button[contains(text(),'Ingresar')]"),
+                    (By.XPATH, "//button[contains(text(),'Continuar')]"),
+                    (By.XPATH, "//button[contains(text(),'Aplicar')]"),
+                    (By.XPATH, "//button[contains(@class,'btn-primary')]"),
+                    (By.XPATH, "//button[contains(@class,'ds-button')]")
+                ]
+                
+                for i, locator in enumerate(alternative_submit_locators):
+                    try:
+                        self.logger.info(f"Trying alternative submit locator {i+1}: {locator}")
+                        submit_button = self.find(locator)
+                        if submit_button is not None:
+                            self.logger.info(f"Submit button found with alternative locator {i+1}.")
+                            break
+                    except Exception as alt_e:
+                        self.logger.warning(f"Alternative submit locator {i+1} failed: {alt_e}")
+                        continue
+            
+            if submit_button is None:
+                raise Exception("Could not find submit button with any locator strategy")
+            
+            # Try different click strategies
+            try:
+                submit_button.click()
+                self.logger.info("Submit button clicked with direct click.")
+            except Exception as click_e:
+                self.logger.warning(f"Direct click failed: {click_e}, trying JavaScript click...")
+                try:
+                    self.driver.execute_script("arguments[0].click();", submit_button)
+                    self.logger.info("Submit button clicked with JavaScript click.")
+                except Exception as js_e:
+                    self.logger.error(f"JavaScript click also failed: {js_e}")
+                    raise Exception(f"Both direct and JavaScript clicks failed: {click_e}, {js_e}")
+            
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+
+            # Apply Avianca credits - Multiple strategies
+            self.logger.info("Looking for apply Avianca credits button...")
+            apply_avianca_credits = None
+            
+            # Strategy 1: Try the original locator
+            try:
+                self.logger.info("Trying apply button locator: //*[contains(@class,'ds-button ds-btn-primary ds-btn-small')]")
+                apply_avianca_credits = self.wait_for_visibility_of_element_located(self.APPLY_AVIANCA_CREDITS)
+                self.logger.info("Apply button found with original locator.")
+            except Exception as e:
+                self.logger.warning(f"Original apply button locator failed: {e}")
+                
+                # Strategy 2: Try alternative locators
+                alternative_apply_locators = [
+                    (By.XPATH, "//button[contains(@class,'ds-button ds-btn-primary ds-btn-small')]"),
+                    (By.XPATH, "//*[contains(@class,'ds-btn-primary') and contains(@class,'ds-btn-small')]"),
+                    (By.XPATH, "//button[contains(@class,'ds-btn-primary')]"),
+                    (By.XPATH, "//button[contains(text(),'Aplicar')]"),
+                    (By.XPATH, "//button[contains(text(),'Apply')]"),
+                    (By.XPATH, "//button[contains(text(),'Continuar')]"),
+                    (By.XPATH, "//button[contains(text(),'Continue')]"),
+                    (By.XPATH, "//button[contains(@class,'btn-primary')]"),
+                    (By.XPATH, "//button[contains(@class,'ds-button')]")
+                ]
+                
+                for i, locator in enumerate(alternative_apply_locators):
+                    try:
+                        self.logger.info(f"Trying alternative apply locator {i+1}: {locator}")
+                        apply_avianca_credits = self.wait_for_visibility_of_element_located(locator)
+                        self.logger.info(f"Apply button found with alternative locator {i+1}.")
+                        break
+                    except Exception as alt_e:
+                        self.logger.warning(f"Alternative apply locator {i+1} failed: {alt_e}")
+                        continue
+            
+            if apply_avianca_credits is None:
+                raise Exception("Could not find apply Avianca credits button with any locator strategy")
+            
+            # Try different click strategies
+            try:
+                apply_avianca_credits.click()
+                self.logger.info("Apply Avianca credits button clicked with direct click.")
+            except Exception as click_e:
+                self.logger.warning(f"Direct click failed: {click_e}, trying JavaScript click...")
+                try:
+                    self.driver.execute_script("arguments[0].click();", apply_avianca_credits)
+                    self.logger.info("Apply Avianca credits button clicked with JavaScript click.")
+                except Exception as js_e:
+                    self.logger.error(f"JavaScript click also failed: {js_e}")
+                    raise Exception(f"Both direct and JavaScript clicks failed: {click_e}, {js_e}")
+            
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            self.wait_for_loader_to_disappear(self.LOADER_C)
+            
+            self.logger.info("Avianca credits selection completed successfully.")
+
         except Exception as e:
             self.logger.error(f"Error filling Avianca credits: {str(e)}")
             raise

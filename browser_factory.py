@@ -36,14 +36,23 @@ def get_driver(browser_name, headless=False):
     if browser_name == "chrome":
         options = webdriver.ChromeOptions()
         options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        
+        # Basic stability options
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--disable-extensions")
         options.add_argument("--disable-gpu")
+        options.add_argument("--start-maximized")
+        
+        # Memory and performance options
+        options.add_argument("--disable-background-timer-throttling")
+        options.add_argument("--disable-backgrounding-occluded-windows")
+        options.add_argument("--disable-renderer-backgrounding")
+        options.add_argument("--disable-background-networking")
+        
+        # Security options (simplified)
         options.add_argument("--disable-web-security")
         options.add_argument("--disable-features=VizDisplayCompositor")
-        options.add_argument("--start-maximized")
-        options.add_argument("--disable-application-cache")
         
         # Create unique user data directory and port for each session
         user_data_dir = tempfile.mkdtemp(prefix="chrome_user_data_")
@@ -51,6 +60,11 @@ def get_driver(browser_name, headless=False):
         
         options.add_argument(f"--user-data-dir={user_data_dir}")
         options.add_argument(f"--remote-debugging-port={debug_port}")
+        
+        # Additional stability options
+        options.add_argument("--disable-blink-features=AutomationControlled")
+        options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        options.add_experimental_option('useAutomationExtension', False)
         
         if headless:
             options.add_argument("--headless=new")

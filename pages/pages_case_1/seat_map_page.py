@@ -185,9 +185,42 @@ class SeatMapPage(Common):
                 self.logger.warning("Loader wait timed out, continuing...")
             
             # Additional wait to ensure page is stable
-            time.sleep(2)
+            time.sleep(1)
             
-            # Try to find the button using find_elements (not wait_to_be_clickable)
+            # First, scroll down to ensure modal content is visible
+            self.logger.info("Scrolling down to make continue button visible...")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
+            
+            # Try multiple locator strategies (same as services_page)
+            self.logger.info("Trying to find seat map continue button...")
+            
+            # First, let's diagnose what's in the DOM
+            self.logger.info("Diagnosing DOM for seat map continue button...")
+            try:
+                # Check if any buttons with "Ir a pagar" text exist
+                ir_pagar_buttons = self.driver.find_elements(By.XPATH, "//button//span[contains(text(),'Ir a pagar')]")
+                self.logger.info(f"Found {len(ir_pagar_buttons)} buttons with 'Ir a pagar' text")
+                
+                # Check if any buttons with btn-action class exist
+                action_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@class,'btn-action')]")
+                self.logger.info(f"Found {len(action_buttons)} buttons with 'btn-action' class")
+                
+                # Check if any buttons with dsButtonId exist
+                ds_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@id,'dsButtonId_')]")
+                self.logger.info(f"Found {len(ds_buttons)} buttons with 'dsButtonId_' pattern")
+                
+                # Log current page source snippet for debugging
+                page_source = self.driver.page_source
+                if "Ir a pagar" in page_source:
+                    self.logger.info("'Ir a pagar' text found in page source")
+                else:
+                    self.logger.warning("'Ir a pagar' text NOT found in page source")
+                    
+            except Exception as e:
+                self.logger.warning(f"DOM diagnosis failed: {e}")
+            
+            # Strategy: Try to find the button using find_elements (not wait_to_be_clickable)
             continue_button = None
             
             # Try different locators to find the button
@@ -196,7 +229,15 @@ class SeatMapPage(Common):
                 (By.XPATH, "//button[contains(@class,'btn-action btn-Medium')]//span[text()='Ir a pagar']"),
                 (By.XPATH, "//button//span[text()='Ir a pagar']"),
                 (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[text()='Ir a pagar']"),
-                (By.XPATH, "//button[contains(@class,'button') and contains(@class,'btn-action')]")
+                (By.XPATH, "//button[contains(@class,'button') and contains(@class,'btn-action')]"),
+                (By.XPATH, "//button[contains(@class,'btn-action')]//span[contains(text(),'Ir a pagar')]"),
+                (By.XPATH, "//button[contains(@class,'btn-action')]"),
+                (By.XPATH, "//button[contains(@id,'dsButtonId_')]"),
+                (By.XPATH, "//span[contains(text(),'Ir a pagar')]/parent::button"),
+                (By.XPATH, "//span[contains(text(),'Ir a pagar')]/ancestor::button"),
+                (By.XPATH, "//button[.//span[contains(text(),'Ir a pagar')]]"),
+                (By.XPATH, "//button[contains(@class,'button')]//span[contains(text(),'Ir a pagar')]"),
+                (By.XPATH, "//button[contains(@class,'btn')]//span[contains(text(),'Ir a pagar')]")
             ]
             
             for i, locator in enumerate(locators_to_try):
@@ -206,11 +247,20 @@ class SeatMapPage(Common):
                         # Find the button that contains "Ir a pagar" text
                         for button in buttons:
                             try:
-                                if "Ir a pagar" in button.text or "Ir a pagar" in button.get_attribute("innerHTML"):
+                                button_text = button.text.strip()
+                                button_html = button.get_attribute("innerHTML") or ""
+                                
+                                # Check for "Ir a pagar" text in various ways
+                                if ("Ir a pagar" in button_text or 
+                                    "Ir a pagar" in button_html or
+                                    "pagar" in button_text.lower() or
+                                    "pagar" in button_html.lower()):
                                     continue_button = button
-                                    self.logger.info(f"Continue button found with locator strategy {i+1}")
+                                    self.logger.info(f"Seat map continue button found with locator strategy {i+1}")
+                                    self.logger.info(f"Button text: '{button_text}', HTML: '{button_html[:100]}...'")
                                     break
-                            except:
+                            except Exception as btn_error:
+                                self.logger.warning(f"Error checking button: {btn_error}")
                                 continue
                         if continue_button:
                             break
@@ -219,37 +269,53 @@ class SeatMapPage(Common):
                     continue
             
             if not continue_button:
-                self.logger.error("Could not find continue button with any strategy")
-                raise Exception("Could not find continue button with any strategy")
+                self.logger.error("Could not find seat map continue button with any strategy")
+                raise Exception("Could not find seat map continue button with any strategy")
             
-            # Make the button clickable if it's not
-            try:
-                # Scroll to the button
+            self.logger.info("Seat map continue button found, ensuring it's visible and clickable...")
+
+            # Enhanced scroll strategy to ensure button is visible
+            self.logger.info("Performing enhanced scroll to make seat map continue button visible...")
+            self.driver.execute_script("""
+                var button = arguments[0];
+                
+                // First, scroll to the very bottom to ensure modal is fully loaded
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                // Wait a moment for scroll to complete
+                setTimeout(function() {
+                    // Scroll the button into view with center alignment
+                    button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    
+                    // Additional scroll down to ensure button is not at the very bottom edge
+                    setTimeout(function() {
+                        window.scrollBy(0, 100);
+                        
+                        // Remove any overlays that might be blocking
+                        var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
+                        overlays.forEach(function(overlay) {
+                            overlay.style.display = 'none';
+                            overlay.style.visibility = 'hidden';
+                        });
+                        
+                        // Make sure button is clickable
+                        button.style.pointerEvents = 'auto';
+                        button.style.zIndex = '9999';
+                        button.style.position = 'relative';
+                        button.style.display = 'block';
+                        button.style.visibility = 'visible';
+                    }, 300);
+                }, 500);
+            """, continue_button)
+            
+            time.sleep(2)  # Wait for scroll to complete
+
+            # Verify button is visible before clicking
+            self.logger.info("Verifying seat map continue button is visible and clickable...")
+            if not continue_button.is_displayed():
+                self.logger.warning("Button is not displayed, trying additional scroll...")
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
-                time.sleep(0.5)
-                
-                # Try to make it clickable by removing any overlays
-                self.driver.execute_script("""
-                    var button = arguments[0];
-                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading');
-                    overlays.forEach(function(overlay) {
-                        overlay.style.display = 'none';
-                    });
-                    button.style.pointerEvents = 'auto';
-                    button.style.zIndex = '9999';
-                """, continue_button)
-                
-                self.logger.info("Button prepared for clicking")
-                
-            except Exception as e:
-                self.logger.warning(f"Button preparation failed: {e}")
-
-            self.logger.info("Continue button is clickable, attempting to click...")
-
-            # Scroll to the button
-            self.scroll_down_move_to_element(continue_button)
-            self.logger.info("Scroll to the button Continue...'")
-            time.sleep(0.5)  # Wait after scrolling
+                time.sleep(1)
 
             # Try different click strategies
             try:

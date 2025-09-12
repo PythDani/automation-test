@@ -115,7 +115,7 @@ class ServicesPage(Common):
             Exception: If the confirmation button is not found or clickable within the timeout period.
         """
         try:
-            self.logger.info("Click on confirm button...")          
+            self.logger.info("Click on confirm button for carry-on and checked baggage...")          
             
             # Wait for any loaders to disappear first
             self.logger.info("Waiting for loaders to disappear...")
@@ -128,123 +128,130 @@ class ServicesPage(Common):
             # Additional wait to ensure page is stable
             time.sleep(1)
             
-            # Multiple strategies to find the confirm button
+            # First, scroll down to ensure modal content is visible
+            self.logger.info("Scrolling down to make modal content visible...")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
+            
+            # Try multiple locator strategies (same as sport_baggage)
+            self.logger.info("Trying to find carry-on and checked baggage confirm button...")
+            
+            # First, let's diagnose what's in the DOM
+            self.logger.info("Diagnosing DOM for carry-on and checked baggage modal...")
+            try:
+                # Check if any buttons with "Confirmar" text exist
+                confirmar_buttons = self.driver.find_elements(By.XPATH, "//button//span[contains(text(),'Confirmar')]")
+                self.logger.info(f"Found {len(confirmar_buttons)} buttons with 'Confirmar' text")
+                
+                # Check if any buttons with btn-action class exist
+                action_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@class,'btn-action')]")
+                self.logger.info(f"Found {len(action_buttons)} buttons with 'btn-action' class")
+                
+                # Check if any buttons with dsButtonId exist
+                ds_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@id,'dsButtonId_')]")
+                self.logger.info(f"Found {len(ds_buttons)} buttons with 'dsButtonId_' pattern")
+                
+                # Log current page source snippet for debugging
+                page_source = self.driver.page_source
+                if "Confirmar" in page_source:
+                    self.logger.info("'Confirmar' text found in page source")
+                else:
+                    self.logger.warning("'Confirmar' text NOT found in page source")
+                    
+            except Exception as e:
+                self.logger.warning(f"DOM diagnosis failed: {e}")
+            
+            # Strategy: Try to find the button using find_elements (not wait_to_be_clickable)
             continue_button = None
-            strategies = [
+            
+            # Try different locators to find the button
+            locators_to_try = [
                 self.CONFIRM_CARRY_ON_AND_CHECKED_BAGGAGE_MODAL,
-                (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Confirmar')]"),
-                (By.XPATH, "//button[contains(@class,'button btn-action btn-Medium')]//span[contains(text(),'Confirmar')]"),
-                (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[contains(text(),'Confirmar')]"),
-                (By.XPATH, "//span[contains(text(),'Confirmar')]/parent::button"),
-                (By.XPATH, "//span[contains(text(),'Confirmar')]/ancestor::button"),
-                (By.XPATH, "//button[.//span[contains(text(),'Confirmar')]]"),
-                (By.XPATH, "//button[@aria-labelledby='Confirmar']"),
-                (By.XPATH, "//span[@class='button_label' and contains(text(),'Confirmar')]/parent::button"),
-                # New strategies based on DOM analysis
-                (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button[contains(@class,'button btn-action btn-Medium')]"),
-                (By.XPATH, "//button[contains(@class,'button btn-action btn-Medium')]"),
-                (By.XPATH, "//span[@class='button_label']/parent::button"),
-                (By.XPATH, "//span[@class='button_label']/ancestor::button"),
-                (By.XPATH, "//button[.//span[@class='button_label']]"),
-                (By.XPATH, "//ds-button[contains(@class,'amount-summary_button')]//button"),
-                (By.XPATH, "//ngb-modal-window//button[contains(@class,'btn-action')]"),
-                (By.XPATH, "//ngb-modal-window//button[contains(@class,'button')]")
+                (By.XPATH, "//button[contains(@class,'btn-action btn-Medium')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@class,'button') and contains(@class,'btn-action')]")
             ]
             
-            for i, strategy in enumerate(strategies):
+            for i, locator in enumerate(locators_to_try):
                 try:
-                    self.logger.info(f"Trying strategy {i+1} to find confirm button...")
-                    continue_button = self.wait_to_be_clickable(strategy)
-                    self.logger.info(f"Confirm button found with strategy {i+1}")
-                    break
-                except TimeoutException:
-                    self.logger.warning(f"Strategy {i+1} failed to find button")
+                    buttons = self.driver.find_elements(*locator)
+                    if buttons:
+                        # Find the button that contains "Confirmar" text
+                        for button in buttons:
+                            try:
+                                if "Confirmar" in button.text or "Confirmar" in button.get_attribute("innerHTML"):
+                                    continue_button = button
+                                    self.logger.info(f"Carry-on and checked baggage confirm button found with locator strategy {i+1}")
+                                    break
+                            except:
+                                continue
+                        if continue_button:
+                            break
+                except Exception as e:
+                    self.logger.warning(f"Locator strategy {i+1} failed: {e}")
                     continue
             
             if not continue_button:
-                # Let's diagnose what's actually in the DOM
-                self.logger.error("Could not find confirm button with any strategy. Diagnosing DOM...")
-                
-                # Print current page source to file for debugging
-                try:
-                    with open("debug_services_page_dom.html", "w", encoding="utf-8") as f:
-                        f.write(self.driver.page_source)
-                    self.logger.info("Page source saved to debug_services_page_dom.html for analysis")
-                except Exception as e:
-                    self.logger.warning(f"Could not save page source: {e}")
-                
-                # Check what buttons are actually present
-                try:
-                    all_buttons = self.driver.find_elements(By.TAG_NAME, "button")
-                    self.logger.info(f"Found {len(all_buttons)} buttons on the page")
-                    
-                    for i, button in enumerate(all_buttons[:10]):  # Check first 10 buttons
-                        try:
-                            button_text = button.text.strip()
-                            button_id = button.get_attribute("id")
-                            button_class = button.get_attribute("class")
-                            self.logger.info(f"Button {i+1}: text='{button_text}', id='{button_id}', class='{button_class}'")
-                        except:
-                            continue
-                    
-                    # Check for any elements containing "Confirmar"
-                    confirmar_elements = self.driver.find_elements(By.XPATH, "//*[contains(text(),'Confirmar')]")
-                    self.logger.info(f"Found {len(confirmar_elements)} elements containing 'Confirmar' text")
-                    
-                    for i, elem in enumerate(confirmar_elements):
-                        try:
-                            tag_name = elem.tag_name
-                            elem_text = elem.text.strip()
-                            elem_id = elem.get_attribute("id")
-                            elem_class = elem.get_attribute("class")
-                            self.logger.info(f"Confirmar element {i+1}: tag='{tag_name}', text='{elem_text}', id='{elem_id}', class='{elem_class}'")
-                        except:
-                            continue
-                            
-                except Exception as e:
-                    self.logger.warning(f"DOM diagnosis failed: {e}")
-                
-                raise Exception("Could not find confirm button with any strategy")
+                self.logger.error("Could not find carry-on and checked baggage confirm button with any strategy")
+                raise Exception("Could not find carry-on and checked baggage confirm button with any strategy")
             
-            self.logger.info("Confirm button found, preparing for click...")
+            self.logger.info("Carry-on and checked baggage confirm button found, ensuring it's visible and clickable...")
 
-            # Force scroll to make the button visible and clickable
+            # Enhanced scroll strategy to ensure button is visible
+            self.logger.info("Performing enhanced scroll to make carry-on and checked baggage button visible...")
             self.driver.execute_script("""
                 var button = arguments[0];
-                // Scroll down first to ensure modal content is visible
+                
+                // First, scroll to the very bottom to ensure modal is fully loaded
                 window.scrollTo(0, document.body.scrollHeight);
+                
                 // Wait a moment for scroll to complete
                 setTimeout(function() {
-                    // Scroll the button into view
-                    button.scrollIntoView({behavior: 'smooth', block: 'center'});
-                    // Remove any overlays that might be blocking
-                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
-                    overlays.forEach(function(overlay) {
-                        overlay.style.display = 'none';
-                        overlay.style.visibility = 'hidden';
-                    });
-                    // Make sure button is clickable
-                    button.style.pointerEvents = 'auto';
-                    button.style.zIndex = '9999';
-                    button.style.position = 'relative';
+                    // Scroll the button into view with center alignment
+                    button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    
+                    // Additional scroll down to ensure button is not at the very bottom edge
+                    setTimeout(function() {
+                        window.scrollBy(0, 100);
+                        
+                        // Remove any overlays that might be blocking
+                        var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
+                        overlays.forEach(function(overlay) {
+                            overlay.style.display = 'none';
+                            overlay.style.visibility = 'hidden';
+                        });
+                        
+                        // Make sure button is clickable
+                        button.style.pointerEvents = 'auto';
+                        button.style.zIndex = '9999';
+                        button.style.position = 'relative';
+                        button.style.display = 'block';
+                        button.style.visibility = 'visible';
+                    }, 300);
                 }, 500);
             """, continue_button)
             
-            time.sleep(1)  # Wait for scroll to complete
+            time.sleep(2)  # Wait for scroll to complete
+
+            # Verify button is visible before clicking
+            self.logger.info("Verifying carry-on and checked baggage button is visible and clickable...")
+            if not continue_button.is_displayed():
+                self.logger.warning("Button is not displayed, trying additional scroll...")
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+                time.sleep(1)
 
             # Try different click strategies
             try:
-                # First try direct click
                 continue_button.click()
-                self.logger.info("Baggage confirmed with direct click.")
+                self.logger.info("Carry-on and checked baggage confirmed with direct click.")
             except Exception as e:
                 self.logger.warning(f"Direct click failed: {e}, trying JavaScript click...")
-                # Force click with JavaScript
                 self.driver.execute_script("arguments[0].click();", continue_button)
-                self.logger.info("Baggage confirmed with JavaScript click.")
+                self.logger.info("Carry-on and checked baggage confirmed with JavaScript click.")
                 
         except TimeoutException as e:
-            raise Exception(f"Timeout Exception trying to confirm baggage") from e
+            raise Exception(f"Timeout Exception trying to confirm carry-on and checked baggage") from e
     
     @catch_exceptions()         
     def add_sport_baggage(self): 
@@ -305,7 +312,7 @@ class ServicesPage(Common):
             Exception: If the confirmation button is not found or clickable within the timeout period.
         """
         try:
-            self.logger.info("Click on confirm button...")            
+            self.logger.info("Click on confirm button for sport baggage...")            
             
             # Wait for any loaders to disappear first
             self.logger.info("Waiting for loaders to disappear...")
@@ -316,7 +323,12 @@ class ServicesPage(Common):
                 self.logger.warning("Loader wait timed out, continuing...")
             
             # Additional wait to ensure page is stable
-            time.sleep(2)
+            time.sleep(1)
+            
+            # First, scroll down to ensure modal content is visible
+            self.logger.info("Scrolling down to make sport baggage modal content visible...")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
             
             # Try multiple locator strategies
             self.logger.info("Trying to find sport baggage confirm button...")
@@ -381,38 +393,50 @@ class ServicesPage(Common):
                 self.logger.error("Could not find sport baggage confirm button with any strategy")
                 raise Exception("Could not find sport baggage confirm button with any strategy")
             
-            # Make the button clickable if it's not
-            try:
-                # Scroll down first to ensure modal content is visible
-                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(0.5)
+            self.logger.info("Sport baggage confirm button found, ensuring it's visible and clickable...")
+
+            # Enhanced scroll strategy to ensure button is visible
+            self.logger.info("Performing enhanced scroll to make sport baggage button visible...")
+            self.driver.execute_script("""
+                var button = arguments[0];
                 
-                # Scroll to the button
+                // First, scroll to the very bottom to ensure modal is fully loaded
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                // Wait a moment for scroll to complete
+                setTimeout(function() {
+                    // Scroll the button into view with center alignment
+                    button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    
+                    // Additional scroll down to ensure button is not at the very bottom edge
+                    setTimeout(function() {
+                        window.scrollBy(0, 100);
+                        
+                        // Remove any overlays that might be blocking
+                        var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
+                        overlays.forEach(function(overlay) {
+                            overlay.style.display = 'none';
+                            overlay.style.visibility = 'hidden';
+                        });
+                        
+                        // Make sure button is clickable
+                        button.style.pointerEvents = 'auto';
+                        button.style.zIndex = '9999';
+                        button.style.position = 'relative';
+                        button.style.display = 'block';
+                        button.style.visibility = 'visible';
+                    }, 300);
+                }, 500);
+            """, continue_button)
+            
+            time.sleep(2)  # Wait for scroll to complete
+
+            # Verify button is visible before clicking
+            self.logger.info("Verifying sport baggage button is visible and clickable...")
+            if not continue_button.is_displayed():
+                self.logger.warning("Button is not displayed, trying additional scroll...")
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
-                time.sleep(0.5)
-                
-                # Try to make it clickable by removing any overlays
-                self.driver.execute_script("""
-                    var button = arguments[0];
-                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading');
-                    overlays.forEach(function(overlay) {
-                        overlay.style.display = 'none';
-                    });
-                    button.style.pointerEvents = 'auto';
-                    button.style.zIndex = '9999';
-                """, continue_button)
-                
-                self.logger.info("Button prepared for clicking")
-                
-            except Exception as e:
-                self.logger.warning(f"Button preparation failed: {e}")
-
-            self.logger.info("Sport baggage confirm button is clickable, attempting to click...")
-
-            # Scroll to the button
-            self._action.scroll_to_element(continue_button).perform()
-            self.scroll_down_move_to_element(continue_button)
-            time.sleep(0.5)  # Wait after scrolling
+                time.sleep(1)
 
             # Try different click strategies
             try:
@@ -486,7 +510,7 @@ class ServicesPage(Common):
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
         """
         try:
-            self.logger.info("Click on confirm button...")              
+            self.logger.info("Click on confirm button for lounge business services...")              
             
             # Wait for any loaders to disappear first
             self.logger.info("Waiting for loaders to disappear...")
@@ -497,7 +521,12 @@ class ServicesPage(Common):
                 self.logger.warning("Loader wait timed out, continuing...")
             
             # Additional wait to ensure page is stable
-            time.sleep(2)
+            time.sleep(1)
+            
+            # First, scroll down to ensure modal content is visible
+            self.logger.info("Scrolling down to make lounge business modal content visible...")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
             
             # Try to find the button using find_elements (not wait_to_be_clickable)
             continue_button = None
@@ -534,38 +563,50 @@ class ServicesPage(Common):
                 self.logger.error("Could not find lounge confirm button with any strategy")
                 raise Exception("Could not find lounge confirm button with any strategy")
             
-            # Make the button clickable if it's not
-            try:
-                # Scroll down first to ensure modal content is visible
-                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-                time.sleep(0.5)
+            self.logger.info("Lounge confirm button found, ensuring it's visible and clickable...")
+
+            # Enhanced scroll strategy to ensure button is visible
+            self.logger.info("Performing enhanced scroll to make lounge business button visible...")
+            self.driver.execute_script("""
+                var button = arguments[0];
                 
-                # Scroll to the button
+                // First, scroll to the very bottom to ensure modal is fully loaded
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                // Wait a moment for scroll to complete
+                setTimeout(function() {
+                    // Scroll the button into view with center alignment
+                    button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    
+                    // Additional scroll down to ensure button is not at the very bottom edge
+                    setTimeout(function() {
+                        window.scrollBy(0, 100);
+                        
+                        // Remove any overlays that might be blocking
+                        var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
+                        overlays.forEach(function(overlay) {
+                            overlay.style.display = 'none';
+                            overlay.style.visibility = 'hidden';
+                        });
+                        
+                        // Make sure button is clickable
+                        button.style.pointerEvents = 'auto';
+                        button.style.zIndex = '9999';
+                        button.style.position = 'relative';
+                        button.style.display = 'block';
+                        button.style.visibility = 'visible';
+                    }, 300);
+                }, 500);
+            """, continue_button)
+            
+            time.sleep(2)  # Wait for scroll to complete
+
+            # Verify button is visible before clicking
+            self.logger.info("Verifying lounge business button is visible and clickable...")
+            if not continue_button.is_displayed():
+                self.logger.warning("Button is not displayed, trying additional scroll...")
                 self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
-                time.sleep(0.5)
-                
-                # Try to make it clickable by removing any overlays
-                self.driver.execute_script("""
-                    var button = arguments[0];
-                    var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading');
-                    overlays.forEach(function(overlay) {
-                        overlay.style.display = 'none';
-                    });
-                    button.style.pointerEvents = 'auto';
-                    button.style.zIndex = '9999';
-                """, continue_button)
-                
-                self.logger.info("Button prepared for clicking")
-                
-            except Exception as e:
-                self.logger.warning(f"Button preparation failed: {e}")
-
-            self.logger.info("Lounge confirm button is clickable, attempting to click...")
-
-            # Scroll to the button
-            self._action.scroll_to_element(continue_button).perform() 
-            self.scroll_down_move_to_element(continue_button)
-            time.sleep(0.5)  # Wait after scrolling
+                time.sleep(1)
 
             # Try different click strategies
             try:
@@ -632,7 +673,7 @@ class ServicesPage(Common):
         If the button is not found or clickable within the timeout period, a TimeoutException is raised.
         """
         try:
-            self.logger.info("Click on confirm button...")              
+            self.logger.info("Click on confirm button for special assistance services...")              
             
             # Wait for any loaders to disappear first
             self.logger.info("Waiting for loaders to disappear...")
@@ -645,18 +686,118 @@ class ServicesPage(Common):
             # Additional wait to ensure page is stable
             time.sleep(1)
             
-            # Wait for the confirm button to be clickable
-            continue_button = self.wait_to_be_clickable(self.CONFIRM_SPECIAL_ASISTANCE_MODAL)
-            self.logger.info("Confirm button is clickable, attempting to click...")
-
-            # Scroll down first to ensure modal content is visible
+            # First, scroll down to ensure modal content is visible
+            self.logger.info("Scrolling down to make special assistance modal content visible...")
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(0.5)
+            time.sleep(1)
             
-            # Scroll to the button
-            self._action.scroll_to_element(continue_button).perform()       
-            self.scroll_down_move_to_element(continue_button)
-            time.sleep(0.5)  # Wait after scrolling
+            # Try multiple locator strategies (same as sport_baggage)
+            self.logger.info("Trying to find special assistance confirm button...")
+            
+            # First, let's diagnose what's in the DOM
+            self.logger.info("Diagnosing DOM for special assistance modal...")
+            try:
+                # Check if any buttons with "Confirmar" text exist
+                confirmar_buttons = self.driver.find_elements(By.XPATH, "//button//span[contains(text(),'Confirmar')]")
+                self.logger.info(f"Found {len(confirmar_buttons)} buttons with 'Confirmar' text")
+                
+                # Check if any buttons with btn-action class exist
+                action_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@class,'btn-action')]")
+                self.logger.info(f"Found {len(action_buttons)} buttons with 'btn-action' class")
+                
+                # Check if any buttons with dsButtonId exist
+                ds_buttons = self.driver.find_elements(By.XPATH, "//button[contains(@id,'dsButtonId_')]")
+                self.logger.info(f"Found {len(ds_buttons)} buttons with 'dsButtonId_' pattern")
+                
+                # Log current page source snippet for debugging
+                page_source = self.driver.page_source
+                if "Confirmar" in page_source:
+                    self.logger.info("'Confirmar' text found in page source")
+                else:
+                    self.logger.warning("'Confirmar' text NOT found in page source")
+                    
+            except Exception as e:
+                self.logger.warning(f"DOM diagnosis failed: {e}")
+            
+            # Strategy: Try to find the button using find_elements (not wait_to_be_clickable)
+            continue_button = None
+            
+            # Try different locators to find the button
+            locators_to_try = [
+                self.CONFIRM_SPECIAL_ASISTANCE_MODAL,
+                (By.XPATH, "//button[contains(@class,'btn-action btn-Medium')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@id,'dsButtonId_')]//span[text()='Confirmar']"),
+                (By.XPATH, "//button[contains(@class,'button') and contains(@class,'btn-action')]")
+            ]
+            
+            for i, locator in enumerate(locators_to_try):
+                try:
+                    buttons = self.driver.find_elements(*locator)
+                    if buttons:
+                        # Find the button that contains "Confirmar" text
+                        for button in buttons:
+                            try:
+                                if "Confirmar" in button.text or "Confirmar" in button.get_attribute("innerHTML"):
+                                    continue_button = button
+                                    self.logger.info(f"Special assistance confirm button found with locator strategy {i+1}")
+                                    break
+                            except:
+                                continue
+                        if continue_button:
+                            break
+                except Exception as e:
+                    self.logger.warning(f"Locator strategy {i+1} failed: {e}")
+                    continue
+            
+            if not continue_button:
+                self.logger.error("Could not find special assistance confirm button with any strategy")
+                raise Exception("Could not find special assistance confirm button with any strategy")
+            
+            self.logger.info("Special assistance confirm button found, ensuring it's visible and clickable...")
+
+            # Enhanced scroll strategy to ensure button is visible
+            self.logger.info("Performing enhanced scroll to make special assistance button visible...")
+            self.driver.execute_script("""
+                var button = arguments[0];
+                
+                // First, scroll to the very bottom to ensure modal is fully loaded
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                // Wait a moment for scroll to complete
+                setTimeout(function() {
+                    // Scroll the button into view with center alignment
+                    button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    
+                    // Additional scroll down to ensure button is not at the very bottom edge
+                    setTimeout(function() {
+                        window.scrollBy(0, 100);
+                        
+                        // Remove any overlays that might be blocking
+                        var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
+                        overlays.forEach(function(overlay) {
+                            overlay.style.display = 'none';
+                            overlay.style.visibility = 'hidden';
+                        });
+                        
+                        // Make sure button is clickable
+                        button.style.pointerEvents = 'auto';
+                        button.style.zIndex = '9999';
+                        button.style.position = 'relative';
+                        button.style.display = 'block';
+                        button.style.visibility = 'visible';
+                    }, 300);
+                }, 500);
+            """, continue_button)
+            
+            time.sleep(2)  # Wait for scroll to complete
+
+            # Verify button is visible before clicking
+            self.logger.info("Verifying special assistance button is visible and clickable...")
+            if not continue_button.is_displayed():
+                self.logger.warning("Button is not displayed, trying additional scroll...")
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+                time.sleep(1)
 
             # Try different click strategies
             try:
@@ -681,22 +822,58 @@ class ServicesPage(Common):
         try:
             self.wait_for_loader_to_disappear(self.LOADER_C)
             
+            # First, scroll down to ensure modal content is visible
+            self.logger.info("Scrolling down to make continue button visible...")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
+            
             # Wait for the button to appear and be clickable
             self.logger.info("Waiting for the continue button to appear...")
             continue_button = self.wait_to_be_clickable(self.CONFIRM_SERVICES_BUTTON)
-            self.logger.info("Continue button is clickable, attempting to click...")
+            self.logger.info("Continue button found, ensuring it's visible and clickable...")
 
-            # Scroll down first to ensure button is visible
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(0.5)
+            # Enhanced scroll strategy to ensure button is visible
+            self.logger.info("Performing enhanced scroll to make continue button visible...")
+            self.driver.execute_script("""
+                var button = arguments[0];
+                
+                // First, scroll to the very bottom to ensure modal is fully loaded
+                window.scrollTo(0, document.body.scrollHeight);
+                
+                // Wait a moment for scroll to complete
+                setTimeout(function() {
+                    // Scroll the button into view with center alignment
+                    button.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+                    
+                    // Additional scroll down to ensure button is not at the very bottom edge
+                    setTimeout(function() {
+                        window.scrollBy(0, 100);
+                        
+                        // Remove any overlays that might be blocking
+                        var overlays = document.querySelectorAll('.modal-backdrop, .overlay, .loading, [class*="backdrop"]');
+                        overlays.forEach(function(overlay) {
+                            overlay.style.display = 'none';
+                            overlay.style.visibility = 'hidden';
+                        });
+                        
+                        // Make sure button is clickable
+                        button.style.pointerEvents = 'auto';
+                        button.style.zIndex = '9999';
+                        button.style.position = 'relative';
+                        button.style.display = 'block';
+                        button.style.visibility = 'visible';
+                    }, 300);
+                }, 500);
+            """, continue_button)
+            
+            time.sleep(2)  # Wait for scroll to complete
 
-            # Scroll to the button
-            self._action.scroll_to_element(continue_button).perform()
-            self.scroll_down_move_to_element(continue_button)
-            self.logger.info("Scrolled to the continue button...")
-
-            # Additional wait after scrolling
-            time.sleep(1)
+            # Verify button is visible before clicking
+            self.logger.info("Verifying continue button is visible and clickable...")
+            if not continue_button.is_displayed():
+                self.logger.warning("Button is not displayed, trying additional scroll...")
+                self.driver.execute_script("arguments[0].scrollIntoView(true);", continue_button)
+                time.sleep(1)
 
             # Try different click strategies
             try:

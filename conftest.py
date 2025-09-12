@@ -1,3 +1,11 @@
+# Load environment variables from .env file FIRST
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    print("Environment variables loaded from .env file")
+except ImportError:
+    print("python-dotenv not installed, using system environment variables only")
+
 import datetime
 import os
 import allure
@@ -6,8 +14,6 @@ import pytest
 import psutil
 import signal
 import time
-import psutil
-import signal
 import time
 
 from pages.pages_case_1.booking_select_page import BookingSelectPage

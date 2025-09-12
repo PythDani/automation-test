@@ -5,6 +5,7 @@
   @Author: Rafael Daniel Farfán
 """
 import allure
+import pytest
 
 
 @allure.title("Automated case 2: Round trip booking")
