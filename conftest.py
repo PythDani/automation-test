@@ -405,15 +405,17 @@ def browser(request):
     browser_name = request.config.getoption("--browser")
     headless_option = request.config.getoption("--headless").lower() == "true"
     
+    driver = None
     try:
         driver = get_driver(browser_name, headless_option)
         yield driver
     finally:
         # Ensure driver is properly closed
-        try:
-            driver.quit()
-        except Exception as e:
-            logger.warning(f"Error closing driver: {e}")
+        if driver is not None:
+            try:
+                driver.quit()
+            except Exception as e:
+                logger.warning(f"Error closing driver: {e}")
         
         # Clean up any remaining processes (only if not disabled)
         if not disable_cleanup:

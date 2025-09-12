@@ -134,10 +134,131 @@ def get_driver(browser_name, headless=False):
         if headless:
             options.add_argument("--headless=new")
 
-        return webdriver.Edge(
-            service=EdgeService(EdgeChromiumDriverManager().install()),
-            options=options
-        )
+        # Check if EdgeDriver already exists in common locations first
+        possible_paths = [
+            "msedgedriver.exe",
+            "C:\\Windows\\System32\\msedgedriver.exe",
+            "C:\\Program Files\\Microsoft\\Edge\\Application\\msedgedriver.exe",
+            os.path.join(os.getcwd(), "drivers", "msedgedriver.exe"),
+            os.path.join(os.getcwd(), "msedgedriver.exe")
+        ]
+        
+        # Check for existing EdgeDriver first
+        for path in possible_paths:
+            if os.path.exists(path):
+                print(f"Found existing EdgeDriver at: {path}")
+                try:
+                    return webdriver.Edge(
+                        service=EdgeService(path),
+                        options=options
+                    )
+                except Exception as e:
+                    print(f"Error using existing EdgeDriver at {path}: {e}")
+                    continue
+        
+        # If no existing EdgeDriver found, try to download
+        try:
+            print("Attempting to download EdgeDriver...")
+            # Try with WebDriver Manager first - use a specific version
+            driver_manager = EdgeChromiumDriverManager(version="140.0.3485.54")
+            driver_path = driver_manager.install()
+            return webdriver.Edge(
+                service=EdgeService(driver_path),
+                options=options
+            )
+        except Exception as e:
+            print(f"Error with EdgeChromiumDriverManager (version 140.0.3485.54): {e}")
+            
+            # Fallback 1: Try with latest stable version
+            try:
+                print("Trying with latest stable version...")
+                driver_manager = EdgeChromiumDriverManager()
+                driver_path = driver_manager.install()
+                return webdriver.Edge(
+                    service=EdgeService(driver_path),
+                    options=options
+                )
+            except Exception as e2:
+                print(f"Error with latest stable EdgeChromiumDriverManager: {e2}")
+                
+                # Fallback 2: Try to use system PATH EdgeDriver
+                try:
+                    print("Trying with system PATH EdgeDriver...")
+                    return webdriver.Edge(options=options)
+                except Exception as e3:
+                    print(f"Error with system PATH EdgeDriver: {e3}")
+                    
+                    # Fallback 3: Download manually using alternative method
+                    try:
+                        print("Attempting manual download of EdgeDriver...")
+                        import requests
+                        import zipfile
+                        import shutil
+                        
+                        # Try alternative download URL
+                        download_url = "https://msedgedriver.azureedge.net/140.0.3485.54/edgedriver_win64.zip"
+                        drivers_dir = os.path.join(os.getcwd(), "drivers")
+                        os.makedirs(drivers_dir, exist_ok=True)
+                        
+                        zip_path = os.path.join(drivers_dir, "edgedriver.zip")
+                        driver_path = os.path.join(drivers_dir, "msedgedriver.exe")
+                        
+                        print(f"Downloading from: {download_url}")
+                        response = requests.get(download_url, timeout=30)
+                        response.raise_for_status()
+                        
+                        with open(zip_path, 'wb') as f:
+                            f.write(response.content)
+                        
+                        # Extract the driver
+                        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                            zip_ref.extractall(drivers_dir)
+                        
+                        # Clean up zip file
+                        os.remove(zip_path)
+                        
+                        if os.path.exists(driver_path):
+                            print(f"Successfully downloaded EdgeDriver to: {driver_path}")
+                            return webdriver.Edge(
+                                service=EdgeService(driver_path),
+                                options=options
+                            )
+                        else:
+                            raise Exception("EdgeDriver not found after extraction")
+                            
+                    except Exception as e4:
+                        print(f"Manual download failed: {e4}")
+                        print("")
+                        print("EdgeDriver download failed. Possible solutions:")
+                        print("1. Check your internet connection")
+                        print("2. Try running as administrator")
+                        print("3. Manually download EdgeDriver from:")
+                        print("   https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/")
+                        print("4. Extract msedgedriver.exe to the 'drivers' folder")
+                        print("")
+                        print("FALLBACK: Using Chrome instead of Edge")
+                        print("Edge is not available due to driver issues. Switching to Chrome...")
+                        
+                        # Fallback to Chrome
+                        chrome_options = webdriver.ChromeOptions()
+                        chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+                        chrome_options.add_argument("--no-sandbox")
+                        chrome_options.add_argument("--disable-dev-shm-usage")
+                        chrome_options.add_argument("--disable-extensions")
+                        chrome_options.add_argument("--disable-gpu")
+                        chrome_options.add_argument("--start-maximized")
+                        
+                        # Create unique user data directory and port for each session
+                        user_data_dir = tempfile.mkdtemp(prefix="chrome_fallback_user_data_")
+                        debug_port = random.randint(9223, 9999)
+                        
+                        chrome_options.add_argument(f"--user-data-dir={user_data_dir}")
+                        chrome_options.add_argument(f"--remote-debugging-port={debug_port}")
+                        
+                        if headless:
+                            chrome_options.add_argument("--headless=new")
+                        
+                        return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=chrome_options)
     elif browser_name == "safari":
         if platform.system() != "Darwin":
             raise EnvironmentError("Safari is only supported on macOS.")
