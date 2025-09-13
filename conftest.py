@@ -508,7 +508,7 @@ def pytest_runtest_makereport(item, call):
                     attachment_type=allure.attachment_type.PNG
                 )
 
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="function", autouse=False)
 def record_screen(request):
     """
     A pytest fixture to record the screen during test execution.
